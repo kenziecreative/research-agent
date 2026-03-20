@@ -17,6 +17,14 @@ ln -s "$(pwd)/research-agent/knz-research.md" ~/.claude/commands/knz-research.md
 
 Then in any Claude Code session, run `/knz-research` to start a new research project.
 
+## Update
+
+```bash
+cd /path/to/research-agent && git pull
+```
+
+Because the command is installed via symlink, the update is immediate — no re-linking needed.
+
 ## What it does
 
 `/knz-research` asks three questions — research type, topic, and where to put the project — then scaffolds a complete research environment tailored to your topic. It launches an agent to do preliminary web research and generate a phase-by-phase research plan before writing anything, so the phases and questions are grounded, not generic.
