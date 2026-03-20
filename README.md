@@ -6,7 +6,8 @@ A Claude Code command that scaffolds structured, AI-assisted research projects w
 
 ```bash
 git clone https://github.com/kenziecreative/research-agent.git
-ln -s "$(pwd)/research-agent/knz-research.md" ~/.claude/commands/knz-research.md
+cd research-agent
+./install.sh
 ```
 
 Then in any Claude Code session, run `/knz-research` to start a new research project.
@@ -14,10 +15,10 @@ Then in any Claude Code session, run `/knz-research` to start a new research pro
 ## Update
 
 ```bash
-cd /path/to/research-agent && git pull
+cd research-agent
+git pull
+./install.sh
 ```
-
-Because the command is installed via symlink, the update is immediate — no re-linking needed.
 
 ## What it does
 
