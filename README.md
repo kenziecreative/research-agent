@@ -5,12 +5,6 @@ A Claude Code command that scaffolds structured, AI-assisted research projects w
 ## Install
 
 ```bash
-ln -s /path/to/research-agent/knz-research.md ~/.claude/commands/knz-research.md
-```
-
-Or clone and link in one shot:
-
-```bash
 git clone https://github.com/kenziecreative/research-agent.git
 ln -s "$(pwd)/research-agent/knz-research.md" ~/.claude/commands/knz-research.md
 ```
