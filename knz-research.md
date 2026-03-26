@@ -120,9 +120,11 @@ You generate research plans for structured AI-assisted research projects. Your o
 
 **Output:** `[##-phase-slug].md`
 
+**Phase cycle:** Complete all steps before proceeding to Phase 2: Collect sources → /cross-ref → /check-gaps → /summarize-section → /audit-claims. Do not start Phase 2 until this phase's audit passes.
+
 ---
 
-[Repeat for each phase]
+[Repeat for each phase — every phase must include the "Phase cycle" reminder with the next phase number]
 
 ---
 
@@ -221,21 +223,26 @@ Do not create files outside this structure for research artifacts. Working files
 
 4. **Workflow:**
 
-The standard research cycle:
+**Research is phase-sequential.** You work one phase at a time, in order. Each phase completes its full cycle before the next phase begins. Do not collect sources for Phase 3 while working on Phase 1. Do not batch source collection across multiple phases. Do not invent phase groupings or reorder phases.
 
-1. **Plan** — Research plan is in `research/research-plan.md`. Read it before starting.
-2. **Collect** — Use `/process-source` for each URL, PDF, or document. Do this repeatedly.
-3. **Connect** — Run `/cross-ref` after every 5-8 new sources to find patterns. This is mandatory, not optional.
-4. **Assess** — Run `/check-gaps` to see what's still missing. Fill gaps with more sources.
-5. **Synthesize** — Use `/summarize-section` to produce a draft in `research/drafts/`. This is NOT a final output.
-6. **Verify** — Run `/audit-claims` on the draft. This is what promotes it from `drafts/` to `outputs/`. No exceptions.
+The cycle for each phase:
+
+1. **Collect** — Use `/process-source` for each URL, PDF, or document relevant to the *current phase only*.
+2. **Connect** — Run `/cross-ref` after every 5-8 new sources to find patterns. This is mandatory, not optional.
+3. **Assess** — Run `/check-gaps` to confirm coverage for this phase. Fill gaps with more sources if needed.
+4. **Synthesize** — Use `/summarize-section` to produce a draft in `research/drafts/`. This is NOT a final output.
+5. **Verify** — Run `/audit-claims` on the draft. This is what promotes it from `drafts/` to `outputs/`. No exceptions.
+6. **Transition** — Update STATE.md, mark the phase complete, recommend context clear, and only then begin the next phase.
+
+Read the research plan in `research/research-plan.md` before starting. It defines the phases and their order.
 
 **Enforcement rules — these are structural, not guidelines:**
 
+- **Phases are sequential.** Complete Phase N's full cycle (collect → connect → assess → synthesize → verify) before starting Phase N+1. Do not collect sources for future phases. Do not batch work across phases. Do not group or reorder phases. The research plan defines the order — follow it.
 - **Nothing reaches `research/outputs/` without passing `/audit-claims`.** `/summarize-section` writes to `research/drafts/`. `/audit-claims` checks the draft against source notes and, if it passes, moves it to `research/outputs/`. If it fails, the draft stays in `drafts/` with an audit report listing what needs fixing.
 - **`/cross-ref` is mandatory after every 5-8 new sources.** Before processing a 9th source without a cross-reference, stop and run `/cross-ref` first. `research/cross-reference.md` must reflect current patterns at all times.
 - **`/check-gaps` is mandatory before starting a new phase.** Do not begin Phase N+1 until `/check-gaps` has confirmed coverage status for Phase N. If gaps remain, fill them or document them explicitly in `research/gaps.md` with a reason they're acceptable.
-- **Phase completion requires all four checks.** A phase is not complete until: cross-reference is current, gaps are assessed, draft is written, and audit has passed. STATE.md should not mark a phase complete until all four are done.
+- **Phase completion requires all five steps.** A phase is not complete until: sources collected for this phase, cross-reference is current, gaps are assessed, draft is written, and audit has passed. STATE.md should not mark a phase complete until all five are done.
 - **Canonical figures registry is the source of truth for cross-phase numbers.** When citing a number from a previous phase, check `research/reference/canonical-figures.json` first. If registered, use the canonical value. If not registered and this is a cross-phase citation, register it before using it. Never copy numbers from STATE.md summaries or conversation memory.
 
 **Clear context between phases.** Each phase should start with a fresh context window. STATE.md and your research files carry everything forward — nothing critical lives in conversation history. A fresh context for each phase produces sharper analysis than a saturated one. Before clearing, ensure STATE.md is fully up to date with current position, completed work, and next action. After clearing, read STATE.md first before resuming work.
@@ -250,9 +257,11 @@ The standard research cycle:
 
 Research state lives in `research/STATE.md`. It is the source of truth for project position — not memory, not conversation history, not file timestamps.
 
-On every new session or after context clear: Read `research/STATE.md` first. Don't start working until you know where you are.
+On every new session or after context clear: Read `research/STATE.md` first. Don't start working until you know where you are. The "Current Phase Cycle" section tells you exactly which step you're on — pick up there.
 
-During work: Update state at every transition — phase start/end, meaningful task completion, user decisions. Write state BEFORE doing anything expensive in case of compaction.
+During work: Update state at every transition — phase start/end, meaningful task completion, user decisions. Check off cycle steps as they complete. Write state BEFORE doing anything expensive in case of compaction. A PreCompact hook will warn you if STATE.md is stale, but don't rely on it — update proactively.
+
+The "Active phase" field in STATE.md tells you which phase to work on. Do not work on any other phase. When the current phase's cycle checklist is fully checked, mark it complete, generate the next phase's cycle checklist, and update "Active phase."
 
 7. **Context Management:**
 
@@ -398,10 +407,25 @@ Use this template, customized with data from the generated research plan:
 ```markdown
 # Research State
 
+**Phases are sequential. Complete the current phase's full cycle before starting the next. Do not batch work across phases.**
+
 ## Current Position
-- Phase: 0 — Project initialized, not yet started
-- Step: Research plan written. Ready to begin Phase 1.
+- Active phase: 1 — [Phase 1 Name]
+- Cycle step: Collect (1 of 5)
 - Blocking on: Nothing — ready to start.
+
+## Current Phase Cycle
+
+Each phase must complete all five steps in order. Check off each step as it is completed. Do not skip steps. Do not mark a phase complete until all five are checked.
+
+### Phase 1: [Name]
+- [ ] **Collect** — Sources gathered for this phase's questions
+- [ ] **Connect** — `/cross-ref` run, cross-reference.md current
+- [ ] **Assess** — `/check-gaps` run, coverage confirmed for this phase
+- [ ] **Synthesize** — `/summarize-section` run, draft in `drafts/`, integrity checked
+- [ ] **Verify** — `/audit-claims` passed, output promoted to `outputs/`
+
+When all five are checked, mark this phase complete below, update "Active phase" to the next phase, and generate a new cycle checklist for that phase.
 
 ## Completed Phases
 [Generate a checklist from the research plan phases, e.g.:]
@@ -419,6 +443,7 @@ Use this template, customized with data from the generated research plan:
 
 ## Sources Processed
 - Total count: 0
+- Sources for current phase: 0
 - Sources since last cross-reference: 0
 - Last cross-reference: N/A
 - Last gap check: N/A
@@ -426,8 +451,7 @@ Use this template, customized with data from the generated research plan:
 **Cross-ref is due when "Sources since last cross-reference" reaches 5.** Do not process a 6th source without running `/cross-ref` first. `/cross-ref` resets this counter to 0.
 
 ## Next Action
-1. Process source material
-2. Begin Phase 1
+Begin Phase 1: Collect sources relevant to Phase 1 questions only.
 ```
 
 Write to `<project-root>/research/STATE.md`.
@@ -564,6 +588,57 @@ Report only issues. Group by check type. For each issue, include:
 
 If zero issues: "No integrity issues found in [filename]."
 ```
+
+### Research Workflow Hooks
+
+Create `<project-root>/.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(echo \"$TOOL_INPUT\" | jq -r '.file_path // empty'); if [ -z \"$FILE_PATH\" ]; then echo '{\"ok\": true}'; exit 0; fi; if echo \"$FILE_PATH\" | grep -q 'research/outputs/'; then BASENAME=$(basename \"$FILE_PATH\"); AUDIT_FILE=\"research/audits/${BASENAME%.md}-audit.md\"; DRAFT_FILE=\"research/drafts/$BASENAME\"; if [ ! -f \"$DRAFT_FILE\" ]; then echo \"{\\\"ok\\\": false, \\\"reason\\\": \\\"BLOCKED: No draft exists at $DRAFT_FILE. Outputs must go through /summarize-section first, then /audit-claims. You cannot write directly to outputs/.\\\"}\"; elif [ ! -f \"$AUDIT_FILE\" ]; then echo \"{\\\"ok\\\": false, \\\"reason\\\": \\\"BLOCKED: No audit report found at $AUDIT_FILE. Run /audit-claims on the draft before promoting to outputs/.\\\"}\"; else echo '{\"ok\": true}'; fi; else echo '{\"ok\": true}'; fi",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(echo \"$TOOL_INPUT\" | jq -r '.file_path // empty'); if [ -z \"$FILE_PATH\" ]; then echo '{\"ok\": true}'; exit 0; fi; if echo \"$FILE_PATH\" | grep -q 'research/outputs/'; then BASENAME=$(basename \"$FILE_PATH\"); AUDIT_FILE=\"research/audits/${BASENAME%.md}-audit.md\"; if [ ! -f \"$AUDIT_FILE\" ]; then echo \"{\\\"ok\\\": false, \\\"reason\\\": \\\"BLOCKED: Cannot edit files in outputs/ without a passing audit report. Run /audit-claims first.\\\"}\"; else echo '{\"ok\": true}'; fi; else echo '{\"ok\": true}'; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f research/STATE.md ]; then STATE_MOD=$(stat -f %m research/STATE.md 2>/dev/null || stat -c %Y research/STATE.md 2>/dev/null); NOW=$(date +%s); AGE=$(( NOW - STATE_MOD )); if [ $AGE -gt 300 ]; then echo '{\"ok\": false, \"reason\": \"WARNING: STATE.md has not been updated in over 5 minutes. Update STATE.md with current position, completed work, and next action BEFORE context compacts. State that is not written down will be lost.\"}'; else echo '{\"ok\": true}'; fi; else echo '{\"ok\": true}'; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+These hooks enforce two rules that agents have been observed ignoring:
+
+1. **Output gate (PreToolUse: Write/Edit)** — Nothing can be written to `research/outputs/` unless both a draft in `research/drafts/` and an audit report in `research/audits/` already exist. This makes it mechanically impossible to skip `/summarize-section` or `/audit-claims`.
+
+2. **State preservation (PreCompact)** — Before context compacts, checks that STATE.md was updated recently. If it's stale, warns that state will be lost. This catches the case where an agent does work but doesn't persist its position before compaction wipes the context.
 
 ### Research Commands
 
@@ -799,6 +874,7 @@ Before reporting to the user, verify the scaffolding is complete:
    - `summarize-section.md`
    **Run `ls <project-root>/.claude/agents/`** — confirm the agent file exists:
    - `research-integrity.md`
+   **Confirm `<project-root>/.claude/settings.json` exists** and contains the PreToolUse and PreCompact hooks.
 2. **Run `ls <project-root>/research/`** — confirm all expected files and directories exist:
    - `research-plan.md`
    - `STATE.md`
@@ -813,7 +889,7 @@ Before reporting to the user, verify the scaffolding is complete:
    - `reference/tools-guide.md`
    - `reference/canonical-figures.json`
 3. **Read `<project-root>/CLAUDE.md`** — confirm it references the five commands and the correct finding tags for the selected research type.
-4. **Read `<project-root>/research/STATE.md`** — confirm the phase checklist matches the research plan.
+4. **Read `<project-root>/research/STATE.md`** — confirm the phase checklist matches the research plan and the Phase 1 cycle checklist is present with all five steps unchecked.
 
 If anything is missing, create it before proceeding. If the CLAUDE.md references commands that don't exist or has mismatched finding tags, fix it.
 
