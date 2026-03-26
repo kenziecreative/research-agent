@@ -34,6 +34,7 @@ git pull
 - **Person Research** — Career trajectory, expertise validation, public positions, reputation, red flags
 - **Market/Industry Research** — Adoption patterns, key players, growth data, barriers, where things are heading
 - **Presentation Research** — Build the evidence base and through line for a talk or presentation
+- **Curriculum Research** — Research a subject domain to build a curriculum from scratch, producing a subject matter foundation for curriculum design
 
 ## What gets created
 
