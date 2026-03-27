@@ -244,6 +244,7 @@ Read the research plan in `research/research-plan.md` before starting. It define
 - **`/check-gaps` is mandatory before starting a new phase.** Do not begin Phase N+1 until `/check-gaps` has confirmed coverage status for Phase N. If gaps remain, fill them or document them explicitly in `research/gaps.md` with a reason they're acceptable.
 - **Phase completion requires all five steps.** A phase is not complete until: sources collected for this phase, cross-reference is current, gaps are assessed, draft is written, and audit has passed. STATE.md should not mark a phase complete until all five are done.
 - **Canonical figures registry is the source of truth for cross-phase numbers.** When citing a number from a previous phase, check `research/reference/canonical-figures.json` first. If registered, use the canonical value. If not registered and this is a cross-phase citation, register it before using it. Never copy numbers from STATE.md summaries or conversation memory.
+- **Never skip, fold, reorder, or merge phases without explicit user approval.** If `/check-gaps` reveals a phase has insufficient source coverage, tell the user and present options: (1) collect more sources to fill the gaps, (2) skip the phase with the user's explicit approval, or (3) fold the phase's questions into another phase with the user's explicit approval. Do not make this decision yourself. Do not record a phase-skip in STATE.md without the user confirming it on screen first.
 
 **Clear context between phases.** Each phase should start with a fresh context window. STATE.md and your research files carry everything forward — nothing critical lives in conversation history. A fresh context for each phase produces sharper analysis than a saturated one. Before clearing, ensure STATE.md is fully up to date with current position, completed work, and next action. After clearing, read STATE.md first before resuming work.
 
@@ -257,7 +258,7 @@ Read the research plan in `research/research-plan.md` before starting. It define
 
 Research state lives in `research/STATE.md`. It is the source of truth for project position — not memory, not conversation history, not file timestamps.
 
-On every new session or after context clear: Read `research/STATE.md` first. Don't start working until you know where you are. The "Current Phase Cycle" section tells you exactly which step you're on — pick up there.
+On every new session or after context clear: Read `research/STATE.md` first. Don't start working until you know where you are. The "Current Phase Cycle" section tells you exactly which step you're on — pick up there. **If STATE.md records any skipped, folded, or deferred phases, report this to the user before resuming work.** The user may not have been present when that decision was made — surface it explicitly so they can confirm or reverse it.
 
 During work: Update state at every transition — phase start/end, meaningful task completion, user decisions. Check off cycle steps as they complete. Write state BEFORE doing anything expensive in case of compaction. A PreCompact hook will warn you if STATE.md is stale, but don't rely on it — update proactively.
 
