@@ -1,28 +1,28 @@
 # research-agent
 
-A Claude Code command that scaffolds structured, AI-assisted research projects with state management, evidence standards, and integrity enforcement built in.
+A Claude Code plugin that scaffolds structured, AI-assisted research projects with state management, evidence standards, and integrity enforcement built in.
 
 ## Install
 
 ```bash
 git clone https://github.com/kenziecreative/research-agent.git
-cd research-agent
-./install.sh
+claude plugin install ./research-agent
 ```
 
-Then in any Claude Code session, run `/knz-research` to start a new research project.
+Then in any Claude Code session, run `/research:init` to start a new research project.
 
 ## Update
 
 ```bash
 cd research-agent
 git pull
-./install.sh
 ```
+
+Plugin updates are picked up automatically.
 
 ## What it does
 
-`/knz-research` asks three questions — research type, topic, and where to put the project — then scaffolds a complete research environment tailored to your topic. It launches an agent to do preliminary web research and generate a phase-by-phase research plan before writing anything, so the phases and questions are grounded, not generic.
+`/research:init` asks three questions — research type, topic, and where to put the project — then scaffolds a complete research environment tailored to your topic. It launches an agent to do preliminary web research and generate a phase-by-phase research plan before writing anything, so the phases and questions are grounded, not generic.
 
 **Supported research types:**
 
@@ -36,9 +36,43 @@ git pull
 - **Presentation Research** — Build the evidence base and through line for a talk or presentation
 - **Curriculum Research** — Research a subject domain to build a curriculum from scratch, producing a subject matter foundation for curriculum design
 
-## What gets created
+## Plugin structure
 
-Each project gets its own self-contained environment:
+```
+research-agent/
+├── .claude-plugin/
+│   └── plugin.json
+├── hooks/
+│   └── hooks.json               # Output gates + state preservation hooks
+├── agents/
+│   └── research-integrity.md    # Post-write drift and integrity checker
+├── skills/
+│   ├── init/                    # Project scaffolder
+│   │   ├── SKILL.md
+│   │   ├── templates/           # Type configs, empty-state files
+│   │   │   ├── types/           # 9 research type templates
+│   │   │   ├── source-standards.md
+│   │   │   ├── cross-reference.md
+│   │   │   ├── registry.md
+│   │   │   └── canonical-figures.json
+│   │   └── reference/           # Copied to project at init
+│   │       ├── writing-standards.md
+│   │       └── tools-guide.md
+│   ├── process-source/          # Process URL/file into structured note
+│   ├── cross-ref/               # Find patterns across source notes
+│   ├── check-gaps/              # Map coverage, identify holes
+│   ├── audit-claims/            # Fact-check draft, promote to outputs
+│   ├── summarize-section/       # Synthesize notes into draft section
+│   ├── start-phase/             # Briefing for next phase (read-only)
+│   ├── phase-insight/           # Current phase analysis (read-only)
+│   └── progress/                # Project dashboard (read-only)
+├── install.sh
+└── README.md
+```
+
+## What gets created per project
+
+Each project gets its own self-contained environment (no `.claude/` files written):
 
 ```
 <project-root>/
@@ -58,25 +92,22 @@ Each project gets its own self-contained environment:
 │       ├── writing-standards.md
 │       ├── tools-guide.md
 │       └── canonical-figures.json  # Single source of truth for cross-phase numbers
-├── source-material/              # Raw input documents
-└── .claude/
-    ├── commands/                 # Project-level research commands
-    │   ├── process-source.md
-    │   ├── cross-ref.md
-    │   ├── check-gaps.md
-    │   ├── summarize-section.md
-    │   └── audit-claims.md
-    └── agents/
-        └── research-integrity.md # Post-write drift and integrity checker
+└── source-material/              # Raw input documents
 ```
 
 ## How the workflow works
 
-1. `/process-source <url-or-file>` — Fetch and structure a source into a research note
-2. `/cross-ref` — Find patterns across all processed notes (mandatory every 5-8 sources)
-3. `/check-gaps` — Map coverage against the research plan, identify holes (mandatory before each new phase)
-4. `/summarize-section <phase>` — Synthesize notes into a draft (writes to `drafts/`, runs integrity check automatically)
-5. `/audit-claims <filepath>` — Fact-check the draft against source notes; promotes to `outputs/` if it passes
+1. `/research:process-source <url-or-file>` — Fetch and structure a source into a research note
+2. `/research:cross-ref` — Find patterns across all processed notes (mandatory every 5-8 sources)
+3. `/research:check-gaps` — Map coverage against the research plan, identify holes (mandatory before each new phase)
+4. `/research:summarize-section <phase>` — Synthesize notes into a draft (writes to `drafts/`, runs integrity check automatically)
+5. `/research:audit-claims <filepath>` — Fact-check the draft against source notes; promotes to `outputs/` if it passes
+
+**New navigation skills (read-only):**
+
+6. `/research:start-phase` — Get a briefing before starting the next phase: questions, prior findings, context
+7. `/research:phase-insight` — See which questions are well-covered vs. thin in the current phase
+8. `/research:progress` — Project dashboard showing phase status, source counts, and next action
 
 ## Key integrity features
 
@@ -84,7 +115,7 @@ Each project gets its own self-contained environment:
 
 **`research-integrity` agent** — Runs automatically after every write. Catches fabricated data, range narrowing (source says "1-3x", output says "2-3x"), qualifier stripping, internal inconsistencies, and cross-phase drift.
 
-**Hard gates** — Nothing reaches `outputs/` without passing `/audit-claims`. No new phase starts without `/check-gaps` confirming the previous phase's coverage. No 6th source gets processed without running `/cross-ref` first.
+**Hard gates (hooks)** — Nothing reaches `outputs/` without passing `/research:audit-claims`. These are enforced by plugin hooks, not just prose instructions.
 
 **Project boundary rule** — All file writes stay inside the research project directory. The agent won't write to other projects or system paths even if asked.
 

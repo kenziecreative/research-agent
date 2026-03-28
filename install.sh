@@ -1,10 +1,9 @@
 #!/bin/bash
 
-COMMANDS_DIR="$HOME/.claude/commands"
-SOURCE="$(cd "$(dirname "$0")" && pwd)/knz-research.md"
-DEST="$COMMANDS_DIR/knz-research.md"
+PLUGIN_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-mkdir -p "$COMMANDS_DIR"
-cp "$SOURCE" "$DEST"
-echo "✓ /knz-research installed to $DEST"
-echo "  Run /knz-research in any Claude Code session to start a research project."
+echo "To install the research-agent plugin, run:"
+echo ""
+echo "  claude plugin install $PLUGIN_DIR"
+echo ""
+echo "Then use /research:init in any Claude Code session to start a research project."

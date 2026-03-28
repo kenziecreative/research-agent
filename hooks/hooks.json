@@ -1,0 +1,38 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(echo \"$TOOL_INPUT\" | jq -r '.file_path // empty'); if [ -z \"$FILE_PATH\" ]; then echo '{\"ok\": true}'; exit 0; fi; if echo \"$FILE_PATH\" | grep -q 'research/outputs/'; then BASENAME=$(basename \"$FILE_PATH\"); AUDIT_FILE=\"research/audits/${BASENAME%.md}-audit.md\"; DRAFT_FILE=\"research/drafts/$BASENAME\"; if [ ! -f \"$DRAFT_FILE\" ]; then echo \"{\\\"ok\\\": false, \\\"reason\\\": \\\"BLOCKED: No draft exists at $DRAFT_FILE. Outputs must go through /research:summarize-section first, then /research:audit-claims. You cannot write directly to outputs/.\\\"}\"; elif [ ! -f \"$AUDIT_FILE\" ]; then echo \"{\\\"ok\\\": false, \\\"reason\\\": \\\"BLOCKED: No audit report found at $AUDIT_FILE. Run /research:audit-claims on the draft before promoting to outputs/.\\\"}\"; else echo '{\"ok\": true}'; fi; else echo '{\"ok\": true}'; fi",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE_PATH=$(echo \"$TOOL_INPUT\" | jq -r '.file_path // empty'); if [ -z \"$FILE_PATH\" ]; then echo '{\"ok\": true}'; exit 0; fi; if echo \"$FILE_PATH\" | grep -q 'research/outputs/'; then BASENAME=$(basename \"$FILE_PATH\"); AUDIT_FILE=\"research/audits/${BASENAME%.md}-audit.md\"; if [ ! -f \"$AUDIT_FILE\" ]; then echo \"{\\\"ok\\\": false, \\\"reason\\\": \\\"BLOCKED: Cannot edit files in outputs/ without a passing audit report. Run /research:audit-claims first.\\\"}\"; else echo '{\"ok\": true}'; fi; else echo '{\"ok\": true}'; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f research/STATE.md ]; then STATE_MOD=$(stat -f %m research/STATE.md 2>/dev/null || stat -c %Y research/STATE.md 2>/dev/null); NOW=$(date +%s); AGE=$(( NOW - STATE_MOD )); if [ $AGE -gt 300 ]; then echo '{\"ok\": false, \"reason\": \"WARNING: STATE.md has not been updated in over 5 minutes. Update STATE.md with current position, completed work, and next action BEFORE context compacts. State that is not written down will be lost.\"}'; else echo '{\"ok\": true}'; fi; else echo '{\"ok\": true}'; fi",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
