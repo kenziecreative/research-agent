@@ -36,7 +36,7 @@ Shipped 9 slash commands, 9 research type templates, source-processing pipeline 
   3. Each playbook specifies which tool to use (tavily_search, Bash HTTP, URL construction) and a graceful degradation instruction for when the channel is unavailable
   4. Each playbook defines a source status taxonomy (DISCOVERED / ACCESSIBLE / PROCESSED) so the skill can label paywalled or inaccessible sources
   5. No playbook files exist inside `.claude/commands/research/` (phantom command constraint satisfied)
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 Plans:
 - [ ] 01-01-PLAN.md — Tavily-based playbooks (web-search, social-signals, financial)
 - [ ] 01-02-PLAN.md — HTTP API playbooks (academic, regulatory, domain-specific)
@@ -87,7 +87,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 1. Channel Playbooks | v1.1 | 0/2 | Planned | - |
+| 1. Channel Playbooks | 1/2 | In Progress|  | - |
 | 2. Type-Channel Maps | v1.1 | 0/TBD | Not started | - |
 | 3. Discover Skill | v1.1 | 0/TBD | Not started | - |
 | 4. Init Modifications | v1.1 | 0/TBD | Not started | - |

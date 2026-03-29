@@ -9,7 +9,7 @@ Requirements for structured multi-channel source discovery. Each maps to roadmap
 
 ### Discovery Infrastructure
 
-- [ ] **DISC-01**: Channel playbooks exist for 6 channel types (web-search, academic, regulatory, financial, social-signals, domain-specific) with query construction patterns, credibility tiers, tool mappings, and graceful degradation instructions
+- [x] **DISC-01**: Channel playbooks exist for 6 channel types (web-search, academic, regulatory, financial, social-signals, domain-specific) with query construction patterns, credibility tiers, tool mappings, and graceful degradation instructions
 - [ ] **DISC-02**: Type-channel maps exist for all 9 research types, mapping each type's phases to prioritized primary and secondary discovery channels derived from existing credibility hierarchies
 - [ ] **DISC-03**: Discovery candidate output is written to `research/discovery/<phase>-candidates.md`, separate from `research/notes/` where processed sources live
 - [ ] **DISC-04**: Discovery strategy is generated at project init time by the plan-generator subagent, mapping each phase to its highest-value channels based on research type
@@ -69,7 +69,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | Phase 1 | Pending |
+| DISC-01 | Phase 1 | Complete |
 | DISC-02 | Phase 2 | Pending |
 | DISC-03 | Phase 3 | Pending |
 | DISC-04 | Phase 4 | Pending |
