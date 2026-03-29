@@ -69,31 +69,31 @@ Deferred to future milestone. Tracked but not in current roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DISC-01 | — | Pending |
-| DISC-02 | — | Pending |
-| DISC-03 | — | Pending |
-| DISC-04 | — | Pending |
-| DSKL-01 | — | Pending |
-| DSKL-02 | — | Pending |
-| DSKL-03 | — | Pending |
-| DSKL-04 | — | Pending |
-| DSKL-05 | — | Pending |
-| DSKL-06 | — | Pending |
-| DSKL-07 | — | Pending |
-| CHAN-01 | — | Pending |
-| CHAN-02 | — | Pending |
-| CHAN-03 | — | Pending |
-| CHAN-04 | — | Pending |
-| CHAN-05 | — | Pending |
-| INIT-01 | — | Pending |
-| INIT-02 | — | Pending |
-| INIT-03 | — | Pending |
+| DISC-01 | Phase 1 | Pending |
+| DISC-02 | Phase 2 | Pending |
+| DISC-03 | Phase 3 | Pending |
+| DISC-04 | Phase 4 | Pending |
+| DSKL-01 | Phase 3 | Pending |
+| DSKL-02 | Phase 3 | Pending |
+| DSKL-03 | Phase 3 | Pending |
+| DSKL-04 | Phase 3 | Pending |
+| DSKL-05 | Phase 3 | Pending |
+| DSKL-06 | Phase 3 | Pending |
+| DSKL-07 | Phase 3 | Pending |
+| CHAN-01 | Phase 3 | Pending |
+| CHAN-02 | Phase 3 | Pending |
+| CHAN-03 | Phase 3 | Pending |
+| CHAN-04 | Phase 3 | Pending |
+| CHAN-05 | Phase 3 | Pending |
+| INIT-01 | Phase 4 | Pending |
+| INIT-02 | Phase 4 | Pending |
+| INIT-03 | Phase 5 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 19 total
-- Mapped to phases: 0
-- Unmapped: 19
+- Mapped to phases: 19
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-29*
-*Last updated: 2026-03-29 after initial definition*
+*Last updated: 2026-03-28 after roadmap creation*
