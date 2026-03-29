@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Phase 2 context gathered
-last_updated: "2026-03-29T17:32:21.547Z"
+stopped_at: Completed 02-01-PLAN.md (company-for-profit, company-non-profit, competitive-analysis maps)
+last_updated: "2026-03-29T17:44:53.432Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
+  total_plans: 5
+  completed_plans: 3
   percent: 0
 ---
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01-channel-playbooks P01 | 2 | 2 tasks | 3 files |
 | Phase 01-channel-playbooks P02 | 4 | 3 tasks | 3 files |
+| Phase 02-type-channel-maps P01 | 20 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,9 @@ Recent decisions affecting current work:
 - [Phase 01-02]: Academic channel uses OpenAlex API (free, no auth) as primary with 10 req/s polite pool via mailto parameter
 - [Phase 01-02]: Regulatory channel requires User-Agent header for SEC EDGAR per SEC policy — embedded in curl templates
 - [Phase 01-02]: Domain-specific channel uses type-hook template pattern — Phase 2 type-channel maps select applicable hooks per research type
+- [Phase 02-type-channel-maps]: For-profit financial phases: regulatory (SEC filings) + domain-specific (Crunchbase/PitchBook) co-primary — cover distinct public vs. private funding data
+- [Phase 02-type-channel-maps]: Non-profit financial phases: regulatory channel sole primary for 990/ProPublica — charity aggregators are secondary since they pull from same 990 data
+- [Phase 02-type-channel-maps]: Academic channel included for non-profit (impact phases) and competitive analysis (tech/trends) but not for-profit — traces to credibility hierarchy differences
 
 ### Pending Todos
 
@@ -82,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-29T17:32:21.544Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-type-channel-maps/02-CONTEXT.md
+Last session: 2026-03-29T17:44:53.430Z
+Stopped at: Completed 02-01-PLAN.md (company-for-profit, company-non-profit, competitive-analysis maps)
+Resume file: None
