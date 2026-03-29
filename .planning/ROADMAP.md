@@ -18,7 +18,7 @@ Shipped 9 slash commands, 9 research type templates, source-processing pipeline 
 
 **Milestone Goal:** Make the Collect step type-aware and multi-channel so the agent knows where to look for sources, not just how to process them once found.
 
-- [ ] **Phase 1: Channel Playbooks** - Reference files that define query construction, credibility tiers, and graceful degradation for each discovery channel type
+- [x] **Phase 1: Channel Playbooks** - Reference files that define query construction, credibility tiers, and graceful degradation for each discovery channel type (completed 2026-03-29)
 - [ ] **Phase 2: Type-Channel Maps** - Per-research-type maps that route each phase of research to its highest-credibility channels
 - [ ] **Phase 3: Discover Skill** - The `/research:discover` slash command that orchestrates type-aware, multi-channel source discovery
 - [ ] **Phase 4: Init Modifications** - Updated init skill that scaffolds discovery infrastructure and advertises the discover command to new projects
@@ -36,7 +36,7 @@ Shipped 9 slash commands, 9 research type templates, source-processing pipeline 
   3. Each playbook specifies which tool to use (tavily_search, Bash HTTP, URL construction) and a graceful degradation instruction for when the channel is unavailable
   4. Each playbook defines a source status taxonomy (DISCOVERED / ACCESSIBLE / PROCESSED) so the skill can label paywalled or inaccessible sources
   5. No playbook files exist inside `.claude/commands/research/` (phantom command constraint satisfied)
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [ ] 01-01-PLAN.md — Tavily-based playbooks (web-search, social-signals, financial)
 - [ ] 01-02-PLAN.md — HTTP API playbooks (academic, regulatory, domain-specific)
@@ -87,7 +87,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
-| 1. Channel Playbooks | 1/2 | In Progress|  | - |
+| 1. Channel Playbooks | 2/2 | Complete   | 2026-03-29 | - |
 | 2. Type-Channel Maps | v1.1 | 0/TBD | Not started | - |
 | 3. Discover Skill | v1.1 | 0/TBD | Not started | - |
 | 4. Init Modifications | v1.1 | 0/TBD | Not started | - |

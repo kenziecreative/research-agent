@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Completed 01-channel-playbooks-01-01-PLAN.md
-last_updated: "2026-03-29T16:23:36.656Z"
+stopped_at: Completed 01-02-PLAN.md — all 3 non-Tavily channel playbooks created
+last_updated: "2026-03-29T16:24:56.633Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-channel-playbooks P01 | 2 | 2 tasks | 3 files |
+| Phase 01-channel-playbooks P02 | 4 | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,9 @@ Recent decisions affecting current work:
 - [Phase 01-channel-playbooks]: Source status taxonomy canonical definition lives in web-search.md Section 5; other playbooks reference it to prevent drift
 - [Phase 01-channel-playbooks]: Wildcard include_domains (community.*.com, investor.*.com) flagged as unconfirmed in Tavily — notes added in playbooks to fall back to explicit domain lists
 - [Phase 01-channel-playbooks]: Financial channel scoped to Tavily-based discovery only; direct EDGAR/ProPublica API access deferred to regulatory channel (Plan 02)
+- [Phase 01-02]: Academic channel uses OpenAlex API (free, no auth) as primary with 10 req/s polite pool via mailto parameter
+- [Phase 01-02]: Regulatory channel requires User-Agent header for SEC EDGAR per SEC policy — embedded in curl templates
+- [Phase 01-02]: Domain-specific channel uses type-hook template pattern — Phase 2 type-channel maps select applicable hooks per research type
 
 ### Pending Todos
 
@@ -78,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-29T16:23:36.654Z
-Stopped at: Completed 01-channel-playbooks-01-01-PLAN.md
+Last session: 2026-03-29T16:24:56.630Z
+Stopped at: Completed 01-02-PLAN.md — all 3 non-Tavily channel playbooks created
 Resume file: None
