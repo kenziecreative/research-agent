@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-29T21:24:12.430Z"
+stopped_at: Completed 03-discover-skill-01-PLAN.md
+last_updated: "2026-03-29T22:24:45.923Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  completed_phases: 3
+  total_plans: 6
+  completed_plans: 6
   percent: 0
 ---
 
@@ -55,6 +55,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-type-channel-maps P01 | 20 | 2 tasks | 3 files |
 | Phase 02-type-channel-maps P02 | 3 | 2 tasks | 3 files |
 | Phase 02-type-channel-maps P03 | 3 | 2 tasks | 3 files |
+| Phase 03-discover-skill P01 | 4 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,9 @@ Recent decisions affecting current work:
 - [Phase 02-type-channel-maps]: Exploratory-thesis routes to academic as primary in 4 of 5 groups — matches credibility hierarchy where peer-reviewed research is highest
 - [Phase 02-type-channel-maps]: Curriculum-research practitioner reality group uses social-signals as primary — practitioner community knowledge is high credibility for ground truth, academic lags
 - [Phase 02-type-channel-maps]: Person-research financial/legal group uses regulatory + financial as primary — SEC filings, court records, corporate registrations are highest credibility per hierarchy
+- [Phase 03-discover-skill]: Skill reads channel playbooks at execution time — thin orchestrator pattern keeps channel intelligence in playbooks
+- [Phase 03-discover-skill]: Re-run behavior: append with timestamp separator + deduplicate by URL — never overwrite prior discovery work
+- [Phase 03-discover-skill]: Status PROCESSED reserved for process-source — discover assigns only DISCOVERED or ACCESSIBLE
 
 ### Pending Todos
 
@@ -94,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-29T21:24:12.426Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-discover-skill/03-CONTEXT.md
+Last session: 2026-03-29T22:24:45.915Z
+Stopped at: Completed 03-discover-skill-01-PLAN.md
+Resume file: None
