@@ -19,7 +19,7 @@ Shipped 9 slash commands, 9 research type templates, source-processing pipeline 
 **Milestone Goal:** Make the Collect step type-aware and multi-channel so the agent knows where to look for sources, not just how to process them once found.
 
 - [x] **Phase 1: Channel Playbooks** - Reference files that define query construction, credibility tiers, and graceful degradation for each discovery channel type (completed 2026-03-29)
-- [ ] **Phase 2: Type-Channel Maps** - Per-research-type maps that route each phase of research to its highest-credibility channels
+- [x] **Phase 2: Type-Channel Maps** - Per-research-type maps that route each phase of research to its highest-credibility channels (completed 2026-03-29)
 - [ ] **Phase 3: Discover Skill** - The `/research:discover` slash command that orchestrates type-aware, multi-channel source discovery
 - [ ] **Phase 4: Init Modifications** - Updated init skill that scaffolds discovery infrastructure and advertises the discover command to new projects
 - [ ] **Phase 5: Tools Guide Update** - Updated tools guide with discovery-specific patterns and channel-specific tool recommendations
@@ -50,7 +50,7 @@ Plans:
   2. Each map lists primary and secondary channels per research phase, referencing channel names defined in Phase 1 playbooks
   3. Channel priorities in each map are consistent with the credibility hierarchies already documented in the project's type templates
   4. A channel appears in a type map only if it serves at least one research phase for that type (no speculative mappings)
-**Plans:** 1/3 plans executed
+**Plans:** 3/3 plans complete
 Plans:
 - [ ] 02-01-PLAN.md — Company/competitive type-channel maps (company-for-profit, company-non-profit, competitive-analysis)
 - [ ] 02-02-PLAN.md — Market/product type-channel maps (market-industry, prd-validation, presentation-research)
@@ -92,7 +92,7 @@ Plans:
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
 | 1. Channel Playbooks | 2/2 | Complete   | 2026-03-29 | - |
-| 2. Type-Channel Maps | 1/3 | In Progress|  | - |
+| 2. Type-Channel Maps | 3/3 | Complete   | 2026-03-29 | - |
 | 3. Discover Skill | v1.1 | 0/TBD | Not started | - |
 | 4. Init Modifications | v1.1 | 0/TBD | Not started | - |
 | 5. Tools Guide Update | v1.1 | 0/TBD | Not started | - |

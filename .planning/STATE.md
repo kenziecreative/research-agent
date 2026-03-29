@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Completed 02-01-PLAN.md (company-for-profit, company-non-profit, competitive-analysis maps)
-last_updated: "2026-03-29T17:44:53.432Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-03-29T17:45:39.753Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 5
   percent: 0
 ---
 
@@ -53,6 +53,8 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-channel-playbooks P01 | 2 | 2 tasks | 3 files |
 | Phase 01-channel-playbooks P02 | 4 | 3 tasks | 3 files |
 | Phase 02-type-channel-maps P01 | 20 | 2 tasks | 3 files |
+| Phase 02-type-channel-maps P02 | 3 | 2 tasks | 3 files |
+| Phase 02-type-channel-maps P03 | 3 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -73,6 +75,12 @@ Recent decisions affecting current work:
 - [Phase 02-type-channel-maps]: For-profit financial phases: regulatory (SEC filings) + domain-specific (Crunchbase/PitchBook) co-primary — cover distinct public vs. private funding data
 - [Phase 02-type-channel-maps]: Non-profit financial phases: regulatory channel sole primary for 990/ProPublica — charity aggregators are secondary since they pull from same 990 data
 - [Phase 02-type-channel-maps]: Academic channel included for non-profit (impact phases) and competitive analysis (tech/trends) but not for-profit — traces to credibility hierarchy differences
+- [Phase 02-type-channel-maps]: market-industry uses 8 phase groups due to high channel variation — different channels needed for sizing vs. technology vs. regulatory vs. investment phases
+- [Phase 02-type-channel-maps]: prd-validation excludes regulatory channel — government filings and standards bodies are not primary sources for PRD assumption validation
+- [Phase 02-type-channel-maps]: presentation-research excludes domain-specific and financial channels — patent search and VC databases are irrelevant to presentation evidence gathering
+- [Phase 02-type-channel-maps]: Exploratory-thesis routes to academic as primary in 4 of 5 groups — matches credibility hierarchy where peer-reviewed research is highest
+- [Phase 02-type-channel-maps]: Curriculum-research practitioner reality group uses social-signals as primary — practitioner community knowledge is high credibility for ground truth, academic lags
+- [Phase 02-type-channel-maps]: Person-research financial/legal group uses regulatory + financial as primary — SEC filings, court records, corporate registrations are highest credibility per hierarchy
 
 ### Pending Todos
 
@@ -86,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-29T17:44:53.430Z
-Stopped at: Completed 02-01-PLAN.md (company-for-profit, company-non-profit, competitive-analysis maps)
+Last session: 2026-03-29T17:45:39.751Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
