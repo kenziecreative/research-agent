@@ -66,7 +66,9 @@ Plans:
   3. The skill reports explicit status for every channel attempted: found N / rate limited / error / skipped / not configured — the user can distinguish "no sources exist" from "channel failed"
   4. Channel results are capped at 5-8 sources per channel per query; the candidate list is reviewable, not overwhelming
   5. The skill degrades gracefully to Tavily-only when other channels are unavailable, completing successfully rather than erroring
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 03-01-PLAN.md — Complete discover skill with orchestration, all 6 channels, candidate output format
 
 ### Phase 4: Init Modifications
 **Goal**: New projects scaffolded with `/research:init` include the discovery directory, a discovery strategy, and CLAUDE.md instructions that advertise the discover command from day one
@@ -93,6 +95,6 @@ Plans:
 |-------|-----------|----------------|--------|-----------|
 | 1. Channel Playbooks | 2/2 | Complete   | 2026-03-29 | - |
 | 2. Type-Channel Maps | 3/3 | Complete   | 2026-03-29 | - |
-| 3. Discover Skill | v1.1 | 0/TBD | Not started | - |
+| 3. Discover Skill | v1.1 | 0/1 | Planning | - |
 | 4. Init Modifications | v1.1 | 0/TBD | Not started | - |
 | 5. Tools Guide Update | v1.1 | 0/TBD | Not started | - |
