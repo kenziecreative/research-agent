@@ -52,11 +52,11 @@ Create the following directories at the target path:
 └── source-material/
 ```
 
-Note: No `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` — these are handled by the plugin.
+Note: No `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` — these live in the research-agent project, not in the scaffolded research project.
 
 ## Step 3: Generate the Research Plan
 
-Read the matching type template from `${CLAUDE_SKILL_DIR}/templates/types/` to get the type-specific finding tags, validation standards, phase structure patterns, and credibility hierarchy.
+Read the matching type template from `.claude/reference/templates/types/` to get the type-specific finding tags, validation standards, phase structure patterns, and credibility hierarchy.
 
 Launch an agent (use `subagent_type: "general-purpose"`, model: `sonnet`) to generate the research plan. Provide the agent with:
 - The research type
@@ -291,14 +291,14 @@ Write the assembled CLAUDE.md to `<project-root>/CLAUDE.md`.
 
 ### Reference Files
 
-Copy the following files from the plugin to the project:
+Copy the following files to the project:
 
-1. Copy `${CLAUDE_SKILL_DIR}/reference/writing-standards.md` to `<project-root>/research/reference/writing-standards.md`
-2. Copy `${CLAUDE_SKILL_DIR}/reference/tools-guide.md` to `<project-root>/research/reference/tools-guide.md`
+1. Copy `.claude/reference/writing-standards.md` to `<project-root>/research/reference/writing-standards.md`
+2. Copy `.claude/reference/tools-guide.md` to `<project-root>/research/reference/tools-guide.md`
 
 ### source-standards.md
 
-Read `${CLAUDE_SKILL_DIR}/templates/source-standards.md` as a template. Replace the `[INSERT THE SOURCE CREDIBILITY HIERARCHY FROM THE MATCHING TYPE TEMPLATE]` placeholder with the Source Credibility Hierarchy from the matching type template. Write the result to `<project-root>/research/reference/source-standards.md`.
+Read `.claude/reference/templates/source-standards.md` as a template. Replace the `[INSERT THE SOURCE CREDIBILITY HIERARCHY FROM THE MATCHING TYPE TEMPLATE]` placeholder with the Source Credibility Hierarchy from the matching type template. Write the result to `<project-root>/research/reference/source-standards.md`.
 
 ### STATE.md
 
@@ -358,7 +358,7 @@ Write to `<project-root>/research/STATE.md`.
 
 ### Other Files
 
-- Copy `${CLAUDE_SKILL_DIR}/templates/registry.md` to `<project-root>/research/sources/registry.md`
+- Copy `.claude/reference/templates/registry.md` to `<project-root>/research/sources/registry.md`
 
 - Write `research/gaps.md` — use phase names from the generated research plan:
 
@@ -380,9 +380,9 @@ Tracks what's been covered and what's still missing across all research phases.
 [...etc for all phases]
 ```
 
-- Copy `${CLAUDE_SKILL_DIR}/templates/cross-reference.md` to `<project-root>/research/cross-reference.md`
+- Copy `.claude/reference/templates/cross-reference.md` to `<project-root>/research/cross-reference.md`
 
-- Copy `${CLAUDE_SKILL_DIR}/templates/canonical-figures.json` to `<project-root>/research/reference/canonical-figures.json`
+- Copy `.claude/reference/templates/canonical-figures.json` to `<project-root>/research/reference/canonical-figures.json`
 
 ### Source Material
 
@@ -405,7 +405,7 @@ Before reporting to the user, verify the scaffolding is complete:
    - `reference/writing-standards.md`
    - `reference/tools-guide.md`
    - `reference/canonical-figures.json`
-2. **Confirm NO `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` were created** — these are handled by the plugin.
+2. **Confirm NO `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` were created** — these live in the research-agent project, not in the scaffolded research project.
 3. **Read `<project-root>/CLAUDE.md`** — confirm it references the eight skills with `/research:*` qualified names and the correct finding tags for the selected research type.
 4. **Read `<project-root>/research/STATE.md`** — confirm the phase checklist matches the research plan and the Phase 1 cycle checklist is present with all five steps unchecked.
 

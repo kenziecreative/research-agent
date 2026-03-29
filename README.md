@@ -1,15 +1,17 @@
 # research-agent
 
-A Claude Code plugin that scaffolds structured, AI-assisted research projects with state management, evidence standards, and integrity enforcement built in.
+Structured, AI-assisted research projects with state management, evidence standards, and integrity enforcement built in.
 
 ## Install
 
+Clone or copy this project, then open a Claude Code session inside it. The `/research:*` commands are auto-discovered from `.claude/commands/research/`.
+
 ```bash
 git clone https://github.com/kenziecreative/research-agent.git
-claude plugin install ./research-agent
+cd research-agent
 ```
 
-Then in any Claude Code session, run `/research:init` to start a new research project.
+Then run `/research:init` to start a new research project.
 
 ## Update
 
@@ -17,8 +19,6 @@ Then in any Claude Code session, run `/research:init` to start a new research pr
 cd research-agent
 git pull
 ```
-
-Plugin updates are picked up automatically.
 
 ## What it does
 
@@ -36,37 +36,34 @@ Plugin updates are picked up automatically.
 - **Presentation Research** — Build the evidence base and through line for a talk or presentation
 - **Curriculum Research** — Research a subject domain to build a curriculum from scratch, producing a subject matter foundation for curriculum design
 
-## Plugin structure
+## Project structure
 
 ```
 research-agent/
-├── .claude-plugin/
-│   └── plugin.json
-├── hooks/
-│   └── hooks.json               # Output gates + state preservation hooks
-├── agents/
-│   └── research-integrity.md    # Post-write drift and integrity checker
-├── skills/
-│   ├── init/                    # Project scaffolder
-│   │   ├── SKILL.md
+├── .claude/
+│   ├── commands/research/       # Slash commands (auto-discovered as /research:*)
+│   │   ├── init/SKILL.md        # Project scaffolder
+│   │   ├── process-source/      # Process URL/file into structured note
+│   │   ├── cross-ref/           # Find patterns across source notes
+│   │   ├── check-gaps/          # Map coverage, identify holes
+│   │   ├── audit-claims/        # Fact-check draft, promote to outputs
+│   │   ├── summarize-section/   # Synthesize notes into draft section
+│   │   ├── start-phase/         # Briefing for next phase (read-only)
+│   │   ├── phase-insight/       # Current phase analysis (read-only)
+│   │   └── progress/            # Project dashboard (read-only)
+│   ├── agents/
+│   │   └── research-integrity.md  # Post-write drift and integrity checker
+│   ├── reference/               # Templates and standards (outside commands tree)
 │   │   ├── templates/           # Type configs, empty-state files
 │   │   │   ├── types/           # 9 research type templates
 │   │   │   ├── source-standards.md
 │   │   │   ├── cross-reference.md
 │   │   │   ├── registry.md
 │   │   │   └── canonical-figures.json
-│   │   └── reference/           # Copied to project at init
-│   │       ├── writing-standards.md
-│   │       └── tools-guide.md
-│   ├── process-source/          # Process URL/file into structured note
-│   ├── cross-ref/               # Find patterns across source notes
-│   ├── check-gaps/              # Map coverage, identify holes
-│   ├── audit-claims/            # Fact-check draft, promote to outputs
-│   ├── summarize-section/       # Synthesize notes into draft section
-│   ├── start-phase/             # Briefing for next phase (read-only)
-│   ├── phase-insight/           # Current phase analysis (read-only)
-│   └── progress/                # Project dashboard (read-only)
-├── install.sh
+│   │   ├── writing-standards.md
+│   │   └── tools-guide.md
+│   ├── settings.json            # Hooks: output gates + state preservation
+│   └── settings.local.json
 └── README.md
 ```
 
@@ -115,7 +112,7 @@ Each project gets its own self-contained environment (no `.claude/` files writte
 
 **`research-integrity` agent** — Runs automatically after every write. Catches fabricated data, range narrowing (source says "1-3x", output says "2-3x"), qualifier stripping, internal inconsistencies, and cross-phase drift.
 
-**Hard gates (hooks)** — Nothing reaches `outputs/` without passing `/research:audit-claims`. These are enforced by plugin hooks, not just prose instructions.
+**Hard gates (hooks)** — Nothing reaches `outputs/` without passing `/research:audit-claims`. These are enforced by hooks in `.claude/settings.json`, not just prose instructions.
 
 **Project boundary rule** — All file writes stay inside the research project directory. The agent won't write to other projects or system paths even if asked.
 
