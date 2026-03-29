@@ -41,4 +41,20 @@ Present a briefing for the phase:
 
 **Ready to begin:** Start collecting sources with `/research:process-source` for Phase [N] questions only.
 
+## Guardrails
+
+1. Do not present a phase briefing if the previous phase's cycle is incomplete. Check STATE.md first — all five steps must be checked.
+2. If STATE.md records skipped or folded phases, surface them explicitly before presenting the next phase's briefing.
+3. Do not pre-collect sources or begin research as part of the briefing. This skill prepares context; source collection is a separate step.
+4. Carry forward only documented gaps and cross-reference patterns — do not carry forward interpretations or conclusions from conversation history.
+
+## Common Failure Modes
+
+| Failure Mode | Prevention |
+|---|---|
+| Starting a phase before the previous one is complete | Read STATE.md's cycle checklist. If any step is unchecked, tell the user what remains before presenting the next phase. |
+| Presenting stale prior findings from conversation memory instead of files | Read cross-reference.md and gaps.md fresh. Do not rely on what was discussed earlier in the session. |
+| Overwhelming the briefing with prior-phase detail that obscures the current phase's questions | Keep prior findings to bullet points directly relevant to the new phase's questions. The full prior output is in research/outputs/ if needed. |
+| Missing carried-forward gaps that affect the new phase | Always check gaps.md for unresolved items from prior phases. An unresolved gap about market size from Phase 2 matters if Phase 5 asks about revenue projections. |
+
 This skill is read-only — it does NOT write any files.

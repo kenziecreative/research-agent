@@ -47,4 +47,21 @@ Analyze the current phase's research progress and identify what's strong and wha
 
 **Recommendation:** [What to do next — more sources? ready for cross-ref? ready for synthesis?]
 
+## Guardrails
+
+1. Report only what the source notes actually say. Do not interpret, extend, or strengthen findings based on general knowledge.
+2. "Thin" means one source. "Unsupported" means zero sources. Do not use softer labels.
+3. When reporting contradictions, cite both source notes by filename. Do not characterize a contradiction without showing both sides.
+4. Distinguish between "no sources found" and "sources found but they do not answer this question." The remedies are different.
+5. Do not recommend "ready for synthesis" if any central question has only one source.
+
+## Common Failure Modes
+
+| Failure Mode | Prevention |
+|---|---|
+| Inflating coverage strength by counting tangential mentions as evidence | A source "addresses" a question only if it provides a specific claim, data point, or argument that answers it. Mentioning the topic is not addressing it. |
+| Recommending synthesis prematurely to move the phase forward | Check the strength column: if any core question has Thin or Unsupported status, the recommendation must be "collect more sources," not "ready for synthesis." |
+| Missing contradictions because sources are read in isolation | Compare sources pairwise on each question. Two sources can both seem reasonable individually while contradicting each other on specifics. |
+| Generating insights from general knowledge instead of source notes | Every claim in the insight output must trace to a filename in `research/notes/`. If you cannot name the file, do not include the insight. |
+
 This skill is read-only — it does NOT write any files.

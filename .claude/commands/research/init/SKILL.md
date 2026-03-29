@@ -34,7 +34,21 @@ Ask: "What's the topic, company, or document you're researching? Provide as much
 
 Ask: "Where should this project live? Provide the full directory path."
 
-Wait for all three answers before proceeding.
+**Question 4 — Audience & Evidence Standard:**
+
+Ask: "Who is this research for, and how will they use it? This helps calibrate how rigorous the evidence standards need to be."
+
+Provide examples:
+- Internal decision-making (exec team evaluating a strategy)
+- External publication (academic paper, journalism, public report)
+- Investment / due diligence (evaluating a company or market for investment)
+- Pitch deck / fundraising support (building evidence for a pitch)
+- Curriculum design (building a knowledge base to teach from)
+- Personal knowledge building (satisfying your own curiosity on a topic)
+
+Accept free-form answers. The user may describe an audience not on this list. The purpose is to understand the stakes and the standard, not to force a category.
+
+Wait for all four answers before proceeding.
 
 ## Step 2: Create Directory Structure
 
@@ -62,6 +76,7 @@ Launch an agent (use `subagent_type: "general-purpose"`, model: `sonnet`) to gen
 - The research type
 - The topic description / source material the user provided
 - The type-specific template content so the agent knows the finding tags, validation standards, and phase structure patterns
+- The audience and evidence standard answer, so the agent can calibrate phase depth and source requirements
 
 Give the agent these instructions:
 
@@ -70,6 +85,12 @@ Give the agent these instructions:
 ### Plan Generator Instructions
 
 You generate research plans for structured AI-assisted research projects. Your output is the content for a `research-plan.md` file that defines the entire research arc for a project.
+
+**Audience calibration:** The evidence standard for this project is set by the audience. Use the audience context to:
+- Adjust the number of sources expected per phase (higher for external publication or investment due diligence, lower for personal knowledge building)
+- Calibrate the level of triangulation required before a finding is treated as confirmed
+- Set the tone of the success criteria (defensibility for investment research, accuracy for curriculum, understanding for personal research)
+Do not override the evidence standard set by the audience. A personal knowledge project should not require academic-grade triangulation. An investment due diligence project should not accept single-source financial claims.
 
 **Your job:** Generate a complete research plan with:
 
@@ -167,6 +188,15 @@ These rules exist because agents can confabulate a subject when the provided des
 - **Do not expand the subject scope based on preliminary research.** If the user provided a narrow topic, keep it narrow. Preliminary research is to understand the topic, not to redefine it.
 - **State the subject explicitly at the top of the research plan.** Before the Core Question, write: "**Research Subject:** [exact subject as provided by the user]". This makes the grounding visible and auditable.
 
+**Common Failure Modes — Plan Generation:**
+
+| Failure Mode | Prevention |
+|---|---|
+| Misidentifying the research subject — generating a plan for a similarly-named but wrong entity | State the exact research subject at the top of the plan. If the topic is ambiguous, stop and ask. Do not resolve ambiguity by picking the most likely match. |
+| Generic phases — questions that could apply to any company/topic rather than this specific one | Every question should reference something specific about the subject. "What is the market size?" is generic. "Does the claimed $4.7B TAM hold up against independent estimates?" is specific. |
+| Over-scoping — generating 12 phases when the topic warrants 6 | Match phase count to available evidence. A person with minimal public footprint needs fewer phases than a Fortune 500 company. Collapse phases where sources will not exist. |
+| Under-specifying source priority — vague "be skeptical of marketing" without naming specific source types | Name the specific source types that mislead for this topic. For a startup: press coverage that parrots founder claims. For a non-profit: self-reported impact metrics. |
+
 **Quality Standards:**
 - Every question must be specific enough that a researcher knows what to search for
 - Questions must be answerable with publicly available sources (flag any that require internal access)
@@ -191,7 +221,21 @@ Assemble a slim CLAUDE.md by combining:
 
 1. **Project Purpose** — Generated from the research type and topic. One paragraph describing what this research project does and why.
 
-2. **Directory Structure:**
+2. **Audience & Evidence Standard:**
+
+This research is for: [user's answer from Question 4]
+
+Evidence calibration — include the appropriate guidance based on the audience type:
+- **Internal decision-making:** Focus on directional accuracy and actionable findings. Single-source findings are acceptable when flagged. Speed matters — do not over-triangulate when the decision timeline is tight.
+- **External publication:** Every claim must be fully sourced and triangulated. No single-source findings presented as established. All contradictions must be presented. Qualifiers are mandatory. This is the highest evidence bar.
+- **Investment / due diligence:** Emphasis on verifiable numbers, risk identification, and red flags. Single-source financial claims are unacceptable. Cross-reference all quantitative claims. Skepticism toward self-reported metrics.
+- **Pitch deck / fundraising support:** Evidence must be defensible under skeptical questioning. Focus on claims that will be challenged by investors. Flag any finding that relies on the company's own reporting.
+- **Curriculum design:** Prioritize accuracy of mental models over precision of specific numbers. Focus on practitioner reality over theory. Flag areas where the field is actively debating — the curriculum must not present contested claims as settled.
+- **Personal knowledge building:** Balanced depth — thorough but not exhaustive. Flag uncertainty but do not over-hedge. Optimize for understanding, not defensibility.
+
+When the audience is not one of the above, calibrate based on: Who will read this? What decisions will they make from it? What happens if a claim turns out to be wrong?
+
+3. **Directory Structure:**
 
 ```
 research/
@@ -213,7 +257,7 @@ Do not create files outside this structure for research artifacts. Working files
 
 **Project boundary rule:** All file writes during a research session must stay within the current research project directory. Do not write to other projects, system directories, or external paths — even when responding to a user request that could be handled by a skill designed for a different context (e.g., a note-capture skill pointed at another project). If the user wants to capture a note or action item, write it to `research/notes-to-self.md` within this project. Never invoke a skill that writes outside the current project directory.
 
-3. **Skills:**
+4. **Skills:**
 
 | Skill | Trigger | Job |
 |-------|---------|-----|
@@ -228,7 +272,7 @@ Do not create files outside this structure for research artifacts. Working files
 
 **Integrity agent:** `research-integrity` — runs automatically after writing any source note, draft, or synthesis. Watches for fabricated data, range narrowing, qualifier stripping, cross-phase drift, unsourced claims.
 
-4. **Workflow:**
+5. **Workflow:**
 
 **Research is phase-sequential.** You work one phase at a time, in order. Each phase completes its full cycle before the next phase begins. Do not collect sources for Phase 3 while working on Phase 1. Do not batch source collection across multiple phases. Do not invent phase groupings or reorder phases.
 
@@ -257,11 +301,11 @@ Read the research plan in `research/research-plan.md` before starting. It define
 
 **At the end of every phase, remind the user:** "Phase [N] is complete and STATE.md is updated. I'd recommend clearing context before starting Phase [N+1] — you'll get sharper results with a fresh window, and nothing is lost because STATE.md has everything."
 
-5. **[Type] Standards** — Include from the matching type template:
+6. **[Type] Standards** — Include from the matching type template:
    - The "What to Validate/Explore/Analyze" section
    - The "Finding Tags" section
 
-6. **State Management:**
+7. **State Management:**
 
 Research state lives in `research/STATE.md`. It is the source of truth for project position — not memory, not conversation history, not file timestamps.
 
@@ -271,13 +315,13 @@ During work: Update state at every transition — phase start/end, meaningful ta
 
 The "Active phase" field in STATE.md tells you which phase to work on. Do not work on any other phase. When the current phase's cycle checklist is fully checked, mark it complete, generate the next phase's cycle checklist, and update "Active phase."
 
-7. **Context Management:**
+8. **Context Management:**
 
 This is a long-running project. Clear context between research phases — each phase gets a fresh window for sharper analysis. STATE.md is the source of truth that carries everything forward. Before clearing context, always update STATE.md with current position, completed work, key decisions, and next action. After clearing or starting a new session: read `research/STATE.md` first. If unsure what's been done, run `/research:check-gaps` before starting new work.
 
-8. **Boundaries** — From the type-specific template.
+9. **Boundaries** — From the type-specific template.
 
-9. **Reference Protocols:**
+10. **Reference Protocols:**
 
 Detailed protocols are in `research/reference/`. Read the relevant file when you need the full protocol:
 

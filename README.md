@@ -20,7 +20,7 @@ The result isn't a summary of what an AI "knows" about your topic. It's a source
 
 ## How It Works
 
-Research Agent is built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). You answer three questions — research type, topic, and where the project should live — and the system scaffolds a complete research environment with a phased plan, state management, and all the protocols in place.
+Research Agent is built on [Claude Code](https://docs.anthropic.com/en/docs/claude-code). You answer four questions — research type, topic, where the project should live, and who the research is for — and the system scaffolds a complete research environment with a phased plan, state management, and all the protocols in place. The audience answer calibrates the evidence standard: investment due diligence requires every financial claim cross-referenced, while personal knowledge building optimizes for understanding over defensibility.
 
 The process follows a strict cycle for each phase:
 

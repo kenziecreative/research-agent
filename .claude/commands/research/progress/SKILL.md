@@ -41,4 +41,11 @@ Show the current state of the research project as a dashboard.
 
 **Next action:** [What to do next based on current cycle step]
 
+## Guardrails
+
+1. Report exactly what STATE.md and the files say. Do not editorialize on progress quality.
+2. If STATE.md and the actual file counts disagree (e.g., STATE.md says 5 sources but there are 7 files in notes/), report the discrepancy.
+3. Do not recommend skipping phases or batching work to "speed things up."
+4. Show blocking issues prominently — a stale cross-reference or undone gap check is a blocker, not a footnote.
+
 This skill is read-only — it does NOT write any files.
