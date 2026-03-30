@@ -129,6 +129,19 @@ Do not override the evidence standard set by the audience. A personal knowledge 
 
 [Where to find the primary document/subject]
 
+## Assumptions
+
+These assumptions shape what evidence this research will find. Review them before starting Phase 1 — if any are wrong, correct them now. Changing an assumption after sources are collected means rework.
+
+- **Date range:** [e.g., "2023–2026 data preferred" or "Historical: 2010–2020"]
+- **Geographic scope:** [e.g., "US market" or "Global" or "EU regulatory context"]
+- **Entity scope:** [e.g., "Apple Inc. (AAPL), not Apple Records" or "Both public and private companies"]
+- **Financial lens:** [e.g., "Revenue and ARR" or "990 program expenses" — only for types where this applies]
+- **Regulatory context:** [e.g., "US SEC filings" or "No regulatory focus" — only for types where this applies]
+- [Any other assumption that constrains what sources the research will seek]
+
+Remove lines that don't apply to this research type. Add assumptions specific to the topic that aren't covered above.
+
 ---
 
 ## Phase 1: [Phase Name]
@@ -195,6 +208,7 @@ These rules exist because agents can confabulate a subject when the provided des
 | Generic phases — questions that could apply to any company/topic rather than this specific one | Every question should reference something specific about the subject. "What is the market size?" is generic. "Does the claimed $4.7B TAM hold up against independent estimates?" is specific. |
 | Over-scoping — generating 12 phases when the topic warrants 6 | Match phase count to available evidence. A person with minimal public footprint needs fewer phases than a Fortune 500 company. Collapse phases where sources will not exist. |
 | Under-specifying source priority — vague "be skeptical of marketing" without naming specific source types | Name the specific source types that mislead for this topic. For a startup: press coverage that parrots founder claims. For a non-profit: self-reported impact metrics. |
+| Silent assumptions about scope — defaulting to a date range, geography, or entity without stating it | Every assumption that constrains what evidence the research will find must be stated in the Assumptions section. Derive assumptions from the topic and user context — do not default. If the topic says "US pricing" the geographic scope is US. If it says "pricing" with no qualifier, state the assumed scope explicitly so the user can correct it. |
 
 **Quality Standards:**
 - Every question must be specific enough that a researcher knows what to search for
