@@ -94,6 +94,19 @@ Plans:
 Plans:
 - [ ] 05-01-PLAN.md — Expand tools guide with discovery workflow, channel-tool mapping, and common mistakes
 
+### Phase 6: Discover Skill Consistency Fixes
+**Goal**: All cross-phase documentation references in the discover and init skills are internally consistent — no mismatched values, phantom steps, or missing fields
+**Depends on**: Phase 3, Phase 4
+**Requirements**: CHAN-02, CHAN-03, CHAN-04, DSKL-02, INIT-02
+**Gap Closure:** Closes integration gaps from v1.1 audit
+**Success Criteria** (what must be TRUE):
+  1. ProPublica URL in discover SKILL.md uses `{ein_no_dashes}` matching regulatory.md's EIN format specification
+  2. Init CLAUDE.md template includes a machine-readable `research-type:` field that the discover skill's pre-check can parse
+  3. Academic channel fallback chain in discover SKILL.md matches academic.md playbook section 6 (no phantom Semantic Scholar step)
+  4. EDGAR User-Agent value in discover SKILL.md matches the value defined in regulatory.md (or the "copy exactly" guardrail is removed)
+Plans:
+- [ ] 06-01-PLAN.md — Fix all 4 integration inconsistencies across discover and init SKILL.md files
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -103,3 +116,4 @@ Plans:
 | 3. Discover Skill | v1.1 | 0/1 | Planning | - |
 | 4. Init Modifications | 2/2 | Complete   | 2026-03-30 | - |
 | 5. Tools Guide Update | 1/1 | Complete   | 2026-03-30 | - |
+| 6. Discover Skill Consistency Fixes | v1.1 | 0/1 | Pending | - |

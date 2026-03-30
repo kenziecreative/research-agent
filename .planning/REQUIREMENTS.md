@@ -74,19 +74,19 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | DISC-03 | Phase 3 | Complete |
 | DISC-04 | Phase 4 | Complete |
 | DSKL-01 | Phase 3 | Complete |
-| DSKL-02 | Phase 3 | Complete |
+| DSKL-02 | Phase 3, Phase 6 | Complete (integration fix pending) |
 | DSKL-03 | Phase 3 | Complete |
 | DSKL-04 | Phase 3 | Complete |
 | DSKL-05 | Phase 3 | Complete |
 | DSKL-06 | Phase 3 | Complete |
 | DSKL-07 | Phase 3 | Complete |
 | CHAN-01 | Phase 3 | Complete |
-| CHAN-02 | Phase 3 | Complete |
-| CHAN-03 | Phase 3 | Complete |
-| CHAN-04 | Phase 3 | Complete |
+| CHAN-02 | Phase 3, Phase 6 | Complete (integration fix pending) |
+| CHAN-03 | Phase 3, Phase 6 | Complete (integration fix pending) |
+| CHAN-04 | Phase 3, Phase 6 | Complete (integration fix pending) |
 | CHAN-05 | Phase 3 | Complete |
 | INIT-01 | Phase 4 | Complete |
-| INIT-02 | Phase 4 | Complete |
+| INIT-02 | Phase 4, Phase 6 | Complete (integration fix pending) |
 | INIT-03 | Phase 5 | Complete |
 
 **Coverage:**
