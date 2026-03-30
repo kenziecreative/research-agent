@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-30T03:09:42.102Z"
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-03-30T03:18:28.107Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
-  completed_phases: 4
-  total_plans: 8
-  completed_plans: 8
+  completed_phases: 5
+  total_plans: 9
+  completed_plans: 9
   percent: 0
 ---
 
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-discover-skill P01 | 4 | 2 tasks | 1 files |
 | Phase 04-init-modifications P02 | 1 | 2 tasks | 2 files |
 | Phase 04-init-modifications P01 | 3 | 1 tasks | 1 files |
+| Phase 05-tools-guide-update P01 | 1 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,8 @@ Recent decisions affecting current work:
 - [Phase 04-init-modifications]: Start-phase recommends discover first: natural workflow entry point surfaces /research:discover before /research:process-source
 - [Phase 04-init-modifications]: Plan-generator subagent receives type-channel map content and produces discovery/strategy.md alongside research-plan.md in the same pass
 - [Phase 04-init-modifications]: Discover is a substep of Collect (soft rule, not mandatory) — keeps the 5-step cycle intact while advertising the discover skill
+- [Phase 05-tools-guide-update]: Tools guide expanded in place — existing Tavily content retained with search-vs-extract rule and channel-tool mapping table added
+- [Phase 05-tools-guide-update]: Common Mistakes section covers 5 anti-patterns: extract-before-search, WebSearch-when-Tavily-available, crawl-without-map, manual-search-for-systematic-discovery, extracting-snippet-URLs
 
 ### Pending Todos
 
@@ -104,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T03:09:42.098Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-tools-guide-update/05-CONTEXT.md
+Last session: 2026-03-30T03:18:28.104Z
+Stopped at: Completed 05-01-PLAN.md
+Resume file: None

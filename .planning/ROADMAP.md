@@ -22,7 +22,7 @@ Shipped 9 slash commands, 9 research type templates, source-processing pipeline 
 - [x] **Phase 2: Type-Channel Maps** - Per-research-type maps that route each phase of research to its highest-credibility channels (completed 2026-03-29)
 - [ ] **Phase 3: Discover Skill** - The `/research:discover` slash command that orchestrates type-aware, multi-channel source discovery
 - [x] **Phase 4: Init Modifications** - Updated init skill that scaffolds discovery infrastructure and advertises the discover command to new projects (completed 2026-03-30)
-- [ ] **Phase 5: Tools Guide Update** - Updated tools guide with discovery-specific patterns and channel-specific tool recommendations
+- [x] **Phase 5: Tools Guide Update** - Updated tools guide with discovery-specific patterns and channel-specific tool recommendations (completed 2026-03-30)
 
 ## Phase Details
 
@@ -90,7 +90,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. The tools guide documents when to use `tavily_search` (discovery) vs. `tavily_extract` (source processing), preventing the common mistake of extracting before evaluating
   2. The tools guide includes channel-specific tool recommendations (Tavily parameters for web/news/financial, Bash HTTP for academic/regulatory APIs, URL construction for patents)
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
 - [ ] 05-01-PLAN.md — Expand tools guide with discovery workflow, channel-tool mapping, and common mistakes
 
@@ -102,4 +102,4 @@ Plans:
 | 2. Type-Channel Maps | 3/3 | Complete   | 2026-03-29 | - |
 | 3. Discover Skill | v1.1 | 0/1 | Planning | - |
 | 4. Init Modifications | 2/2 | Complete   | 2026-03-30 | - |
-| 5. Tools Guide Update | v1.1 | 0/1 | Planning | - |
+| 5. Tools Guide Update | 1/1 | Complete   | 2026-03-30 | - |
