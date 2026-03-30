@@ -19,7 +19,14 @@ Supports optional `--channel {name}` argument for targeted re-runs against a sin
 
 3. **Determine the research type** — read the project's CLAUDE.md. Find the `research-type` field. This value (e.g., `company-for-profit`, `non-profit`, `market-industry`) selects the type-channel map.
 
-4. **Read the type-channel map** at `.claude/reference/discovery/type-channel-maps/{research-type}.md`. Parse `active-channels` from the frontmatter. Find the Discovery Group whose Phases list matches (or partially matches, via keyword) the current active phase name. The matched Discovery Group determines which channels to query and their priority order (Primary, Secondary).
+4a. **Check for discovery strategy** — read `research/discovery/strategy.md` if it exists. If found, look up the current active phase name in the strategy file. The strategy contains pre-matched phase-to-channel mappings (primary and secondary channels per phase). If the current phase is found in the strategy:
+- Use the pre-matched channels directly — no keyword guessing needed
+- Print: "Using project discovery strategy (pre-matched channels)"
+- Skip to step 5 check (if channels list is empty or marked "no discovery", report "No discovery channels mapped for this phase — this phase uses existing sources." and stop)
+
+4b. **Fall back to type-channel map** (only if `research/discovery/strategy.md` does not exist OR the current phase was not found in strategy.md):
+- Print: "Using type-channel map (keyword matching)"
+- Read the type-channel map at `.claude/reference/discovery/type-channel-maps/{research-type}.md`. Parse `active-channels` from the frontmatter. Find the Discovery Group whose Phases list matches (or partially matches, via keyword) the current active phase name. The matched Discovery Group determines which channels to query and their priority order (Primary, Secondary).
 
 5. **If no Discovery Group matches the current phase**, report: "No discovery channels mapped for this phase — this phase uses existing sources." and stop. This is expected for synthesis and output phases.
 
