@@ -90,7 +90,9 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. The tools guide documents when to use `tavily_search` (discovery) vs. `tavily_extract` (source processing), preventing the common mistake of extracting before evaluating
   2. The tools guide includes channel-specific tool recommendations (Tavily parameters for web/news/financial, Bash HTTP for academic/regulatory APIs, URL construction for patents)
-**Plans**: TBD
+**Plans:** 1 plan
+Plans:
+- [ ] 05-01-PLAN.md — Expand tools guide with discovery workflow, channel-tool mapping, and common mistakes
 
 ## Progress
 
@@ -100,4 +102,4 @@ Plans:
 | 2. Type-Channel Maps | 3/3 | Complete   | 2026-03-29 | - |
 | 3. Discover Skill | v1.1 | 0/1 | Planning | - |
 | 4. Init Modifications | 2/2 | Complete   | 2026-03-30 | - |
-| 5. Tools Guide Update | v1.1 | 0/TBD | Not started | - |
+| 5. Tools Guide Update | v1.1 | 0/1 | Planning | - |
