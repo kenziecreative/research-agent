@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-30T01:21:06.441Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-30T02:13:50.667Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 8
+  completed_plans: 7
   percent: 0
 ---
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-type-channel-maps P02 | 3 | 2 tasks | 3 files |
 | Phase 02-type-channel-maps P03 | 3 | 2 tasks | 3 files |
 | Phase 03-discover-skill P01 | 4 | 2 tasks | 1 files |
+| Phase 04-init-modifications P02 | 1 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,8 @@ Recent decisions affecting current work:
 - [Phase 03-discover-skill]: Skill reads channel playbooks at execution time — thin orchestrator pattern keeps channel intelligence in playbooks
 - [Phase 03-discover-skill]: Re-run behavior: append with timestamp separator + deduplicate by URL — never overwrite prior discovery work
 - [Phase 03-discover-skill]: Status PROCESSED reserved for process-source — discover assigns only DISCOVERED or ACCESSIBLE
+- [Phase 04-init-modifications]: Strategy.md express lane: discover reads pre-matched phase-to-channel mappings from strategy.md when available, skipping keyword guessing entirely
+- [Phase 04-init-modifications]: Start-phase recommends discover first: natural workflow entry point surfaces /research:discover before /research:process-source
 
 ### Pending Todos
 
@@ -98,6 +101,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T01:21:06.432Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-init-modifications/04-CONTEXT.md
+Last session: 2026-03-30T02:13:50.664Z
+Stopped at: Completed 04-02-PLAN.md
+Resume file: None

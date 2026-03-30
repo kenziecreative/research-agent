@@ -12,7 +12,7 @@ Requirements for structured multi-channel source discovery. Each maps to roadmap
 - [x] **DISC-01**: Channel playbooks exist for 6 channel types (web-search, academic, regulatory, financial, social-signals, domain-specific) with query construction patterns, credibility tiers, tool mappings, and graceful degradation instructions
 - [x] **DISC-02**: Type-channel maps exist for all 9 research types, mapping each type's phases to prioritized primary and secondary discovery channels derived from existing credibility hierarchies
 - [x] **DISC-03**: Discovery candidate output is written to `research/discovery/<phase>-candidates.md`, separate from `research/notes/` where processed sources live
-- [ ] **DISC-04**: Discovery strategy is generated at project init time by the plan-generator subagent, mapping each phase to its highest-value channels based on research type
+- [x] **DISC-04**: Discovery strategy is generated at project init time by the plan-generator subagent, mapping each phase to its highest-value channels based on research type
 
 ### Discovery Skill
 
@@ -35,7 +35,7 @@ Requirements for structured multi-channel source discovery. Each maps to roadmap
 ### Init & Workflow Updates
 
 - [ ] **INIT-01**: Project scaffold includes `research/discovery/` directory
-- [ ] **INIT-02**: CLAUDE.md template includes `/research:discover` in the skills table and phase cycle workflow
+- [x] **INIT-02**: CLAUDE.md template includes `/research:discover` in the skills table and phase cycle workflow
 - [ ] **INIT-03**: Tools guide is updated with discovery-specific patterns (when to use search vs. extract, channel-specific tool recommendations)
 
 ## v1.2 Requirements
@@ -72,7 +72,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | DISC-01 | Phase 1 | Complete |
 | DISC-02 | Phase 2 | Complete |
 | DISC-03 | Phase 3 | Complete |
-| DISC-04 | Phase 4 | Pending |
+| DISC-04 | Phase 4 | Complete |
 | DSKL-01 | Phase 3 | Complete |
 | DSKL-02 | Phase 3 | Complete |
 | DSKL-03 | Phase 3 | Complete |
@@ -86,7 +86,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | CHAN-04 | Phase 3 | Complete |
 | CHAN-05 | Phase 3 | Complete |
 | INIT-01 | Phase 4 | Pending |
-| INIT-02 | Phase 4 | Pending |
+| INIT-02 | Phase 4 | Complete |
 | INIT-03 | Phase 5 | Pending |
 
 **Coverage:**
