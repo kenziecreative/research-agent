@@ -30,11 +30,7 @@ Ask the user which type of research they want to conduct:
 
 Ask: "What's the topic, company, or document you're researching? Provide as much context as you have — a description, a URL, a document path, or paste the content directly."
 
-**Question 3 — Project Directory:**
-
-Ask: "Where should this project live? Provide the full directory path."
-
-**Question 4 — Audience & Evidence Standard:**
+**Question 3 — Audience & Evidence Standard:**
 
 Ask: "Who is this research for, and how will they use it? This helps calibrate how rigorous the evidence standards need to be."
 
@@ -48,26 +44,25 @@ Provide examples:
 
 Accept free-form answers. The user may describe an audience not on this list. The purpose is to understand the stakes and the standard, not to force a category.
 
-Wait for all four answers before proceeding.
+Wait for all three answers before proceeding.
 
-## Step 2: Create Directory Structure
+## Step 2: Verify Directory Structure
 
-Create the following directories at the target path:
+The directory structure already exists from the clone. Verify these directories are present:
 
 ```
-<project-root>/
-├── research/
-│   ├── sources/
-│   ├── notes/
-│   ├── drafts/
-│   ├── outputs/
-│   ├── audits/
-│   ├── reference/
-│   └── discovery/               # Discovery strategy and candidate sources
-└── source-material/
+research/
+├── sources/
+├── notes/
+├── drafts/
+├── outputs/
+├── audits/
+├── reference/
+└── discovery/
+source-material/
 ```
 
-Note: No `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` — these live in the research-agent project, not in the scaffolded research project.
+If any are missing, create them. Do NOT create `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` — these already exist in the repo root.
 
 ## Step 3: Generate the Research Plan
 
@@ -211,7 +206,7 @@ These rules exist because agents can confabulate a subject when the provided des
 
 You have access to WebSearch and WebFetch — use them to understand the topic before generating the plan. Do preliminary research so the phases and questions are grounded, not generic. **Preliminary research is for context only — it does not change the subject you were given.**
 
-Write the final research plan to `<project-root>/research/research-plan.md`.
+Write the final research plan to `research/research-plan.md`.
 
 **Discovery Strategy Generation:**
 
@@ -222,7 +217,7 @@ For each phase in the research plan you just generated:
 - If a match is found: record the phase name, its primary channels, and its secondary channels from the type-channel map
 - If no match is found: record the phase as "no discovery — uses existing sources"
 
-Write `<project-root>/research/discovery/strategy.md` with this format:
+Write `research/discovery/strategy.md` with this format:
 
 ```markdown
 # Discovery Strategy: [Research Type]
@@ -264,7 +259,7 @@ Assemble a slim CLAUDE.md by combining:
 
 2. **Audience & Evidence Standard:**
 
-This research is for: [user's answer from Question 4]
+This research is for: [user's answer from Question 3]
 
 Evidence calibration — include the appropriate guidance based on the audience type:
 - **Internal decision-making:** Focus on directional accuracy and actionable findings. Single-source findings are acceptable when flagged. Speed matters — do not over-triangulate when the decision timeline is tight.
@@ -377,18 +372,18 @@ Detailed protocols are in `research/reference/`. Read the relevant file when you
 | Writing & File Standards | `research/reference/writing-standards.md` | Writing output sections, naming files |
 | Tools Guide (Tavily) | `research/reference/tools-guide.md` | Using Tavily search, extract, map, or crawl |
 
-Write the assembled CLAUDE.md to `<project-root>/CLAUDE.md`.
+Write the assembled CLAUDE.md to `CLAUDE.md`.
 
 ### Reference Files
 
 Copy the following files to the project:
 
-1. Copy `.claude/reference/writing-standards.md` to `<project-root>/research/reference/writing-standards.md`
-2. Copy `.claude/reference/tools-guide.md` to `<project-root>/research/reference/tools-guide.md`
+1. Copy `.claude/reference/writing-standards.md` to `research/reference/writing-standards.md`
+2. Copy `.claude/reference/tools-guide.md` to `research/reference/tools-guide.md`
 
 ### source-standards.md
 
-Read `.claude/reference/templates/source-standards.md` as a template. Replace the `[INSERT THE SOURCE CREDIBILITY HIERARCHY FROM THE MATCHING TYPE TEMPLATE]` placeholder with the Source Credibility Hierarchy from the matching type template. Write the result to `<project-root>/research/reference/source-standards.md`.
+Read `.claude/reference/templates/source-standards.md` as a template. Replace the `[INSERT THE SOURCE CREDIBILITY HIERARCHY FROM THE MATCHING TYPE TEMPLATE]` placeholder with the Source Credibility Hierarchy from the matching type template. Write the result to `research/reference/source-standards.md`.
 
 ### STATE.md
 
@@ -444,11 +439,11 @@ When all five are checked, mark this phase complete below, update "Active phase"
 Begin Phase 1: Collect sources relevant to Phase 1 questions only.
 ```
 
-Write to `<project-root>/research/STATE.md`.
+Write to `research/STATE.md`.
 
 ### Other Files
 
-- Copy `.claude/reference/templates/registry.md` to `<project-root>/research/sources/registry.md`
+- Copy `.claude/reference/templates/registry.md` to `research/sources/registry.md`
 
 - Write `research/gaps.md` — use phase names from the generated research plan:
 
@@ -470,9 +465,9 @@ Tracks what's been covered and what's still missing across all research phases.
 [...etc for all phases]
 ```
 
-- Copy `.claude/reference/templates/cross-reference.md` to `<project-root>/research/cross-reference.md`
+- Copy `.claude/reference/templates/cross-reference.md` to `research/cross-reference.md`
 
-- Copy `.claude/reference/templates/canonical-figures.json` to `<project-root>/research/reference/canonical-figures.json`
+- Copy `.claude/reference/templates/canonical-figures.json` to `research/reference/canonical-figures.json`
 
 ### Source Material
 
@@ -482,7 +477,7 @@ If the user provided a document path, URL, or pasted content as part of the topi
 
 Before reporting to the user, verify the scaffolding is complete:
 
-1. **Run `ls <project-root>/research/`** — confirm all expected files and directories exist:
+1. **Run `ls research/`** — confirm all expected files and directories exist:
    - `research-plan.md`
    - `STATE.md`
    - `gaps.md`
@@ -496,22 +491,19 @@ Before reporting to the user, verify the scaffolding is complete:
    - `reference/tools-guide.md`
    - `reference/canonical-figures.json`
    - `discovery/strategy.md`
-2. **Confirm NO `.claude/commands/`, `.claude/agents/`, or `.claude/settings.json` were created** — these live in the research-agent project, not in the scaffolded research project.
-3. **Read `<project-root>/CLAUDE.md`** — confirm it references the nine skills with `/research:*` qualified names and the correct finding tags for the selected research type.
-4. **Read `<project-root>/research/STATE.md`** — confirm the phase checklist matches the research plan and the Phase 1 cycle checklist is present with all five steps unchecked.
+2. **Read `CLAUDE.md`** — confirm it references the nine skills with `/research:*` qualified names and the correct finding tags for the selected research type.
+3. **Read `research/STATE.md`** — confirm the phase checklist matches the research plan and the Phase 1 cycle checklist is present with all five steps unchecked.
 
 If anything is missing, create it before proceeding. If the CLAUDE.md references incorrect skill names or has mismatched finding tags, fix it.
 
 ## Step 6: Report
 
 Tell the user what was created. Include:
-- The full directory path
 - The research type selected
 - The number of phases in the research plan
 - The finding tags for this project type
-- The nine research skills available: `/research:process-source`, `/research:cross-ref`, `/research:check-gaps`, `/research:audit-claims`, `/research:summarize-section`, `/research:start-phase`, `/research:phase-insight`, `/research:progress`, `/research:discover`
-- Next steps: open a session in the project directory, read STATE.md, and start with Phase 1
-- Reminder to review the research plan in `research/research-plan.md` before starting work
+- The ten research skills available: `/research:init`, `/research:discover`, `/research:process-source`, `/research:cross-ref`, `/research:check-gaps`, `/research:summarize-section`, `/research:audit-claims`, `/research:start-phase`, `/research:phase-insight`, `/research:progress`
+- Next steps: review the research plan in `research/research-plan.md`, then start Phase 1 with `/research:discover`
 - Reminder to clear context between phases for sharper analysis
 
-Do NOT initialize a git repo — the user will handle version control separately.
+Do NOT tell the user to `cd` anywhere — they are already in the correct directory. Do NOT initialize a git repo.
