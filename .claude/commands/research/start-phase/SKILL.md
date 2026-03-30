@@ -39,7 +39,7 @@ Present a briefing for the phase:
 
 **Skipped/Folded phases:** [List any, or "None"]
 
-**Ready to begin:** Start collecting sources with `/research:process-source` for Phase [N] questions only.
+**Recommended first step:** Run `/research:discover` to find candidate sources for this phase's questions, then process the best candidates with `/research:process-source`.
 
 ## Guardrails
 
