@@ -1,5 +1,19 @@
 # Milestones
 
+## v1.1 Structured Source Discovery (Shipped: 2026-03-30)
+
+**Phases completed:** 6 phases, 10 plans, 2 tasks
+
+**Key accomplishments:**
+- 6 channel playbooks with query templates, credibility tiers, and degradation chains (web-search, academic, regulatory, financial, social-signals, domain-specific)
+- 9 type-channel maps routing each research type's phases to prioritized discovery channels
+- `/research:discover` skill — thin orchestrator for type-aware multi-channel source discovery
+- Init scaffolds discovery infrastructure (directory, strategy.md, CLAUDE.md integration)
+- Tools guide expanded with search-vs-extract workflow and channel-tool mapping
+- 4 cross-phase integration fixes (EIN format, academic fallback, User-Agent, research-type field)
+
+---
+
 ## v1.0 — Core Research System
 
 **Shipped:** 2026-03-29
