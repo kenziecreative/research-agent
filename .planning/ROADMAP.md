@@ -116,4 +116,4 @@ Plans:
 | 3. Discover Skill | v1.1 | 0/1 | Planning | - |
 | 4. Init Modifications | 2/2 | Complete   | 2026-03-30 | - |
 | 5. Tools Guide Update | 1/1 | Complete   | 2026-03-30 | - |
-| 6. Discover Skill Consistency Fixes | v1.1 | 0/1 | Pending | - |
+| 6. Discover Skill Consistency Fixes | 1/1 | Complete   | 2026-03-30 | - |

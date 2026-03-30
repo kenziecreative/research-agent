@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-30T03:20:47.890Z"
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-03-30T03:50:21.410Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 9
-  completed_plans: 9
+  total_phases: 6
+  completed_phases: 6
+  total_plans: 10
+  completed_plans: 10
   percent: 0
 ---
 
@@ -59,6 +59,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-init-modifications P02 | 1 | 2 tasks | 2 files |
 | Phase 04-init-modifications P01 | 3 | 1 tasks | 1 files |
 | Phase 05-tools-guide-update P01 | 1 | 2 tasks | 1 files |
+| Phase 06-discover-skill-consistency-fixes PP01 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,9 @@ Recent decisions affecting current work:
 - [Phase 04-init-modifications]: Discover is a substep of Collect (soft rule, not mandatory) — keeps the 5-step cycle intact while advertising the discover skill
 - [Phase 05-tools-guide-update]: Tools guide expanded in place — existing Tavily content retained with search-vs-extract rule and channel-tool mapping table added
 - [Phase 05-tools-guide-update]: Common Mistakes section covers 5 anti-patterns: extract-before-search, WebSearch-when-Tavily-available, crawl-without-map, manual-search-for-systematic-discovery, extracting-snippet-URLs
+- [Phase 06-01]: EDGAR User-Agent updated to match regulatory.md (ResearchAgent (contact@example.com)) — playbook is source of truth
+- [Phase 06-01]: Academic fallback chain: Semantic Scholar step removed entirely, now tavily_search then WebSearch per academic.md section 6
+- [Phase 06-01]: Init CLAUDE.md template: research-type field added as item 0 — machine-readable for discover pre-check
 
 ### Pending Todos
 
@@ -107,6 +111,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T03:18:28.104Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-03-30T03:50:21.408Z
+Stopped at: Completed 06-01-PLAN.md
 Resume file: None
