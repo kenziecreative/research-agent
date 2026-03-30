@@ -171,7 +171,7 @@ Write to `research/discovery/{phase}-candidates.md`. Create the `research/discov
 ...
 ```
 
-### Step 7: Print completion summary
+### Step 7: Print completion summary and offer to process
 
 ```
 Discovery complete.
@@ -184,11 +184,26 @@ Channel results:
   Academic      found {N}
   Regulatory    skipped (not configured)
   ...
-
-Next steps:
-  Review candidates in research/discovery/{phase}-candidates.md
-  Process selected sources with /research:process-source <url>
 ```
+
+After printing the summary, present the top candidates in priority order (highest-credibility and most relevant first) and offer to begin processing:
+
+```
+Top candidates for this phase:
+
+1. {Title} — {source} — {why it's high priority}
+2. {Title} — {source} — {why it's high priority}
+3. {Title} — {source} — {why it's high priority}
+...
+
+Want me to start processing these? I'll work through them in priority order.
+You can skip any that don't look relevant. After 5-8 sources I'll pause
+for cross-referencing.
+```
+
+If the user says yes (or any affirmative), begin processing sources sequentially using `/research:process-source` for each URL. Track the count — after processing 5-8 sources, pause and run `/research:cross-ref` before continuing. If the user wants to skip a source, skip it and move to the next.
+
+If the user wants to review the full candidates file first or pick specific sources, respect that — show them the file path and let them direct which sources to process.
 
 ---
 
@@ -306,7 +321,7 @@ Fallback chain (per regulatory.md):
 ## Guardrails
 
 1. **Discovery output goes to `research/discovery/` ONLY.** Never write to `research/notes/`, `research/sources/registry.md`, or any other research file. The boundary between discovery and processing belongs to process-source — do not cross it.
-2. **Never auto-feed discovered sources into process-source.** The candidate list is for human review. Suggest process-source in the completion message but never invoke it.
+2. **Never auto-process without user approval.** After discovery, present the prioritized candidate list and ask the user before processing. Once the user approves, process sources sequentially — but the human gate between discovery and processing must be an explicit approval, not a silent transition.
 3. **Cap results at 8 sources per channel per query.** If an API returns more results, take the top 8 by relevance score or citation count. Exceeding 8 per channel defeats the purpose of the candidate review step.
 4. **Always include `User-Agent: ResearchAgent (contact@example.com)` for SEC EDGAR requests.** This is required by SEC policy — the header value is defined in regulatory.md.
 5. **Include `mailto=research-agent@example.com` for all OpenAlex API requests.** This activates the 10 req/s polite pool. Without it, rate limit is 1 req/s.
@@ -323,7 +338,7 @@ Fallback chain (per regulatory.md):
 | Running discovery with no active phase | Pre-check step 1 reads `research/STATE.md`. If no active phase, error with guidance before any channel execution. |
 | Querying channels not relevant to the research type | Pre-check step 4 reads the type-channel map first. Only execute channels in the matched Discovery Group — never execute all 6 channels by default. |
 | Overwriting prior discovery work on re-run | Pre-check step 7 checks for existing candidates file. If it exists, append with timestamp separator and deduplicate by URL. Never overwrite. |
-| Feeding discovered sources directly into processing pipeline | Guardrail 1 and 2: output to `research/discovery/` only. Suggest process-source in completion message but never invoke it. |
+| Processing sources without user approval | Guardrail 2: present prioritized candidates and ask the user before processing. Once approved, process sequentially — but the transition from discovery to processing requires explicit user approval. |
 | Silent channel failure with no status reporting | Print per-channel status lines during execution. Include all channels in summary table with explicit status — even channels that were skipped or errored. |
 | Exceeding API rate limits | Follow rate limits from playbooks: EDGAR max 5 req/s, OpenAlex 10 req/s with mailto (1 req/s without), Tavily usage is monthly-quota-based. Space Bash curl calls with brief pauses if running multiple EDGAR queries. |
 | Missing User-Agent for SEC EDGAR | Guardrail 4: always include `User-Agent: ResearchAgent (contact@example.com)`. The value is defined in regulatory.md. |
@@ -339,6 +354,8 @@ Print the completion summary (Step 7 format) with:
 - Total candidates found
 - Per-channel status (found N / skipped / error / degraded)
 - Path to candidates file
-- Next-step guidance: "Review candidates in `research/discovery/{phase}-candidates.md`. Process selected sources with `/research:process-source <url>`."
+- Prioritized candidate list with offer to begin processing
+
+After discovery, the agent should guide the user through source processing — not hand back control and wait for manual URL entry. The user's job is to review and approve; the agent's job is to drive the workflow forward.
 
 The candidates file at `research/discovery/{phase}-candidates.md` is the primary artifact of this skill.
