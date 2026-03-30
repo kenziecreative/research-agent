@@ -258,6 +258,8 @@ Wait for the agent to complete before proceeding.
 
 Assemble a slim CLAUDE.md by combining:
 
+0. **Research Type Field** — A single line at the very top of the file: `research-type: {type}` where `{type}` is the kebab-case research type value from the user's Question 1 answer (e.g., `company-for-profit`, `market-industry`, `company-non-profit`, `prd-validation`, `competitive-analysis`, `person-research`, `exploratory-thesis`, `curriculum-research`, `presentation-research`). This field is machine-readable — the discover skill's pre-check reads it to select the correct type-channel map.
+
 1. **Project Purpose** — Generated from the research type and topic. One paragraph describing what this research project does and why.
 
 2. **Audience & Evidence Standard:**
