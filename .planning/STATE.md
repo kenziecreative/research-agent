@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Structured Source Discovery
 status: planning
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-03-30T02:13:50.667Z"
+stopped_at: Completed 04-01-PLAN.md — init skill updated with discovery scaffold
+last_updated: "2026-03-30T02:15:30.177Z"
 last_activity: 2026-03-28 — Roadmap created for v1.1 milestone
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 8
-  completed_plans: 7
+  completed_plans: 8
   percent: 0
 ---
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-type-channel-maps P03 | 3 | 2 tasks | 3 files |
 | Phase 03-discover-skill P01 | 4 | 2 tasks | 1 files |
 | Phase 04-init-modifications P02 | 1 | 2 tasks | 2 files |
+| Phase 04-init-modifications P01 | 3 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,8 @@ Recent decisions affecting current work:
 - [Phase 03-discover-skill]: Status PROCESSED reserved for process-source — discover assigns only DISCOVERED or ACCESSIBLE
 - [Phase 04-init-modifications]: Strategy.md express lane: discover reads pre-matched phase-to-channel mappings from strategy.md when available, skipping keyword guessing entirely
 - [Phase 04-init-modifications]: Start-phase recommends discover first: natural workflow entry point surfaces /research:discover before /research:process-source
+- [Phase 04-init-modifications]: Plan-generator subagent receives type-channel map content and produces discovery/strategy.md alongside research-plan.md in the same pass
+- [Phase 04-init-modifications]: Discover is a substep of Collect (soft rule, not mandatory) — keeps the 5-step cycle intact while advertising the discover skill
 
 ### Pending Todos
 
@@ -101,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-30T02:13:50.664Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-03-30T02:15:30.174Z
+Stopped at: Completed 04-01-PLAN.md — init skill updated with discovery scaffold
 Resume file: None

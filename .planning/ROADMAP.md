@@ -21,7 +21,7 @@ Shipped 9 slash commands, 9 research type templates, source-processing pipeline 
 - [x] **Phase 1: Channel Playbooks** - Reference files that define query construction, credibility tiers, and graceful degradation for each discovery channel type (completed 2026-03-29)
 - [x] **Phase 2: Type-Channel Maps** - Per-research-type maps that route each phase of research to its highest-credibility channels (completed 2026-03-29)
 - [ ] **Phase 3: Discover Skill** - The `/research:discover` slash command that orchestrates type-aware, multi-channel source discovery
-- [ ] **Phase 4: Init Modifications** - Updated init skill that scaffolds discovery infrastructure and advertises the discover command to new projects
+- [x] **Phase 4: Init Modifications** - Updated init skill that scaffolds discovery infrastructure and advertises the discover command to new projects (completed 2026-03-30)
 - [ ] **Phase 5: Tools Guide Update** - Updated tools guide with discovery-specific patterns and channel-specific tool recommendations
 
 ## Phase Details
@@ -78,7 +78,7 @@ Plans:
   1. Running `/research:init` creates a `research/discovery/` directory in the project scaffold alongside the existing `research/notes/` and `research/sources/` directories
   2. The plan-generator subagent produces a `discovery-strategy.md` file mapping each research phase to its highest-value channels, as part of the init output
   3. The CLAUDE.md template assembled by init includes `/research:discover` in the skills table and the phase cycle workflow
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 Plans:
 - [ ] 04-01-PLAN.md — Init skill modifications (directory scaffold, strategy generation, CLAUDE.md/STATE.md templates, verification, report)
 - [ ] 04-02-PLAN.md — Cross-skill integration (discover strategy.md priority path, start-phase discover recommendation)
@@ -99,5 +99,5 @@ Plans:
 | 1. Channel Playbooks | 2/2 | Complete   | 2026-03-29 | - |
 | 2. Type-Channel Maps | 3/3 | Complete   | 2026-03-29 | - |
 | 3. Discover Skill | v1.1 | 0/1 | Planning | - |
-| 4. Init Modifications | 1/2 | In Progress|  | - |
+| 4. Init Modifications | 2/2 | Complete   | 2026-03-30 | - |
 | 5. Tools Guide Update | v1.1 | 0/TBD | Not started | - |

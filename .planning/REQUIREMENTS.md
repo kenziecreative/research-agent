@@ -34,7 +34,7 @@ Requirements for structured multi-channel source discovery. Each maps to roadmap
 
 ### Init & Workflow Updates
 
-- [ ] **INIT-01**: Project scaffold includes `research/discovery/` directory
+- [x] **INIT-01**: Project scaffold includes `research/discovery/` directory
 - [x] **INIT-02**: CLAUDE.md template includes `/research:discover` in the skills table and phase cycle workflow
 - [ ] **INIT-03**: Tools guide is updated with discovery-specific patterns (when to use search vs. extract, channel-specific tool recommendations)
 
@@ -85,7 +85,7 @@ Deferred to future milestone. Tracked but not in current roadmap.
 | CHAN-03 | Phase 3 | Complete |
 | CHAN-04 | Phase 3 | Complete |
 | CHAN-05 | Phase 3 | Complete |
-| INIT-01 | Phase 4 | Pending |
+| INIT-01 | Phase 4 | Complete |
 | INIT-02 | Phase 4 | Complete |
 | INIT-03 | Phase 5 | Pending |
 
