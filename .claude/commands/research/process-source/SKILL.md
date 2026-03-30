@@ -18,7 +18,7 @@ The user will provide a URL, file path, or pasted content.
 
 ## Process
 
-1. **Fetch the content.** For URLs, use Tavily extract (preferred) or WebFetch to get the full content. For files, read them directly. Do not work from search snippets.
+1. **Fetch the content.** For URLs, always attempt `tavily_extract` first — on every source, every phase, every time. If Tavily fails for a specific source, fall back to `WebFetch` for that source only. On the next source, try `tavily_extract` again. Fallbacks are per-source, not per-session — a Tavily failure on one URL does not mean Tavily is broken for all URLs. For files, read them directly. Do not work from search snippets.
 
    **If the source cannot be fetched** (domain blocks agents, paywall, 403, timeout, or any other access failure): do NOT silently skip the source or decide you have enough without it. Present the situation to the user and offer options:
 
@@ -65,6 +65,7 @@ The user will provide a URL, file path, or pasted content.
 | Processing sources for future phases instead of the current one | Check STATE.md for the active phase. Extract findings relevant to the current phase only. Note future-phase relevance in the Relevance field but do not tag those findings. |
 | Working from search snippets instead of full content | Always extract or read the full source content. Search snippets are for discovery, not for note-taking. Partial content leads to missing context and qualifier stripping. |
 | Silently skipping blocked or paywalled sources | Never decide on your own to skip a source you can't access. Present the access failure to the user with options: they provide the content, explicitly skip it, or offer an alternative URL. The user decides, not the agent. |
+| Sticky fallback — using WebFetch for all sources after one Tavily failure | Fallbacks are per-source, not per-session. Always try `tavily_extract` first on every source. A failure on one URL does not mean Tavily won't work on the next. Reset to Tavily on every new source. |
 | Silently resolving contradictions within a source | When a source contains contradictory figures for the same metric, flag both values. Do not pick the one that fits the narrative. |
 
 ## Output
