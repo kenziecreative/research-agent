@@ -1,7 +1,6 @@
 ---
 name: check-gaps
 description: Map research coverage and identify holes across all phases
-disable-model-invocation: true
 ---
 
 # /research:check-gaps

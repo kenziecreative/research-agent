@@ -2,7 +2,6 @@
 name: phase-insight
 description: Analyze current phase progress — which questions are addressed, which are thin, emerging patterns
 allowed-tools: Read, Grep, Glob
-disable-model-invocation: true
 ---
 
 # /research:phase-insight

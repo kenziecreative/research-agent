@@ -2,7 +2,6 @@
 name: start-phase
 description: Show what's needed to begin the next research phase — questions, prior findings, and context
 allowed-tools: Read, Grep, Glob
-disable-model-invocation: true
 ---
 
 # /research:start-phase

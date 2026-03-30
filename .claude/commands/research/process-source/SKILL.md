@@ -2,7 +2,6 @@
 name: process-source
 description: Process a URL, PDF, or document into a structured research note
 argument-hint: "[url-or-file-path]"
-disable-model-invocation: true
 ---
 
 # /research:process-source

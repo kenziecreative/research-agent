@@ -2,7 +2,6 @@
 name: audit-claims
 description: Fact-check a research draft against source notes and promote to outputs if it passes
 argument-hint: "[filepath]"
-disable-model-invocation: true
 ---
 
 # /research:audit-claims

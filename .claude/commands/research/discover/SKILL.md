@@ -2,7 +2,6 @@
 name: discover
 description: "Execute type-aware, multi-channel source discovery for the current research phase"
 allowed-tools: [tavily_search, Bash, WebSearch, tavily_extract, Read, Grep, Glob]
-disable-model-invocation: true
 ---
 
 # /research:discover

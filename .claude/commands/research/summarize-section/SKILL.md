@@ -2,7 +2,6 @@
 name: summarize-section
 description: Synthesize processed source notes into a draft research output section
 argument-hint: "[section-name-or-phase-number]"
-disable-model-invocation: true
 ---
 
 # /research:summarize-section

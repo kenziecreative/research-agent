@@ -1,7 +1,6 @@
 ---
 name: cross-ref
 description: Find patterns and connections across all processed research notes
-disable-model-invocation: true
 ---
 
 # /research:cross-ref
