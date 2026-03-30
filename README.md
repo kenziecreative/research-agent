@@ -10,6 +10,8 @@ The result isn't a summary of what an AI "knows" about your topic. It's a source
 
 **A tailored research plan** generated from preliminary web research on your specific topic — not a generic template. The system researches before it plans, so the phases and questions reflect what actually matters for your subject.
 
+**Type-aware source discovery** that knows where to look based on your research type. A company deep-dive searches SEC filings and financial databases. An exploratory thesis prioritizes academic papers. A non-profit investigation pulls 990 tax filings. The system routes to the right channels automatically — you review the candidates and decide what to process.
+
 **Structured source processing** that turns URLs, PDFs, and documents into consistent research notes with credibility ratings, key findings tagged by type, and limitations called out — building a searchable evidence base as you go.
 
 **Cross-referencing and gap analysis** that runs automatically as sources accumulate, surfacing patterns across your evidence and mapping exactly where coverage is strong and where holes remain.
@@ -24,7 +26,7 @@ Research Agent is built on [Claude Code](https://docs.anthropic.com/en/docs/clau
 
 The process follows a strict cycle for each phase:
 
-1. **Collect** — Process sources relevant to the current phase's questions
+1. **Collect** — Start with `/research:discover` to find candidate sources across multiple channels, then process the best ones with `/research:process-source`
 2. **Connect** — Cross-reference across all sources to find patterns
 3. **Assess** — Check coverage gaps before moving on
 4. **Synthesize** — Draft a section from the evidence
@@ -71,11 +73,26 @@ Then open Claude Code in the project directory and run:
 
 That walks you through setup — research type, topic, and project location. From there, the system guides you through each phase.
 
+## External APIs Used by Discovery
+
+The `/research:discover` command calls several free, public APIs to find sources across different channels. **No API keys or accounts are required** — these are all open-access. The system degrades gracefully if any are unavailable; it skips the channel and reports what happened.
+
+| API | What It Does | Who Should Know |
+|-----|-------------|----------------|
+| **[OpenAlex](https://openalex.org/)** | Searches academic papers by topic. Returns titles, authors, citation counts, DOIs, and open-access links. | Sends HTTP requests to `api.openalex.org` with a `mailto` parameter for polite pool access. No auth required. Free and open. |
+| **[SEC EDGAR EFTS](https://efts.sec.gov/LATEST/search-index?q=)** | Searches SEC filings (10-K, 10-Q, 8-K, DEF 14A, S-1) by company name or CIK. | Sends HTTP requests to `efts.sec.gov` with a `User-Agent` header identifying the tool, per SEC's [fair access policy](https://www.sec.gov/os/accessing-edgar-data). Rate-limited to 5 req/s. Free, public data. |
+| **[ProPublica Nonprofit Explorer](https://projects.propublica.org/nonprofits/api)** | Looks up nonprofit organizations by name or EIN. Returns 990 filing data, revenue, and links to full PDF filings. | Sends HTTP requests to `projects.propublica.org`. No auth required. Free and open. |
+| **[Google Patents](https://patents.google.com/)** | Constructs search URLs for patent discovery by assignee or inventor. | Builds a URL that gets extracted via Tavily — no direct API call to Google. |
+| **[Tavily](https://tavily.com/)** | Web search, news, financial sources, and social signals. The primary discovery engine. | Requires the Tavily MCP server to be configured (you set this up during install). Used for web-search, financial, social-signals, and domain-specific channels. |
+
+All HTTP API calls are made via `curl` in the terminal. You can see exactly what's being requested. Nothing is sent to these services other than search queries derived from your research topic.
+
 ## Commands
 
 | Command | What It Does |
 |---------|-------------|
 | `/research:init` | Start a new research project |
+| `/research:discover` | Find candidate sources across multiple channels based on research type |
 | `/research:process-source` | Process a URL or file into a structured research note |
 | `/research:cross-ref` | Find patterns across all processed source notes |
 | `/research:check-gaps` | Map coverage against the research plan, identify holes |
