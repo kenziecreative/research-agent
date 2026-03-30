@@ -277,18 +277,15 @@ Key parameters:
 Rate limit: 10 req/s with mailto, 1 req/s without.
 
 Fallback chain (per academic.md):
-1. Semantic Scholar API (Bash curl) — if OpenAlex fails
-2. `tavily_search` with academic domain scoping (scholar.google.com, pubmed.ncbi.nlm.nih.gov, semanticscholar.org, jstor.org, arxiv.org)
-3. `WebSearch` with site: operators
-
-Label degraded results: `[via Semantic Scholar fallback]`, `[via Tavily fallback]`, `[via WebSearch fallback]`
+1. `tavily_search` with academic domain scoping (scholar.google.com, arxiv.org, pubmed.ncbi.nlm.nih.gov) — label: `[via Tavily fallback]`
+2. `WebSearch` with academic domain keywords — label: `[via WebSearch fallback]`
 
 ### Regulatory (channel-type: regulatory)
 
 Primary: `Bash` curl to EDGAR EFTS and ProPublica APIs
 
 **EDGAR EFTS (SEC filings):**
-- Always include `User-Agent: Research Agent research-agent@example.com` header — required by SEC policy
+- Always include `User-Agent: ResearchAgent (contact@example.com)` header — required by SEC policy
 - Rate limit: max 5 req/s; never exceed
 - Extract per result: filing date, form type (10-K, 10-Q, 8-K, DEF 14A, etc.), entity name
 - Construct filing URL from accession number: `https://www.sec.gov/Archives/edgar/data/{cik}/{accession-number-formatted}/`
@@ -296,8 +293,8 @@ Primary: `Bash` curl to EDGAR EFTS and ProPublica APIs
 
 **ProPublica Nonprofit Explorer (990 data):**
 - Extract per result: EIN, organization name, total revenue, filing year
-- Construct 990 profile URL: `https://projects.propublica.org/nonprofits/organizations/{ein}`
-- PDF link for individual 990: `https://projects.propublica.org/nonprofits/organizations/{ein}/{filing_id}/full`
+- Construct 990 profile URL: `https://projects.propublica.org/nonprofits/organizations/{ein_no_dashes}` — remove dashes from EIN (e.g., `13-1837418` → `131837418`)
+- PDF link for individual 990: `https://projects.propublica.org/nonprofits/organizations/{ein_no_dashes}/{filing_id}/full`
 - Status: ACCESSIBLE — IRS 990 data is public record
 
 Fallback chain (per regulatory.md):
@@ -311,7 +308,7 @@ Fallback chain (per regulatory.md):
 1. **Discovery output goes to `research/discovery/` ONLY.** Never write to `research/notes/`, `research/sources/registry.md`, or any other research file. The boundary between discovery and processing belongs to process-source — do not cross it.
 2. **Never auto-feed discovered sources into process-source.** The candidate list is for human review. Suggest process-source in the completion message but never invoke it.
 3. **Cap results at 8 sources per channel per query.** If an API returns more results, take the top 8 by relevance score or citation count. Exceeding 8 per channel defeats the purpose of the candidate review step.
-4. **Always include `User-Agent: Research Agent research-agent@example.com` for SEC EDGAR requests.** This is required by SEC policy. The header is embedded in the curl template in regulatory.md — copy it exactly.
+4. **Always include `User-Agent: ResearchAgent (contact@example.com)` for SEC EDGAR requests.** This is required by SEC policy — the header value is defined in regulatory.md.
 5. **Include `mailto=research-agent@example.com` for all OpenAlex API requests.** This activates the 10 req/s polite pool. Without it, rate limit is 1 req/s.
 6. **Do not run all domain-specific hooks.** Only execute the hooks specified in the current research type's channel map. Running patent search for a non-profit research project wastes time and produces irrelevant results.
 7. **When a channel fails, continue with remaining channels.** Never abort discovery due to a single channel failure. Log the failure, report it in the summary table, move on.
@@ -329,7 +326,7 @@ Fallback chain (per regulatory.md):
 | Feeding discovered sources directly into processing pipeline | Guardrail 1 and 2: output to `research/discovery/` only. Suggest process-source in completion message but never invoke it. |
 | Silent channel failure with no status reporting | Print per-channel status lines during execution. Include all channels in summary table with explicit status — even channels that were skipped or errored. |
 | Exceeding API rate limits | Follow rate limits from playbooks: EDGAR max 5 req/s, OpenAlex 10 req/s with mailto (1 req/s without), Tavily usage is monthly-quota-based. Space Bash curl calls with brief pauses if running multiple EDGAR queries. |
-| Missing User-Agent for SEC EDGAR | Guardrail 4: always include the User-Agent header. The curl template in regulatory.md embeds it. Copy the template exactly. |
+| Missing User-Agent for SEC EDGAR | Guardrail 4: always include `User-Agent: ResearchAgent (contact@example.com)`. The value is defined in regulatory.md. |
 | Assigning PROCESSED status during discovery | Pre-check: PROCESSED is reserved for process-source. Assign only DISCOVERED or ACCESSIBLE during discovery. |
 | Running domain-specific hooks for wrong research type | Guardrail 6: read the type-channel map's hook list. Only run hooks that appear in the current research type's channel map. |
 | wildcard include_domains failing in Tavily | If a playbook lists wildcard domains (e.g., `investor.*.com`), replace with explicit domain list. Wildcards are unconfirmed in Tavily — use specific URLs instead. |
