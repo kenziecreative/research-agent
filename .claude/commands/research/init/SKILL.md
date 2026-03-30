@@ -204,7 +204,7 @@ These rules exist because agents can confabulate a subject when the provided des
 - Synthesis phase always produces at minimum an executive summary and a full report
 - Be specific in "be skeptical of" — name source types that tend to mislead for this topic
 
-You have access to WebSearch and WebFetch — use them to understand the topic before generating the plan. Do preliminary research so the phases and questions are grounded, not generic. **Preliminary research is for context only — it does not change the subject you were given.**
+You have access to `tavily_search` and `WebFetch` — use `tavily_search` as your primary research tool (not WebSearch, which is the degraded fallback). Do preliminary research so the phases and questions are grounded, not generic. Use the current date to set appropriate search ranges — do not cap searches at a past year. **Preliminary research is for context only — it does not change the subject you were given.**
 
 Write the final research plan to `research/research-plan.md`.
 
