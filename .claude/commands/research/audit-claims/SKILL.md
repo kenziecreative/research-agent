@@ -59,8 +59,31 @@ There is no percentage threshold. Every specific claim must check out. The score
 
 ## After Audit
 
-- **If PASS:** Move the file from `research/drafts/` to `research/outputs/`. Update `research/STATE.md` to reflect the output is finalized. Tell the user: "Audit passed. Promoted to `research/outputs/<filename>`."
+- **If PASS:** Move the file from `research/drafts/` to `research/outputs/`. Update `research/STATE.md` to reflect the output is finalized. Then present a **phase debrief** (see below).
 - **If FAIL:** Leave the file in `research/drafts/`. List every issue with line-level specifics and what needs to change. The user or agent must fix the issues in the draft, then run `/research:audit-claims` again on the same file. Do not promote until it passes.
+
+## Phase Debrief (after pass)
+
+When a phase's audit passes, do NOT just say "Audit passed" and recommend clearing context. Present a comprehensive debrief of what the phase established. Read the promoted output file and present:
+
+1. **Key findings** — The substantive things this phase established, with specifics (numbers, comparisons, named entities). Not a one-line summary — cover all the major findings, not just the headline.
+2. **Surprises or counterintuitive results** — Anything that challenges assumptions or conventional wisdom.
+3. **Gaps that remain** — What this phase couldn't answer and why (data doesn't exist, sources conflict, needs internal verification).
+4. **Implications for upcoming phases** — How these findings shape what to look for next.
+
+After presenting the debrief, pause and invite the user to react:
+
+```
+That's what Phase {N} established. Anything you want to capture, question, or dig into before we move on?
+```
+
+Wait for the user to respond. They may:
+- Ask follow-up questions about specific findings
+- Want to capture a note for later (`research/notes-to-self.md`)
+- Challenge or comment on something the research surfaced
+- Say they're good to move on
+
+Only after the user is done, recommend clearing context and starting the next phase.
 
 ## Non-Negotiable Rules
 
