@@ -25,6 +25,7 @@ Ask the user which type of research they want to conduct:
 - **Market/Industry Research** — Map the current state of a market, technology, or trend. Adoption patterns, key players, growth data, barriers, accelerators, and where things are heading. Use this when you want to understand a landscape, not validate a specific claim.
 - **Presentation Research** — Build the evidence base and through line for a presentation. Start with your existing points and topic, research to validate claims, find supporting data, identify counterpoints, and discover the narrative thread that connects everything. Produces a presentation brief, not a report.
 - **Curriculum Research** — Research a subject domain to build a curriculum from scratch. Verify subject matter accuracy, map practitioner reality, identify common misconceptions, assess field currency, and produce a subject matter foundation that feeds into curriculum design.
+- **Opportunity Discovery** — Discover product opportunities for a specific audience or niche. Map where they gather, what they complain about, what they pay for, and where existing solutions fall short. Produces a ranked list of opportunity areas with evidence, not a product spec.
 
 **Question 2 — Topic:**
 
@@ -115,6 +116,7 @@ Do not override the evidence standard set by the audience. A personal knowledge 
 - **Market/Industry Research (8-12 phases):** Market definition and scope → current state and maturity assessment → adoption data and growth patterns → key players and ecosystem mapping → technology/capability landscape → barriers and accelerators → segment or regional variations → emerging trends and inflection points → future direction and projections → synthesis with landscape report and strategic implications. Adapt phases to the topic — a mature market needs more segmentation analysis; an emerging technology needs more feasibility and adoption barrier analysis.
 - **Presentation Research (5-8 phases):** Nugget inventory and claim mapping → audience and context research → evidence gathering and claim validation (one phase per major claim cluster) → counterpoint and objection research → through line discovery and narrative gap analysis → synthesis with presentation brief, narrative arc, evidence map, and talking points. The plan generator should examine the user's existing points and organize phases around the major claim clusters that need evidence, not around a generic research structure.
 - **Curriculum Research (6-10 phases):** Domain landscape → practitioner reality → skill decomposition → common misconceptions and failure patterns → current best practice → field trajectory → competing approaches → existing program landscape → synthesis with subject matter foundation, practitioner workflow map, skill decomposition, misconception inventory, field currency assessment, and curriculum scope recommendation. Adapt phase count to the topic — collapse early phases when the designer has substantial existing knowledge, deepen misconception and practitioner reality phases in those cases. For entirely new domains, keep the full structure.
+- **Opportunity Discovery (6-8 phases):** Niche definition and audience profiling → watering hole mapping and community discovery → pain point extraction and complaint analysis → current tool stack and spending patterns → existing solution audit → demand validation and willingness to pay → synthesis with ranked opportunity areas, evidence map, and recommended exploration areas. Adapt phase count to the niche — collapse community discovery and pain points if the niche has only one or two hubs; expand the solution audit if the existing landscape is crowded.
 
 **Output format:**
 
@@ -267,7 +269,7 @@ Wait for the agent to complete before proceeding.
 
 Assemble a slim CLAUDE.md by combining:
 
-0. **Research Type Field** — A single line at the very top of the file: `research-type: {type}` where `{type}` is the kebab-case research type value from the user's Question 1 answer (e.g., `company-for-profit`, `market-industry`, `company-non-profit`, `prd-validation`, `competitive-analysis`, `person-research`, `exploratory-thesis`, `curriculum-research`, `presentation-research`). This field is machine-readable — the discover skill's pre-check reads it to select the correct type-channel map.
+0. **Research Type Field** — A single line at the very top of the file: `research-type: {type}` where `{type}` is the kebab-case research type value from the user's Question 1 answer (e.g., `company-for-profit`, `market-industry`, `company-non-profit`, `prd-validation`, `competitive-analysis`, `person-research`, `exploratory-thesis`, `curriculum-research`, `presentation-research`, `opportunity-discovery`). This field is machine-readable — the discover skill's pre-check reads it to select the correct type-channel map.
 
 1. **Project Purpose** — Generated from the research type and topic. One paragraph describing what this research project does and why.
 
