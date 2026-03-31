@@ -36,17 +36,19 @@ Phases are sequential. You finish one before starting the next. The system track
 
 ## Research Types
 
-- **PRD Validation** — Pressure-test a Product Requirements Document against external evidence before engineering begins. Tests assumptions, technical choices, timeline estimates, market claims.
-- **Exploratory Thesis** — Build the evidence base for a thesis, concept, or vision. Validate core claims, map the landscape, identify opportunities and risks.
-- **Competitive Analysis** — Map a competitive landscape for a product, market, or space. Identify players, compare features, find white space, assess positioning.
-- **Company Research (For-Profit)** — Deep research on a specific company. Financials, products, market position, leadership, technology, risks.
-- **Company Research (Non-Profit)** — Deep research on a non-profit. Mission, programs, impact, 990 financials, funding, governance, effectiveness.
-- **Person Research** — Deep research on an individual. Career trajectory, expertise validation, published work, public positions, reputation, red flags.
-- **Market/Industry Research** — Map the current state of a market, technology, or trend. Adoption patterns, key players, growth data, barriers, and where things are heading.
-- **Presentation Research** — Build the evidence base and narrative thread for a presentation. Validate claims, find supporting data, identify counterpoints, discover the through line.
-- **Curriculum Research** — Research a subject domain to build a curriculum from scratch. Verify accuracy, map practitioner reality, identify misconceptions, assess field currency.
-- **Opportunity Discovery** — Discover product opportunities for a specific audience or niche. Map where they gather, what they complain about, what they pay for, and where existing solutions fall short. Produces a ranked list of opportunity areas with evidence.
-- **Customer Safari** — Build strategic intelligence about a target audience by observing their natural online behavior. Uses digital anthropology methods to systematically map communities, categorize observations (Pains, Delights, Recommendations, Questions, Jargon), score trends, and produce prioritized market intelligence.
+| Type | What It Does |
+|------|-------------|
+| **PRD Validation** | Pressure-test a Product Requirements Document against external evidence. Tests assumptions, technical choices, timeline estimates, market claims. |
+| **Exploratory Thesis** | Build the evidence base for a thesis, concept, or vision. Validate core claims, map the landscape, identify opportunities and risks. |
+| **Competitive Analysis** | Map a competitive landscape for a product, market, or space. Identify players, compare features, find white space, assess positioning. |
+| **Company Research (For-Profit)** | Deep research on a specific company. Financials, products, market position, leadership, technology, risks. |
+| **Company Research (Non-Profit)** | Deep research on a non-profit. Mission, programs, impact, 990 financials, funding, governance, effectiveness. |
+| **Person Research** | Deep research on an individual. Career trajectory, expertise validation, published work, public positions, reputation, red flags. |
+| **Market/Industry Research** | Map the current state of a market, technology, or trend. Adoption patterns, key players, growth data, barriers, and where things are heading. |
+| **Presentation Research** | Build the evidence base and narrative thread for a presentation. Validate claims, find supporting data, identify counterpoints, discover the through line. |
+| **Curriculum Research** | Research a subject domain to build a curriculum from scratch. Verify accuracy, map practitioner reality, identify misconceptions, assess field currency. |
+| **Opportunity Discovery** | Discover product opportunities for a specific audience or niche. Map where they gather, what they complain about, what they pay for, and where existing solutions fall short. |
+| **Customer Safari** | Build strategic intelligence about a target audience by observing their natural online behavior. Map communities, categorize observations (Pains, Delights, Recommendations, Questions, Jargon), score trends, and produce prioritized market intelligence. |
 
 Each type has its own phase structure, finding tags, source credibility hierarchy, and validation standards. The research plan adapts to the type — a company deep-dive produces different phases than a thesis validation.
 
