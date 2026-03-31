@@ -29,7 +29,7 @@ Supports optional `--channel {name}` argument for targeted re-runs against a sin
 
 5. **If no Discovery Group matches the current phase**, report: "No discovery channels mapped for this phase — this phase uses existing sources." and stop. This is expected for synthesis and output phases.
 
-6. **If `--channel {name}` was provided**, filter the channel list to only that channel. Confirm it exists in the matched Discovery Group's channel list. If not found, error: "Channel '{name}' is not configured for this phase. Available channels: {list}."
+6. **If `--channel {name}` was provided**, filter the channel list to only that channel. Confirm it exists in the matched Discovery Group's channel list. If not found, error: "Channel '{name}' is not mapped for this phase. Available channels: {list}."
 
 7. **Check for existing candidates file** at `research/discovery/{phase}-candidates.md`. If it exists, new results will be appended with a timestamp separator and deduplicated by URL against existing entries. Note this to the user before proceeding.
 
@@ -67,7 +67,7 @@ For each channel:
 
 **f.** Cap results at **8 sources maximum** per channel per query. If an API returns more, take the top 8 by relevance score or citation count. Never include more than 8.
 
-**g.** Print result status: "{Channel Name}: found {N}" or "{Channel Name}: error — {reason}" or "{Channel Name}: degraded — using WebSearch fallback, found {N}" or "{Channel Name}: skipped (not in active channels)"
+**g.** Print result status: "{Channel Name}: found {N}" or "{Channel Name}: error — {reason}" or "{Channel Name}: degraded — using WebSearch fallback, found {N}" or "{Channel Name}: skipped (not mapped for this phase)"
 
 **h.** If a channel fails (timeout, rate limit, API error, tool unavailable), log the specific failure reason, continue to the next channel. Never abort discovery because one channel failed.
 
@@ -116,7 +116,7 @@ Write to `research/discovery/{phase}-candidates.md`. Create the `research/discov
 |---------|--------|---------|
 | Web Search | found 6 | 6 |
 | Financial | found 3 | 3 |
-| Social Signals | skipped (not in active channels) | 0 |
+| Social Signals | skipped (not mapped for this phase) | 0 |
 | Academic | found 5 | 5 |
 | Regulatory | error (timeout) | 0 |
 | Domain-Specific | found 2 | 2 |
@@ -181,7 +181,7 @@ Discovery complete.
 Channel results:
   Web Search    found {N}
   Academic      found {N}
-  Regulatory    skipped (not configured)
+  Regulatory    skipped (not mapped for this phase)
   ...
 ```
 
