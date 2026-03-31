@@ -45,6 +45,7 @@ Phases are sequential. You finish one before starting the next. The system track
 - **Market/Industry Research** — Map the current state of a market, technology, or trend. Adoption patterns, key players, growth data, barriers, and where things are heading.
 - **Presentation Research** — Build the evidence base and narrative thread for a presentation. Validate claims, find supporting data, identify counterpoints, discover the through line.
 - **Curriculum Research** — Research a subject domain to build a curriculum from scratch. Verify accuracy, map practitioner reality, identify misconceptions, assess field currency.
+- **Opportunity Discovery** — Discover product opportunities for a specific audience or niche. Map where they gather, what they complain about, what they pay for, and where existing solutions fall short. Produces a ranked list of opportunity areas with evidence.
 
 Each type has its own phase structure, finding tags, source credibility hierarchy, and validation standards. The research plan adapts to the type — a company deep-dive produces different phases than a thesis validation.
 
