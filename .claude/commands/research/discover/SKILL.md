@@ -39,7 +39,19 @@ Supports optional `--channel {name}` argument for targeted re-runs against a sin
 
 From the matched Discovery Group, collect Primary channels and Secondary channels. Primary channels execute first. If `--channel` filter was applied, use only that channel.
 
-Print: "Running discovery for phase: {phase name} | Research type: {type} | Channels: {list}"
+Print the following orientation block before executing any queries:
+
+```
+Running discovery for phase: {phase name}
+Research type: {type}
+Channels: {list}
+
+What we're looking for:
+  {Briefly restate the 2-3 core research questions for this phase from research-plan.md}
+
+I'll search across {N} channels and present what I find. You'll get to review
+candidates and decide which ones to process — nothing gets processed automatically.
+```
 
 ### Step 2: Execute each channel in priority order
 
@@ -200,9 +212,49 @@ You can skip any that don't look relevant. After 5-8 sources I'll pause
 for cross-referencing.
 ```
 
-If the user says yes (or any affirmative), begin processing sources sequentially using `/research:process-source` for each URL. Track the count — after processing 5-8 sources, pause and run `/research:cross-ref` before continuing. If the user wants to skip a source, skip it and move to the next.
+If the user says yes (or any affirmative), begin processing sources sequentially using `/research:process-source` for each URL. Track the count — after processing 5-8 sources, pause and present the cross-reference checkpoint:
+
+```
+Pausing after {N} sources to cross-reference before continuing.
+
+What we've processed so far:
+  {1-line summary per processed source — title and what it contributed}
+
+Why pause now: Cross-referencing at this point lets us spot patterns, contradictions,
+and gaps while the data is fresh — so remaining sources can fill holes instead of
+piling on what we already know.
+
+Want me to run cross-referencing now? ({M} candidates remaining after this.)
+```
+
+If the user approves, run `/research:cross-ref`, then resume processing the remaining candidates with the same pause cadence.
+
+If the user wants to skip a source during processing, skip it and move to the next.
 
 If the user wants to review the full candidates file first or pick specific sources, respect that — show them the file path and let them direct which sources to process.
+
+### Decision points: always recommend, don't just list options
+
+When presenting a choice to the user (process another source, move to gap assessment, run cross-ref, etc.), **state your recommendation and reasoning first**, then ask for confirmation. You have the context — use it.
+
+Bad (options without opinion):
+```
+Want me to process the last source, or move to gap assessment?
+```
+
+Good (recommendation with reasoning):
+```
+I'd recommend skipping the last candidate (topstartups.io broader data) — we already
+have strong startup-specific salary data from the earlier topstartups.io source, and
+the 7 sources processed give solid coverage across all three research questions.
+
+My recommendation: move to gap assessment (/research:check-gaps) to confirm coverage
+before writing. If gaps surface, we can circle back to remaining candidates.
+
+Sound good?
+```
+
+Apply this pattern at every pause point — cross-ref checkpoints, end-of-candidates, and any mid-processing decision. The user can always override, but the agent should have an opinion.
 
 ---
 

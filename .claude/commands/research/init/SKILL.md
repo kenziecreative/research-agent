@@ -28,6 +28,10 @@ Ask the user which type of research they want to conduct:
 - **Opportunity Discovery** — Discover product opportunities for a specific audience or niche. Map where they gather, what they complain about, what they pay for, and where existing solutions fall short. Produces a ranked list of opportunity areas with evidence, not a product spec.
 - **Customer Safari** — Build strategic intelligence about a target audience through systematic observation of their natural online behavior. Map where they gather, what they say when they think no one official is watching, and which patterns matter strategically. Uses the safari labeling system (Pains, Delights, Recommendations, Questions, Jargon) and trend scoring to produce prioritized market intelligence.
 
+After presenting the types, add: "Not sure which one fits? Just tell me what you're trying to learn and I'll help you pick the right type."
+
+If the user describes their goal instead of picking a type, recommend the best-fit type with a brief explanation of why it matches, and ask them to confirm before proceeding.
+
 **Question 2 — Topic:**
 
 Ask: "What's the topic, company, or document you're researching? Provide as much context as you have — a description, a URL, a document path, or paste the content directly."
