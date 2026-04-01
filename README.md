@@ -69,6 +69,17 @@ git clone https://github.com/kenziecreative/research-agent.git
 cd research-agent
 ```
 
+**Important:** Don't name the clone `research`. The system creates a `research/` directory inside the project for your research files. Cloning into a directory also called `research` produces a `research/research/` nesting that confuses path resolution across sessions.
+
+```bash
+# Good — clone into a descriptive name
+git clone https://github.com/kenziecreative/research-agent.git my-market-research
+git clone https://github.com/kenziecreative/research-agent.git competitor-analysis
+
+# Bad — creates research/research/ nesting
+git clone https://github.com/kenziecreative/research-agent.git research
+```
+
 Then open Claude Code in the project directory and run:
 
 ```

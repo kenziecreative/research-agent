@@ -52,6 +52,13 @@
 
 For less public individuals, the plan generator should collapse phases where source material won't exist (e.g., skip the financial/legal phase for someone with no SEC filings) and deepen the phases where material is available.
 
+**Thin-profile detection (mid-research):** If during any phase the agent finds that all or nearly all findings are SELF-REPORTED with no independent corroboration available, this is likely a thin-profile individual — someone not prominent enough for independent coverage. When this happens:
+- Name it explicitly: "This person has a thin public footprint. Independent verification of career claims is not available through public sources."
+- Distinguish between a _researchable gap_ (more searching could fill it) and a _structural limitation_ (the information simply doesn't exist in public sources for someone at this profile level). Don't send the agent chasing sources that won't exist.
+- Recommend synthesizing what's available with clear SELF-REPORTED tags rather than leaving the phase open indefinitely.
+- Flag this finding to the user — it's often the most important thing person research reveals, especially for hire/invest/partner decisions.
+- Re-evaluate the remaining phase plan: phases designed for prominent individuals (thought leadership, peer perception, financial footprint) may need to be collapsed or skipped now that profile depth is established.
+
 **Success Criteria:**
 1. Career timeline is verified against multiple sources — not just the person's own LinkedIn or bio
 2. Every expertise claim is tagged: independently confirmed, self-reported only, or unverifiable

@@ -12,7 +12,9 @@ Supports optional `--channel {name}` argument for targeted re-runs against a sin
 
 ## Pre-check (mandatory before execution)
 
-1. **Read `research/STATE.md`** — extract the current active phase name. If no active phase field is present or it is empty, error: "No active phase. Run `/research:start-phase` first." Do not proceed.
+1. **Read `research/STATE.md`** — extract the current active phase name.
+   - If `research/STATE.md` does not exist at all: error: "No STATE.md found — this project hasn't been initialized. Run `/research:init` first." Do not proceed. (Note: `/research:start-phase` won't help here either — it also requires STATE.md.)
+   - If `research/STATE.md` exists but the "Active phase" field is missing or empty: error: "STATE.md exists but has no active phase set. Check STATE.md — the active phase may need to be set manually." Do not proceed.
 
 2. **Read `research/research-plan.md`** — extract the research questions and research subject (the entity, topic, or organization being researched) for the active phase. These become the primary inputs for query construction.
 
