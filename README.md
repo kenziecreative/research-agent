@@ -65,20 +65,13 @@ The system is designed to produce research you can trust because you can trace i
 You'll need [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and the [Tavily MCP server](https://docs.tavily.com/) configured for web search and source extraction.
 
 ```bash
-git clone https://github.com/kenziecreative/research-agent.git
-cd research-agent
+git clone https://github.com/kenziecreative/research-agent.git your-project-name
+cd your-project-name
 ```
+
+Replace `your-project-name` with a name for your research project (e.g., `competitor-analysis`, `market-sizing`, `ceo-background-check`).
 
 **Important:** Don't name the clone `research`. The system creates a `research/` directory inside the project for your research files. Cloning into a directory also called `research` produces a `research/research/` nesting that confuses path resolution across sessions.
-
-```bash
-# Good — clone into a descriptive name
-git clone https://github.com/kenziecreative/research-agent.git my-market-research
-git clone https://github.com/kenziecreative/research-agent.git competitor-analysis
-
-# Bad — creates research/research/ nesting
-git clone https://github.com/kenziecreative/research-agent.git research
-```
 
 Then open Claude Code in the project directory and run:
 
