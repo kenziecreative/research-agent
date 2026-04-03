@@ -46,6 +46,7 @@ The user will provide a URL, file path, or pasted content.
    - Source title, URL/path, date accessed, source type
    - Author (verified byline only — see step 4)
    - Credibility assessment based on the project's source credibility hierarchy
+   - Origin chain — whether this source is primary (original data/research) or secondary (reporting on someone else's findings). If secondary, record the original source it cites (name, author, date if available). If the source cites multiple original sources for different claims, record the origin for each major claim separately.
    - Key findings — the important claims, data points, and arguments from this source
    - Relevance — which research plan phases this source informs
    - Finding tags applied to key claims (use the project's tag set from CLAUDE.md)
@@ -61,6 +62,7 @@ The user will provide a URL, file path, or pasted content.
 3. Assess credibility against the project's specific credibility hierarchy, not a generic one. Read `research/reference/source-standards.md` every time.
 4. Preserve the source's own qualifiers, ranges, and uncertainty language in the structured note. Do not clean up hedging.
 5. If the source contradicts previously processed sources, flag the contradiction explicitly in the note — do not leave it for cross-ref to discover.
+6. Record the origin chain for every source. If a source presents its own original research, record it as primary. If it reports on others' findings, record each cited original with enough detail (title, author, date) for cross-ref to match origins across sources.
 
 ## Common Failure Modes
 
@@ -73,6 +75,7 @@ The user will provide a URL, file path, or pasted content.
 | Silently skipping blocked or paywalled sources | Never decide on your own to skip a source you can't access. Present the access failure to the user with options: they provide the content, explicitly skip it, or offer an alternative URL. The user decides, not the agent. |
 | Sticky fallback — using WebFetch for all sources after one Tavily failure | Fallbacks are per-source, not per-session. Always try `tavily_extract` first on every source. A failure on one URL does not mean Tavily won't work on the next. Reset to Tavily on every new source. |
 | Silently resolving contradictions within a source | When a source contains contradictory figures for the same metric, flag both values. Do not pick the one that fits the narrative. |
+| Missing origin chain — not recording whether a source is primary or secondary | Every source note must include an origin chain field. If the source's originality status is unclear from the content, record "Origin unclear — could not determine from extracted content" rather than omitting the field. |
 
 ## Output
 Summarize the key findings for the user. Note which research phases this source is relevant to and any contradictions with existing sources. If "Sources since last cross-reference" is now 4 or 5, remind the user: "Cross-reference is due soon (N/5 sources). Run `/research:cross-ref` after the next source or two."
