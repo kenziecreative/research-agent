@@ -15,6 +15,12 @@ The user will provide a URL, file path, or pasted content.
 
 1. **Read `research/STATE.md`** and check "Sources since last cross-reference."
 2. **If the count is 5 or higher, stop.** Tell the user: "Cross-reference is overdue (N sources since last `/research:cross-ref`). Run `/research:cross-ref` before processing more sources." Do not proceed until cross-ref is run.
+3. **Check for duplicate processing.** Before fetching the source, search `research/sources/registry.md` for the URL (or filename for local files). Also check `research/notes/` for a note file with a matching URL in its header.
+   - If found in registry AND a complete note exists in `research/notes/`: warn the user: "This source was already processed — see research/notes/{file}. Process again to update, or skip?"
+   - If found in registry BUT the note file is missing or truncated: warn the user: "This source appears partially processed (registered but note is missing or incomplete). I'll re-process it from scratch."
+   - If not found anywhere: proceed normally.
+
+   This prevents duplicate processing after context clears that interrupt mid-source, and avoids wasting extraction calls on sources already in the evidence base.
 
 ## Process
 

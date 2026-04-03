@@ -487,6 +487,17 @@ Tracks what's been covered and what's still missing across all research phases.
 [...etc for all phases]
 ```
 
+- Write `research/audits/gate-log.md`:
+
+```markdown
+# Gate Log
+
+Permission gate decisions for writes to research/outputs/.
+
+| Timestamp | Action | Result | File | Detail |
+|-----------|--------|--------|------|--------|
+```
+
 - Copy `.claude/reference/templates/cross-reference.md` to `research/cross-reference.md`
 
 - Copy `.claude/reference/templates/canonical-figures.json` to `research/reference/canonical-figures.json`
@@ -507,7 +518,7 @@ Before reporting to the user, verify the scaffolding is complete:
    - `sources/registry.md`
    - `drafts/` (directory exists)
    - `outputs/` (directory exists)
-   - `audits/` (directory exists)
+   - `audits/gate-log.md`
    - `reference/source-standards.md`
    - `reference/writing-standards.md`
    - `reference/tools-guide.md`
