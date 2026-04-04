@@ -42,6 +42,28 @@ Before writing anything, verify:
 
    This is a **warning, not a gate** — synthesis proceeds after displaying the advisory. If no sources exceed the threshold, skip the advisory silently.
 
+5. **Counter-evidence gate (PRD Validation and Exploratory Thesis only).** Read `research/research-plan.md` to determine the research type. If the type is PRD Validation or Exploratory Thesis:
+   a. Scan all processed source notes in `research/notes/` for this phase.
+   b. Look for findings tagged CHALLENGED (PRD Validation) or CONTRADICTED (Exploratory Thesis) from sources with credibility tier above "blog/opinion" level (official docs, analyst reports, peer-reviewed, industry data, developer community).
+   c. If at least one credible source has a CHALLENGED or CONTRADICTED finding, the gate passes — proceed.
+   d. If no credible counter-evidence exists, block synthesis:
+
+   ```
+   Synthesis blocked — no counter-evidence found for [research type].
+
+   [Research type] requires at least one credible source that challenges the central claim before synthesis can proceed. This ensures the research stress-tests its thesis rather than just confirming it.
+
+   Current sources all [support/validate] the position. To proceed:
+   1. Run /research:discover with terms like "[negating/challenging terms for the thesis]"
+   2. Look for sources from [suggest specific channels: academic databases, industry analysts, competing viewpoints]
+   3. Process at least one source that presents counter-evidence
+   4. Then re-run /research:summarize-section
+
+   If after genuine search no counter-evidence can be found, note this explicitly — absence of opposition is itself a finding worth documenting.
+   ```
+
+   This gate applies to every phase in PRD Validation and Exploratory Thesis types, not just the final synthesis.
+
 If any pre-check fails, do not proceed. Tell the user which check failed and what to run.
 
 ## Process
@@ -61,6 +83,38 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
    - Use prose paragraphs, not bullet lists (except for data tables and key findings)
    - Present contradictions when sources disagree
    - No orphan claims — if it can't be cited, flag it as inference
+8a. **Log assumptions to `research/assumptions.md`.** While writing the draft, identify any judgment or finding that meets these criteria:
+    - Based on a single source (already flagged with "single source suggests" per guardrail 5)
+    - Inferred from indirect evidence rather than directly stated
+    - Extrapolated beyond what the source data strictly supports
+    - Based on sources that exceed the staleness threshold
+
+    For each assumption identified, append an entry to `research/assumptions.md` (create the file if it does not exist). Entry format:
+
+    ```markdown
+    ### [Short assumption description]
+    - **Status:** Open
+    - **Phase:** [phase number and name]
+    - **Section:** [draft section name]
+    - **Basis:** [What evidence exists and why it is thin — e.g., "single source (vendor whitepaper)", "inferred from adjacent market data", "based on 2021 data exceeding 2-year threshold"]
+    - **What would validate:** [What kind of evidence would confirm this]
+    - **What would challenge:** [What kind of evidence would overturn this]
+    - **Added:** [date]
+    ```
+
+    The file header (create only if file does not exist):
+    ```markdown
+    # Research Assumptions Record
+
+    Judgments synthesized from weak, thin, or indirect evidence. Revisit when new phases add evidence.
+
+    **Statuses:** Open (still assumed) | Validated (later evidence confirmed) | Challenged (later evidence contradicts)
+
+    ---
+    ```
+
+    When adding new assumptions, also scan existing assumptions in the file. If new evidence from current synthesis validates or challenges a prior assumption, update its status from Open to Validated or Challenged and add a note with the evidence that changed it.
+
 9. **Run the research-integrity agent** on the draft. Pass the filepath. If the agent finds issues, fix them in the draft before proceeding. Do not move to audit with known integrity issues — fix them now while the source context is fresh.
 10. **Update `research/STATE.md`** — note the draft was written, integrity-checked, and is pending audit.
 
@@ -74,6 +128,8 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 6. Run the research-integrity agent before declaring the draft ready for audit. Do not skip this step.
 7. Never synthesize past an unresolved core contradiction. If cross-reference.md shows unresolved contradictions on questions this section addresses, the pre-check should have caught it. If you reach synthesis and notice a contradiction that was not in cross-reference.md, stop and flag it — do not smooth it into consensus.
 8. When a source exceeds the staleness threshold, include its findings in the draft but add an explicit age caveat noting the data year. Do not silently present stale data as current.
+9. Every "single source suggests" finding in the draft must have a corresponding entry in `research/assumptions.md`. If you wrote "single source suggests" but did not log the assumption, go back and add it.
+10. Do not bypass the counter-evidence gate by re-tagging a supporting source as CHALLENGED. The gate requires genuinely opposing evidence from a credible source, not relabeled confirmatory evidence.
 
 ## Common Failure Modes
 
@@ -86,6 +142,8 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 | False precision — converting ranges to point estimates | "The market is $4.7B" when the source says "$3–6B" is false precision. Preserve the range. |
 | Synthesizing past unresolved contradictions — smoothing disagreements into false consensus | Check cross-reference.md Contradictions section before writing. If any core contradiction is unresolved, stop. Do not proceed by picking the "more likely" side — the user must explicitly decide. |
 | Treating stale sources as equally current — using old data without age caveat | Check each source's data year against the type's staleness threshold. If stale, include the finding but add an age caveat: "Based on [YYYY] data..." so the reader knows the evidence may not reflect current conditions. |
+| Silent assumptions — presenting thin-evidence judgments as established findings without logging them | Before finalizing the draft, re-read it and check every finding: is it supported by 2+ independent credible sources with direct evidence? If not, it is an assumption and must be logged to `research/assumptions.md`. |
+| Counter-evidence theater — processing a weak source just to satisfy the gate | The counter-evidence gate requires a credible source (not blog/opinion tier) with a genuine CHALLENGED or CONTRADICTED finding. Processing a low-quality source and tagging it as challenging does not satisfy the gate — the source must genuinely present opposing evidence. |
 
 ## Output
 Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then tell the user: "This draft needs to pass `/research:audit-claims` before it moves to `outputs/`. Run `/research:audit-claims research/drafts/<filename>` now."
