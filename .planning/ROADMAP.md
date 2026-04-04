@@ -51,7 +51,7 @@ Plans:
   2. User can see a confidence level (not just pass/fail) from audit-claims, derived from source count, credibility tiers, and evidence directness
   3. User can see an explicit assumptions record — judgments synthesized from weak or thin coverage — that persists and can be revisited when later phases add evidence
   4. User cannot open synthesis for PRD Validation or Exploratory Thesis research types until at least one processed source challenges the central claim
-**Plans:** 3 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 - [ ] 08-01-PLAN.md — Add staleness thresholds to type templates and staleness warnings to summarize-section
@@ -83,6 +83,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 7. Cross-Reference Rigor | 2/2 | Complete   | 2026-04-03 |
-| 8. Pipeline Quality Gates | 0/3 | Not started | - |
+| 8. Pipeline Quality Gates | 1/3 | In Progress|  |
 | 9. Gap Analysis Depth | 0/TBD | Not started | - |
 | 10. System Health Visibility | 0/TBD | Not started | - |
