@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Evidence Quality & Analytical Rigor
 status: planning
-stopped_at: Completed 08-pipeline-quality-gates-03-PLAN.md
-last_updated: "2026-04-04T00:56:43.616Z"
+stopped_at: Completed 09-gap-analysis-depth 09-01-PLAN.md
+last_updated: "2026-04-04T02:38:46.729Z"
 last_activity: 2026-04-03 — v1.2 roadmap created, phases 1-4 defined
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 7
+  completed_plans: 6
   percent: 0
 ---
 
@@ -54,6 +54,9 @@ Recent decisions affecting current work:
 - [Phase 08-pipeline-quality-gates]: Counter-evidence gate applies to every phase in PRD Validation and Exploratory Thesis types, not just the final synthesis
 - [Phase 08-pipeline-quality-gates]: Blog/opinion tier sources do not satisfy the counter-evidence gate; credibility must be official docs, analyst reports, peer-reviewed, industry data, or developer community
 - [Phase 08-pipeline-quality-gates]: Assumption logging is a synthesis step (8a during drafting), not a post-draft audit — source context is fresh during drafting
+- [Phase 09-gap-analysis-depth]: Adjacent matches do not count toward coverage status — question with 3 Adjacent and 0 Direct is Not Started
+- [Phase 09-gap-analysis-depth]: Lopsided coverage flag triggers at exactly 1 independent Direct source — consistent with Phase 8 single-source rule
+- [Phase 09-gap-analysis-depth]: coverage-assessment-guide.md is single source of truth for Direct/Adjacent/None classification; check-gaps references it
 
 ### Pending Todos
 
@@ -65,6 +68,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-04-04T00:52:06.631Z
-Stopped at: Completed 08-pipeline-quality-gates-03-PLAN.md
+Last session: 2026-04-04T02:38:46.726Z
+Stopped at: Completed 09-gap-analysis-depth 09-01-PLAN.md
 Resume file: None

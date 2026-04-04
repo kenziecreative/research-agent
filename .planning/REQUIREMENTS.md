@@ -15,8 +15,8 @@ Requirements for v1.2: Evidence Quality & Analytical Rigor. All behavior changes
 
 ### Gap & Coverage Analysis
 
-- [ ] **GAP-01**: User can see how many independent sources address each phase question, with lopsided coverage flagged and non-independent sources identified
-- [ ] **GAP-02**: User can see when processed sources answer adjacent-but-not-direct questions, distinguishing genuine coverage from close-enough matches
+- [x] **GAP-01**: User can see how many independent sources address each phase question, with lopsided coverage flagged and non-independent sources identified
+- [x] **GAP-02**: User can see when processed sources answer adjacent-but-not-direct questions, distinguishing genuine coverage from close-enough matches
 
 ### Pipeline Quality Gates
 
@@ -72,8 +72,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | XREF-01 | Phase 1 | Complete |
 | XREF-02 | Phase 1 | Complete |
 | XREF-03 | Phase 1 | Complete |
-| GAP-01 | Phase 3 | Pending |
-| GAP-02 | Phase 3 | Pending |
+| GAP-01 | Phase 3 | Complete |
+| GAP-02 | Phase 3 | Complete |
 | PIPE-01 | Phase 2 | Complete |
 | PIPE-02 | Phase 2 | Complete |
 | PIPE-03 | Phase 2 | Complete |
