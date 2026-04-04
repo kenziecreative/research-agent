@@ -7,6 +7,8 @@
 - **QUESTION** — What they're actively seeking to learn. Includes how-to questions (skill gaps), recommendation requests (active shopping), troubleshooting (failure points), best practices (improvement desire), and comparison questions (decision criteria). Don't just track questions — note which get detailed answers (topics that matter to the community) vs. which get ignored (topics that don't).
 - **JARGON** — The exact language the audience uses in natural conversation. Specialty words outsiders don't understand, insider lingo that looks familiar but means something different in context, emotional intensifiers that reveal pain intensity. Capture exact phrases, not paraphrases. Build a running glossary — when you later create content or messaging for this audience, pull directly from this glossary so it sounds native, not like marketing.
 
+**Staleness Threshold:** 2 years — user behavior and preferences shift with market conditions
+
 **What to Analyze:**
 - Digital watering holes — where does this audience gather? Reddit, LinkedIn, Discord, industry forums, newsletters, conferences. Map platform-by-platform. Different platforms reveal different facets: Reddit shows raw frustration, LinkedIn shows professional pain points, Discord shows enthusiast behavior, forums show technical depth, Twitter/X shows breaking sentiment.
 - Pains and struggles — what do they complain about repeatedly? Look for frequency (how often the same issue appears), emotional intensity (language like "terrified," "desperate," "fed up" vs. "mildly annoying"), and behavioral signals (repeated questions, workaround descriptions, tool-switching patterns). Trust behavior over stated severity.

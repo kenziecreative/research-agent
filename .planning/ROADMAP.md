@@ -28,7 +28,7 @@ Shipped 6 channel playbooks, 9 type-channel maps, `/research:discover` skill, in
 
 ## Phase Details
 
-### Phase 1: Cross-Reference Rigor
+### Phase 7: Cross-Reference Rigor
 **Goal**: Users can trust that cross-ref output distinguishes genuine independent corroboration from false triangulation, surfaces real contradictions for resolution, and signals when more sources are unlikely to change the picture.
 **Depends on**: Nothing (first phase of milestone)
 **Requirements**: XREF-01, XREF-02, XREF-03
@@ -39,30 +39,35 @@ Shipped 6 channel playbooks, 9 type-channel maps, `/research:discover` skill, in
 **Plans:** 2/2 plans complete
 
 Plans:
-- [ ] 01-01-PLAN.md — Enhance cross-ref with contradiction/saturation/laundering detection + process-source origin chain + template restructure
-- [ ] 01-02-PLAN.md — Add contradiction resolution gate to summarize-section
+- [ ] 07-01-PLAN.md — Enhance cross-ref with contradiction/saturation/laundering detection + process-source origin chain + template restructure
+- [ ] 07-02-PLAN.md — Add contradiction resolution gate to summarize-section
 
-### Phase 2: Pipeline Quality Gates
+### Phase 8: Pipeline Quality Gates
 **Goal**: Users can see source staleness, confidence levels, and explicit assumptions throughout the pipeline, and the system blocks synthesis for validation research types until counter-evidence exists.
-**Depends on**: Phase 1
+**Depends on**: Phase 7
 **Requirements**: PIPE-01, PIPE-02, PIPE-03, PIPE-04
 **Success Criteria** (what must be TRUE):
   1. User can see source age warnings during synthesis when a processed source exceeds the staleness threshold defined for that research type
   2. User can see a confidence level (not just pass/fail) from audit-claims, derived from source count, credibility tiers, and evidence directness
   3. User can see an explicit assumptions record — judgments synthesized from weak or thin coverage — that persists and can be revisited when later phases add evidence
   4. User cannot open synthesis for PRD Validation or Exploratory Thesis research types until at least one processed source challenges the central claim
-**Plans**: TBD
+**Plans:** 3 plans
 
-### Phase 3: Gap Analysis Depth
+Plans:
+- [ ] 08-01-PLAN.md — Add staleness thresholds to type templates and staleness warnings to summarize-section
+- [ ] 08-02-PLAN.md — Add confidence tier scoring to audit-claims
+- [ ] 08-03-PLAN.md — Add assumption tracking and counter-evidence gate to summarize-section and start-phase
+
+### Phase 9: Gap Analysis Depth
 **Goal**: Users can see whether phase question coverage is backed by independent sources and whether matched sources genuinely answer the question or only address adjacent territory.
-**Depends on**: Phase 1
+**Depends on**: Phase 7
 **Requirements**: GAP-01, GAP-02
 **Success Criteria** (what must be TRUE):
   1. User can see how many independent sources address each phase question, with lopsided coverage flagged and non-independent sources (those tracing to the same origin) identified
   2. User can see when processed sources answer adjacent-but-not-direct questions, with a clear distinction between genuine coverage and close-enough matches
 **Plans**: TBD
 
-### Phase 4: System Health Visibility
+### Phase 10: System Health Visibility
 **Goal**: Users can confirm the research infrastructure is intact before reviewing project status, catching configuration drift before it silently undermines a session.
 **Depends on**: Nothing (independent; can follow any phase)
 **Requirements**: INFRA-01
@@ -77,7 +82,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Cross-Reference Rigor | 2/2 | Complete   | 2026-04-03 |
-| 2. Pipeline Quality Gates | 0/TBD | Not started | - |
-| 3. Gap Analysis Depth | 0/TBD | Not started | - |
-| 4. System Health Visibility | 0/TBD | Not started | - |
+| 7. Cross-Reference Rigor | 2/2 | Complete   | 2026-04-03 |
+| 8. Pipeline Quality Gates | 0/3 | Not started | - |
+| 9. Gap Analysis Depth | 0/TBD | Not started | - |
+| 10. System Health Visibility | 0/TBD | Not started | - |

@@ -8,6 +8,8 @@
 - **STALE** — Data older than 18 months in a fast-moving space. Still usable with date context, but vulnerable to "that's outdated" pushback.
 - **GAP** — A point you want to make but can't adequately support with evidence yet.
 
+**Staleness Threshold:** 2 years — presentation topics typically address current issues
+
 **What to Research:**
 - Your existing points and claims — what evidence supports each one? Which are strong, which are vulnerable?
 - The audience — who are they, what do they already know, what do they care about, what will they push back on?

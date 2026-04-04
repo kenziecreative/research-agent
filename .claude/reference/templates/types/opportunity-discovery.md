@@ -7,6 +7,8 @@
 - **UNDERSERVED_GAP** — People describe this problem but existing solutions either don't address it, address it poorly, or are too expensive/complex for this niche. High opportunity signal.
 - **WILLINGNESS_TO_PAY** — Evidence that people in this niche actively spend money (or have expressed willingness to spend) to solve this problem. Strongest opportunity indicator when combined with UNDERSERVED_GAP.
 
+**Staleness Threshold:** 2 years — market opportunities are time-sensitive
+
 **What to Explore:**
 - Niche identity and boundaries — who exactly are these people? Demographics, psychographics, defining constraints. What makes this niche a niche rather than a broad market?
 - Watering holes and communication patterns — where do these people gather online and offline? Which communities, forums, subreddits, Slack/Discord groups, conferences, newsletters? This determines where evidence lives.

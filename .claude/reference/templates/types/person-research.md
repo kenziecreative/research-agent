@@ -8,6 +8,8 @@
 - **SELF-REPORTED** — Claim originates from the person themselves with no independent verification
 - **GAP** — Important information that isn't publicly available
 
+**Staleness Threshold:** 3 years — career arcs move slowly but roles and affiliations change
+
 **What to Analyze:**
 - Identity and career arc — who are they, what's their professional trajectory, what are the major chapters of their career?
 - Expertise and credibility — what evidence supports their claimed expertise? Published work, patents, speaking engagements, demonstrated outcomes, peer recognition.

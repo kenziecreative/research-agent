@@ -7,6 +7,8 @@
 - **EMERGING** — New player, feature, or trend with limited data but worth tracking
 - **GAP** — Market gap or unserved need identified through competitive analysis
 
+**Staleness Threshold:** 1 year — competitive positioning, features, and pricing shift frequently
+
 **What to Analyze:**
 - Market boundaries — what's in scope and what's adjacent?
 - Player identification — who competes directly, indirectly, and who's adjacent?

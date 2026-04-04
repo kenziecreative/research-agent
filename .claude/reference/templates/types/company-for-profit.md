@@ -7,6 +7,8 @@
 - **OUTDATED** — Information that was once accurate but may have changed (flag date)
 - **GAP** — Important information that isn't publicly available
 
+**Staleness Threshold:** 2 years — financials, strategy, and leadership change frequently
+
 **What to Analyze:**
 - Company identity — what do they do, for whom, and why does it matter?
 - Leadership and governance — who runs the company, what's their track record?

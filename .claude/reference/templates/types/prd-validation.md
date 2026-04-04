@@ -7,6 +7,8 @@
 - **MISSING** — The PRD doesn't address something it should
 - **OUTDATED** — The PRD references something that has changed since it was written
 
+**Staleness Threshold:** 2 years — technical architecture, APIs, and market assumptions evolve quickly
+
 **What to Validate:**
 - Technical architecture choices — are they current best practice or already outdated?
 - Timeline estimates — are they realistic given comparable projects?

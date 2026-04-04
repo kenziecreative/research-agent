@@ -9,6 +9,8 @@
 - **OUTDATED** — Information or practice that was once standard but has been superseded. Valuable for curriculum design as a "what not to teach" marker.
 - **GAP** — Important aspect of the domain where reliable information is thin or contradictory. Flag for the curriculum designer to address through expert consultation or primary research.
 
+**Staleness Threshold:** 5 years — educational content and pedagogy evolve slowly; foundational material is durable
+
 **What to Research:**
 - Subject matter accuracy — are the core concepts, definitions, and frameworks current and correct? What does the authoritative literature say? Where do sources agree, and where do they diverge?
 - Practitioner reality — what do people who do this work actually do day-to-day? How does real practice differ from textbook descriptions? What tools, workflows, and shortcuts do practitioners use? This is the foundation for transfer activities in the curriculum.

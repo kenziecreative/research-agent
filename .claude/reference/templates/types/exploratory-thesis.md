@@ -7,6 +7,8 @@
 - **EMERGING** — New or developing trend with limited but promising evidence
 - **GAP** — Area needs more research or isn't answerable with available sources
 
+**Staleness Threshold:** 3 years — thesis exploration tolerates broader evidence windows but still needs currency
+
 **What to Explore:**
 - Theoretical foundations — is the academic/intellectual base solid, or cherry-picked?
 - Core claims — does the evidence support the thesis, complicate it, or contradict it?

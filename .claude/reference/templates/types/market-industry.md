@@ -8,6 +8,8 @@
 - **PROJECTED** — Forward-looking estimate or forecast; flag the source methodology and track record
 - **GAP** — Important aspect of the landscape where reliable data doesn't exist or isn't publicly available
 
+**Staleness Threshold:** 2 years — market data, adoption rates, and competitive landscapes change rapidly
+
 **What to Analyze:**
 - Market definition and scope — what exactly are we talking about? Define boundaries clearly. What's in, what's adjacent, what's out.
 - Current state and maturity — where is this market/technology on the maturity curve? Early adoption, growth, mainstream, saturation?

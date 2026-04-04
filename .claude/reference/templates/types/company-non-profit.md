@@ -7,6 +7,8 @@
 - **OUTDATED** — Information that was once accurate but may have changed (flag date)
 - **GAP** — Important information that isn't publicly available
 
+**Staleness Threshold:** 3 years — non-profits move slower; program data, impact metrics have longer relevance
+
 **What to Analyze:**
 - Mission and theory of change — what problem do they solve, and what's their approach?
 - Leadership and governance — who runs the organization, what's the board composition?
