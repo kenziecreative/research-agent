@@ -29,6 +29,19 @@ Before writing anything, verify:
 
    Do not proceed until all core contradictions are resolved. Peripheral contradictions (those not directly addressing a current phase question) should be noted in the draft but do not block synthesis.
 
+4. **Source staleness advisory.** Read `research/research-plan.md` to identify the research type, then read the corresponding type template in `.claude/reference/templates/types/` to get the **Staleness Threshold** value. Read all source notes in `research/notes/` relevant to this section. For each source note, compare its **data year** (not publication year — a 2025 article citing 2021 data uses 2021) against `current year minus threshold`. If any sources exceed the threshold, display a staleness advisory before proceeding:
+
+   ```
+   Source staleness advisory (threshold: N years for [research type]):
+
+   - [source-note-filename]: data year [YYYY], [M] years over threshold
+   - [source-note-filename]: data year [YYYY], [M] years over threshold
+
+   These sources will be included in synthesis with age caveats. Stale evidence is still evidence but carries reduced weight.
+   ```
+
+   This is a **warning, not a gate** — synthesis proceeds after displaying the advisory. If no sources exceed the threshold, skip the advisory silently.
+
 If any pre-check fails, do not proceed. Tell the user which check failed and what to run.
 
 ## Process
@@ -60,6 +73,7 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 5. Flag any finding supported by only one source with "single source suggests" language. Do not present single-source findings as established facts.
 6. Run the research-integrity agent before declaring the draft ready for audit. Do not skip this step.
 7. Never synthesize past an unresolved core contradiction. If cross-reference.md shows unresolved contradictions on questions this section addresses, the pre-check should have caught it. If you reach synthesis and notice a contradiction that was not in cross-reference.md, stop and flag it — do not smooth it into consensus.
+8. When a source exceeds the staleness threshold, include its findings in the draft but add an explicit age caveat noting the data year. Do not silently present stale data as current.
 
 ## Common Failure Modes
 
@@ -71,6 +85,7 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 | Range narrowing — presenting the favorable end of a range | Every range in the draft must match the source note's range exactly. Check endpoints. If the source says "5–25%" and the draft says "15–25%," the lower bound was dropped. |
 | False precision — converting ranges to point estimates | "The market is $4.7B" when the source says "$3–6B" is false precision. Preserve the range. |
 | Synthesizing past unresolved contradictions — smoothing disagreements into false consensus | Check cross-reference.md Contradictions section before writing. If any core contradiction is unresolved, stop. Do not proceed by picking the "more likely" side — the user must explicitly decide. |
+| Treating stale sources as equally current — using old data without age caveat | Check each source's data year against the type's staleness threshold. If stale, include the finding but add an age caveat: "Based on [YYYY] data..." so the reader knows the evidence may not reflect current conditions. |
 
 ## Output
 Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then tell the user: "This draft needs to pass `/research:audit-claims` before it moves to `outputs/`. Run `/research:audit-claims research/drafts/<filename>` now."
