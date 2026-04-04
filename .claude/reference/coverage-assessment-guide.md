@@ -19,8 +19,18 @@ A question is **addressed** when:
 A question is **NOT addressed** when:
 - A source mentions the topic but provides no evidence (e.g., "market size is important" without a number)
 - The answer exists only in conversation memory, not in a processed source note
-- A source addresses a related but different question (adjacent is not the same as addressed)
+- A source addresses a related but different question — classify as Adjacent, not Direct (see Match Classification)
 - The only "evidence" is the source repeating a claim without its own data
+
+## Match Classification
+
+Every source note's relevance to a given question is classified into one of three tiers:
+
+- **Direct:** Source contains a specific claim, data point, or argument that substantively answers the question. The source's evidence directly addresses the question's subject matter. Direct matches count toward coverage status.
+- **Adjacent:** Source addresses a related topic but does not answer the specific question. Example: a source about "cloud infrastructure market size" is adjacent to a question about "AWS market share" — related but not the same question. Display with explanation: "Addresses [actual topic] rather than [phase question]". Adjacent matches do **not** count toward coverage status.
+- **None:** Source does not address the question or any related topic. Not listed in per-question detail.
+
+**Critical rule:** Adjacent matches do not contribute to coverage status. A question with 3 Adjacent sources and 0 Direct sources is **Not Started**, not Partial or Complete.
 
 ## Source Diversity Requirements
 
@@ -37,12 +47,24 @@ Questions answered by only one source type carry coverage risk:
 
 ## Coverage Status Definitions
 
-Use these labels consistently in `research/gaps.md`:
+Use these labels consistently in `research/gaps.md`. All statuses are calculated using **independent Direct source count only** — Adjacent matches do not contribute.
 
-- **Complete:** 3+ independent sources with substantive evidence, no unresolved contradictions, source types are mixed
-- **Partial:** 1-2 sources, or sources exist but coverage is thin, one-sided, or source-type skewed
-- **Not started:** No source notes address this question
-- **Addressed but unbalanced:** Sources exist but represent only one perspective or source type
+- **Complete:** 3+ **independent** sources with **Direct** matches, no unresolved contradictions, source types are mixed
+- **Partial:** 1-2 **independent** sources with Direct matches, or sources exist but coverage is thin, one-sided, or source-type skewed
+- **Not started:** No source notes have a **Direct** match for this question (including questions with only Adjacent matches)
+- **Addressed but unbalanced:** **Direct** sources exist but represent only one perspective or source type
+
+**Note:** Adjacent matches do not contribute to coverage status. A question with 3 Adjacent sources and 0 Direct sources is Not Started.
+
+## Source Independence
+
+Independence determines how many distinct data points exist for a question — not how many source notes reference it.
+
+- Independence is determined by the **origin_chain field** in source notes (added in Phase 7)
+- Sources sharing the same cited original (e.g., multiple articles all citing the same Gartner report) collapse to **one independent data point**
+- Coverage status uses independent source count: 3 sources sharing one origin = 1 independent = Partial, not Complete
+- Two sources that independently reach the same conclusion are still two independent sources — independence requires tracing to the same origin, not merely agreement
+- Cross-reference with `pattern-recognition-guide.md` Echo level for shared-origin clusters
 
 ## When to Accept Gaps
 
@@ -59,9 +81,9 @@ A gap is **NOT acceptable** just because:
 ## Coverage Assessment Workflow
 
 For each phase question:
-1. List the source notes that address it (by filename)
-2. For each source, verify the evidence is substantive (not a passing mention)
-3. Check source independence (are they citing the same underlying data?)
+1. List source notes that address the question — classify each as Direct, Adjacent, or None
+2. For Direct sources, verify the evidence is substantive (not a passing mention)
+3. Check source independence using origin_chain — collapse shared-origin sources to one independent data point
 4. Check source type diversity
 5. Check perspective balance
-6. Assign a coverage status using the definitions above
+6. Assign a coverage status using the definitions above — based on independent Direct source count only

@@ -65,7 +65,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can see how many independent sources address each phase question, with lopsided coverage flagged and non-independent sources (those tracing to the same origin) identified
   2. User can see when processed sources answer adjacent-but-not-direct questions, with a clear distinction between genuine coverage and close-enough matches
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Enhance check-gaps with independence counting, three-tier matching, and dashboard output
+- [ ] 09-02-PLAN.md — Integrate enhanced gaps.md into phase-insight, summarize-section, and start-phase
 
 ### Phase 10: System Health Visibility
 **Goal**: Users can confirm the research infrastructure is intact before reviewing project status, catching configuration drift before it silently undermines a session.
@@ -84,5 +88,5 @@ Plans:
 |-------|----------------|--------|-----------|
 | 7. Cross-Reference Rigor | 2/2 | Complete   | 2026-04-03 |
 | 8. Pipeline Quality Gates | 1/3 | In Progress|  |
-| 9. Gap Analysis Depth | 0/TBD | Not started | - |
+| 9. Gap Analysis Depth | 0/2 | Not started | - |
 | 10. System Health Visibility | 0/TBD | Not started | - |
