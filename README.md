@@ -14,9 +14,9 @@ The result isn't a summary of what an AI "knows" about your topic. It's a source
 
 **Structured source processing** that turns URLs, PDFs, and documents into consistent research notes with credibility ratings, key findings tagged by type, and limitations called out — building a searchable evidence base as you go.
 
-**Cross-referencing and gap analysis** that runs automatically as sources accumulate, surfacing patterns across your evidence and mapping exactly where coverage is strong and where holes remain.
+**Cross-referencing and gap analysis** that runs automatically as sources accumulate, surfacing patterns across your evidence and mapping exactly where coverage is strong and where holes remain. The system detects when multiple sources trace back to the same original claim — three blog posts citing the same study count as one data point, not three. Coverage is measured by independent sources that directly answer each question, not by volume.
 
-**Audited outputs** where every draft section is fact-checked against your source notes before it can become a final deliverable. Claims that aren't supported get flagged. Numbers that drifted get caught. Qualifiers that got stripped get restored. Nothing reaches the final output directory without passing audit.
+**Audited outputs** where every draft section is fact-checked against your source notes before it can become a final deliverable. Claims that aren't supported get flagged. Numbers that drifted get caught. Qualifiers that got stripped get restored. Each section gets a confidence tier (High, Moderate, Low, Insufficient) based on source count, credibility, evidence directness, and staleness — so you know exactly how much weight to put on each part of the output. Nothing reaches the final output directory without passing audit.
 
 **A canonical figures registry** that prevents the most common research failure mode: numbers changing as they travel from source to note to draft to synthesis. Every cross-phase figure is registered once and enforced everywhere.
 
@@ -115,6 +115,12 @@ All HTTP API calls are made via `curl` in the terminal. You can see exactly what
 **Canonical figures registry** — Every number cited across phases is registered in a single source of truth. When a figure is carried forward, it must match the canonical value exactly. Numbers don't drift.
 
 **Research integrity agent** — Runs automatically after every write. Catches fabricated data, range narrowing (source says "1-3x", output says "2-3x"), qualifier stripping, internal inconsistencies, and cross-phase drift.
+
+**Contradiction detection** — When credible sources genuinely conflict, the system flags the contradiction with both sides cited and a suggested resolution. Synthesis is blocked until you make a resolution decision — contradictions don't get silently averaged away.
+
+**Source staleness warnings** — Each research type has its own staleness threshold (1 year for competitive analysis, up to 5 for curriculum research). When a source exceeds the threshold, you see a warning during synthesis with the source name, data year, and how far over the threshold it is.
+
+**Counter-evidence requirement** — For PRD Validation and Exploratory Thesis research types, the system blocks synthesis until at least one credible source challenges the central claim. If nobody disagrees with your thesis, that's a finding worth noting — but you have to look first.
 
 **Hard gates** — Nothing reaches the final output directory without passing `/research:audit-claims`. This is enforced by hooks, not just instructions. The system will block a write to `outputs/` if no audit report exists.
 
