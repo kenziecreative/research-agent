@@ -21,7 +21,7 @@ Requirements for v1.2: Evidence Quality & Analytical Rigor. All behavior changes
 ### Pipeline Quality Gates
 
 - [x] **PIPE-01**: User can see source age warnings during synthesis when a processed source exceeds the staleness threshold for that research type
-- [ ] **PIPE-02**: User can see a confidence level (not just pass/fail) from audit-claims based on source count, credibility tiers, and evidence directness
+- [x] **PIPE-02**: User can see a confidence level (not just pass/fail) from audit-claims based on source count, credibility tiers, and evidence directness
 - [ ] **PIPE-03**: User can see an explicit record of assumptions — judgments synthesized from weak or thin coverage — that can be revisited when later phases add evidence
 - [ ] **PIPE-04**: User cannot open synthesis for PRD Validation or Exploratory Thesis research types until at least one processed source challenges the central claim
 
@@ -75,7 +75,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | GAP-01 | Phase 3 | Pending |
 | GAP-02 | Phase 3 | Pending |
 | PIPE-01 | Phase 2 | Complete |
-| PIPE-02 | Phase 2 | Pending |
+| PIPE-02 | Phase 2 | Complete |
 | PIPE-03 | Phase 2 | Pending |
 | PIPE-04 | Phase 2 | Pending |
 | INFRA-01 | Phase 4 | Pending |

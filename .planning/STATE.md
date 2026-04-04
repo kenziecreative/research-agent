@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Evidence Quality & Analytical Rigor
 status: planning
-stopped_at: Completed 08-pipeline-quality-gates-01-PLAN.md
-last_updated: "2026-04-04T00:48:26.667Z"
+stopped_at: Completed 08-pipeline-quality-gates-03-PLAN.md
+last_updated: "2026-04-04T00:52:11.062Z"
 last_activity: 2026-04-03 — v1.2 roadmap created, phases 1-4 defined
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 3
+  completed_plans: 5
   percent: 0
 ---
 
@@ -48,6 +48,12 @@ Recent decisions affecting current work:
 - [Phase 07-cross-reference-rigor]: Resolved contradictions must appear in draft with reasoning (both sides + resolution), not silently replaced by the winning side
 - [Phase 08-pipeline-quality-gates]: Stale sources warn but do not block synthesis — advisory pattern preserves user agency while surfacing age risk
 - [Phase 08-pipeline-quality-gates]: Staleness thresholds differentiated by domain decay rate: 1 year (competitive-analysis) to 5 years (curriculum-research); type templates are the single source of truth
+- [Phase 08-pipeline-quality-gates]: Confidence tier is advisory — does not affect pass/fail; a Low-confidence section that passes is promoted with tier visible
+- [Phase 08-pipeline-quality-gates]: Single-source sections cannot be High confidence regardless of source authority — triangulation requires multiple independent sources
+- [Phase 08-pipeline-quality-gates]: Weakest-link rule: overall document confidence equals the lowest section tier
+- [Phase 08-pipeline-quality-gates]: Counter-evidence gate applies to every phase in PRD Validation and Exploratory Thesis types, not just the final synthesis
+- [Phase 08-pipeline-quality-gates]: Blog/opinion tier sources do not satisfy the counter-evidence gate; credibility must be official docs, analyst reports, peer-reviewed, industry data, or developer community
+- [Phase 08-pipeline-quality-gates]: Assumption logging is a synthesis step (8a during drafting), not a post-draft audit — source context is fresh during drafting
 
 ### Pending Todos
 
@@ -59,6 +65,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-04-04T00:48:26.664Z
-Stopped at: Completed 08-pipeline-quality-gates-01-PLAN.md
+Last session: 2026-04-04T00:52:06.631Z
+Stopped at: Completed 08-pipeline-quality-gates-03-PLAN.md
 Resume file: None
