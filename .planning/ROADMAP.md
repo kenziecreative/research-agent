@@ -78,7 +78,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. User can see infrastructure health status — hooks active, JSON valid, STATE.md structurally sound, reference files present, discovery strategy present — at the top of progress output, before project status
   2. Any infrastructure issue is surfaced as a named failure (not a silent omission) so the user knows what to fix
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 10-01-PLAN.md — Add 5 infrastructure health checks to progress skill with named failures and compact all-pass display
@@ -92,4 +92,4 @@ Plans:
 | 7. Cross-Reference Rigor | 2/2 | Complete   | 2026-04-03 |
 | 8. Pipeline Quality Gates | 1/3 | In Progress|  |
 | 9. Gap Analysis Depth | 1/2 | In Progress|  |
-| 10. System Health Visibility | 0/1 | Not started | - |
+| 10. System Health Visibility | 1/1 | Complete   | 2026-04-04 |

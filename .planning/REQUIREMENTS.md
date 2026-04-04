@@ -27,7 +27,7 @@ Requirements for v1.2: Evidence Quality & Analytical Rigor. All behavior changes
 
 ### System Infrastructure
 
-- [ ] **INFRA-01**: User can see infrastructure health status (hooks, JSON validity, STATE.md structure, reference files, discovery strategy) at the top of progress output before project status
+- [x] **INFRA-01**: User can see infrastructure health status (hooks, JSON validity, STATE.md structure, reference files, discovery strategy) at the top of progress output before project status
 
 ## Future Requirements
 
@@ -78,7 +78,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PIPE-02 | Phase 2 | Complete |
 | PIPE-03 | Phase 2 | Complete |
 | PIPE-04 | Phase 2 | Complete |
-| INFRA-01 | Phase 4 | Pending |
+| INFRA-01 | Phase 4 | Complete |
 
 **Coverage:**
 - v1.2 requirements: 10 total
