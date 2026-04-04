@@ -23,6 +23,7 @@ Prepare to begin the next research phase by gathering all relevant context.
     - Its topic directly relates to a question this phase will investigate
     - This phase's source collection could plausibly produce evidence that validates or challenges it
     - It was logged in a prior phase (not the current one)
+5b. **Read `research/gaps.md`** (if it exists) and extract the Coverage Dashboard for the current phase. If gaps.md has been generated for any prior phases, show a coverage snapshot so the user can see existing coverage status and lopsided flags before deciding what to collect.
 
 ## Output
 
@@ -40,6 +41,12 @@ Present a briefing for the phase:
 **Gaps carried forward:**
 - [Any unresolved gaps from previous phases that overlap with this phase]
 
+**Coverage snapshot** (from last gap check):
+- Total questions: N | Direct coverage: N | Lopsided: N | Adjacent-only: N
+- [If lopsided flags exist] Questions with only 1 independent source: [list question text]
+- [If adjacent-only matches exist] Questions with only adjacent matches (not counted as covered): [list question text]
+- [If gaps.md does not exist] No gap check has been run yet. Run `/research:check-gaps` after processing sources.
+
 **Open assumptions to revisit:**
 - [Assumption description] (from Phase [N]): [basis]. Look for evidence that [what would validate/challenge].
 - [If none] No open assumptions from prior phases relate to this phase's questions.
@@ -55,6 +62,7 @@ Present a briefing for the phase:
 3. Do not pre-collect sources or begin research as part of the briefing. This skill prepares context; source collection is a separate step.
 4. Carry forward only documented gaps and cross-reference patterns — do not carry forward interpretations or conclusions from conversation history.
 5. Do not silently skip `assumptions.md`. If the file exists and has Open entries, evaluate each against this phase's questions. Missing a relevant assumption means the user won't know to look for validating or challenging evidence.
+6. If gaps.md exists, always show the coverage snapshot. Do not skip it even if coverage looks adequate — lopsided flags and adjacent-only matches are not obvious from source counts alone.
 
 ## Common Failure Modes
 
@@ -65,5 +73,6 @@ Present a briefing for the phase:
 | Overwhelming the briefing with prior-phase detail that obscures the current phase's questions | Keep prior findings to bullet points directly relevant to the new phase's questions. The full prior output is in research/outputs/ if needed. |
 | Missing carried-forward gaps that affect the new phase | Always check gaps.md for unresolved items from prior phases. An unresolved gap about market size from Phase 2 matters if Phase 5 asks about revenue projections. |
 | Ignoring prior assumptions that this phase could resolve | Always read `assumptions.md` if it exists. For each Open assumption, check whether this phase's questions could produce evidence that validates or challenges it. An assumption about market size from Phase 2 is relevant if Phase 5 asks about revenue projections. |
+| Skipping coverage snapshot when gaps.md exists | Always read and display gaps.md coverage data if the file exists. Lopsided coverage and adjacent-only matches are invisible without it — the user needs this to decide what sources to pursue. |
 
 This skill is read-only — it does NOT write any files.

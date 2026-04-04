@@ -64,7 +64,20 @@ Before writing anything, verify:
 
    This gate applies to every phase in PRD Validation and Exploratory Thesis types, not just the final synthesis.
 
-If any pre-check fails, do not proceed. Tell the user which check failed and what to run.
+6. **Pre-check 6 — Lopsided coverage advisory.** Read `research/gaps.md` and find the questions relevant to this section. If any question has a lopsided coverage flag (only 1 independent Direct source), display an advisory:
+
+   ```
+   Lopsided coverage advisory:
+
+   - Q: [question text] — 1 independent source ([source-note-filename])
+   - Q: [question text] — 1 independent source ([source-note-filename])
+
+   These questions are supported by a single independent data point. Findings from these questions will be flagged with "single source suggests" language per guardrail 5. Consider running /research:discover to find additional independent sources before synthesis.
+   ```
+
+   This is a **warning, not a gate** — synthesis proceeds after displaying the advisory. If no questions have lopsided coverage, skip the advisory silently.
+
+If any pre-check fails, do not proceed. Tell the user which check failed and what to run. Note: pre-checks 4 and 6 are advisories that do not block synthesis — they display warnings and then allow synthesis to proceed.
 
 ## Process
 
@@ -144,6 +157,7 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 | Treating stale sources as equally current — using old data without age caveat | Check each source's data year against the type's staleness threshold. If stale, include the finding but add an age caveat: "Based on [YYYY] data..." so the reader knows the evidence may not reflect current conditions. |
 | Silent assumptions — presenting thin-evidence judgments as established findings without logging them | Before finalizing the draft, re-read it and check every finding: is it supported by 2+ independent credible sources with direct evidence? If not, it is an assumption and must be logged to `research/assumptions.md`. |
 | Counter-evidence theater — processing a weak source just to satisfy the gate | The counter-evidence gate requires a credible source (not blog/opinion tier) with a genuine CHALLENGED or CONTRADICTED finding. Processing a low-quality source and tagging it as challenging does not satisfy the gate — the source must genuinely present opposing evidence. |
+| Synthesizing lopsided questions with confident language | Check gaps.md for lopsided flags on this section's questions. If a question has only 1 independent source, use "single source suggests" language — not "evidence shows" or "research confirms." |
 
 ## Output
 Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then tell the user: "This draft needs to pass `/research:audit-claims` before it moves to `outputs/`. Run `/research:audit-claims research/drafts/<filename>` now."
