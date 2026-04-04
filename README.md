@@ -124,8 +124,6 @@ All HTTP API calls are made via `curl` in the terminal. You can see exactly what
 
 **Hard gates** — Nothing reaches the final output directory without passing `/research:audit-claims`. This is enforced by hooks, not just instructions. The system will block a write to `outputs/` if no audit report exists.
 
-**Project boundary rule** — All file writes stay inside the research project directory. The agent won't write to other projects or system paths even if asked.
-
 ## Picking Up Where You Left Off
 
 Research projects run across multiple sessions. The system is designed for that.
