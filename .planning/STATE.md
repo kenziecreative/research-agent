@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Evidence Quality & Analytical Rigor
 status: planning
-stopped_at: Completed 09-gap-analysis-depth 09-01-PLAN.md
-last_updated: "2026-04-04T02:38:46.729Z"
+stopped_at: Completed 09-gap-analysis-depth 09-02-PLAN.md
+last_updated: "2026-04-04T02:43:50.341Z"
 last_activity: 2026-04-03 — v1.2 roadmap created, phases 1-4 defined
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
   percent: 0
 ---
 
@@ -57,6 +57,9 @@ Recent decisions affecting current work:
 - [Phase 09-gap-analysis-depth]: Adjacent matches do not count toward coverage status — question with 3 Adjacent and 0 Direct is Not Started
 - [Phase 09-gap-analysis-depth]: Lopsided coverage flag triggers at exactly 1 independent Direct source — consistent with Phase 8 single-source rule
 - [Phase 09-gap-analysis-depth]: coverage-assessment-guide.md is single source of truth for Direct/Adjacent/None classification; check-gaps references it
+- [Phase 09-gap-analysis-depth]: Adjacent sources excluded from strength labels in phase-insight — Thin and Unsupported reference independent Direct counts only
+- [Phase 09-gap-analysis-depth]: Lopsided advisory in summarize-section is a warning, not a gate — consistent with Phase 8 staleness advisory pattern
+- [Phase 09-gap-analysis-depth]: Coverage snapshot always displayed in start-phase if gaps.md exists — lopsided and adjacent-only flags are invisible without it
 
 ### Pending Todos
 
@@ -68,6 +71,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-04-04T02:38:46.726Z
-Stopped at: Completed 09-gap-analysis-depth 09-01-PLAN.md
+Last session: 2026-04-04T02:43:50.339Z
+Stopped at: Completed 09-gap-analysis-depth 09-02-PLAN.md
 Resume file: None
