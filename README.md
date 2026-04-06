@@ -1,6 +1,6 @@
 # Research Agent
 
-**A structured research system by Kenzie Creative.**
+**A structured research system by [Kenzie Creative](https://www.kenzienotes.com).**
 
 Research Agent turns Claude Code into a rigorous research partner. You pick a topic, it builds a phased research plan grounded in preliminary web research, and then you work through it together — collecting sources, finding patterns, identifying gaps, synthesizing findings, and fact-checking every claim before it reaches a final output. The system enforces the discipline that makes research trustworthy: every source is structured and registered, every number is tracked to its origin, every draft is audited against the evidence before it's promoted to a finished section.
 
