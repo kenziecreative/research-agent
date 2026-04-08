@@ -374,13 +374,28 @@ Fallback chain (per regulatory.md):
 ## Guardrails
 
 1. **Discovery output goes to `research/discovery/` ONLY.** Never write to `research/notes/`, `research/sources/registry.md`, or any other research file. The boundary between discovery and processing belongs to process-source — do not cross it.
-2. **Never auto-process without user approval.** After discovery, present the prioritized candidate list and ask the user before processing. Once the user approves, process sources sequentially — but the human gate between discovery and processing must be an explicit approval, not a silent transition.
+2. **Never auto-process without user approval — but approval is one gate, not many.** After discovery, present the prioritized candidate list and ask the user before processing. Once the user approves the batch, process sources sequentially through the list without asking for re-confirmation between sources. The human gate sits between discovery and processing, not between every source. See "Legitimate Pause Points" below for the exhaustive list of when you MAY pause; a clean source completion is not on that list.
 3. **Cap results at 8 sources per channel per query.** If an API returns more results, take the top 8 by relevance score or citation count. Exceeding 8 per channel defeats the purpose of the candidate review step.
 4. **Always include `User-Agent: ResearchAgent (contact@example.com)` for SEC EDGAR requests.** This is required by SEC policy — the header value is defined in regulatory.md.
 5. **Include `mailto=research-agent@example.com` for all OpenAlex API requests.** This activates the 10 req/s polite pool. Without it, rate limit is 1 req/s.
 6. **Do not run all domain-specific hooks.** Only execute the hooks specified in the current research type's channel map. Running patent search for a non-profit research project wastes time and produces irrelevant results.
 7. **When a channel fails, continue with remaining channels.** Never abort discovery due to a single channel failure. Log the failure, report it in the summary table, move on.
 8. **Label all degraded and fallback results inline.** Every result from a fallback method must be tagged with the actual method used: `[via WebSearch fallback]`, `[via Tavily fallback]`, etc.
+
+---
+
+## Legitimate Pause Points During Batch Processing
+
+Once the user has approved a batch of candidates for processing, you drive the workflow forward. You may pause ONLY at these points:
+
+1. **Mandatory cross-ref checkpoint.** When "Sources since last cross-reference" in STATE.md reaches 5 (or whatever interval the project has configured, typically 5–8). Stop and run `/research:cross-ref` before processing the next source. This is the only scheduled pause.
+2. **Real access failure.** A source cannot be fetched — domain block, paywall, 403, rendering issue, extraction returned stub content. Present the options defined in `process-source` step 1 and wait for the user.
+3. **Genuine strategic decision surfaces.** Something the user needs to decide because it changes the approach: a gap analysis result that suggests the phase needs different sources, a contradiction that needs resolution before more processing is useful, a discovery that the candidate list is wrong for the phase. These are rare.
+4. **End of the approved candidate list.** You finished the batch. Report what was processed, surface the cross-ref or gap-check status, and ask the user what's next.
+
+A successful source completion — "processed, note written, no issues" — is NOT a pause point. A one-line status line is fine. An "OK to continue?" prompt is not.
+
+If you catch yourself wanting to ask "should I keep going?" after a clean source, the answer is yes. You were already told yes when the batch was approved.
 
 ---
 
@@ -392,6 +407,7 @@ Fallback chain (per regulatory.md):
 | Querying channels not relevant to the research type | Pre-check step 4 reads the type-channel map first. Only execute channels in the matched Discovery Group — never execute all 6 channels by default. |
 | Overwriting prior discovery work on re-run | Pre-check step 7 checks for existing candidates file. If it exists, append with timestamp separator and deduplicate by URL. Never overwrite. |
 | Processing sources without user approval | Guardrail 2: present prioritized candidates and ask the user before processing. Once approved, process sequentially — but the transition from discovery to processing requires explicit user approval. |
+| Accountability avoidance — asking "should I continue?" after every clean source completion | Once the user approved the batch, you were told yes. Re-asking between successful sources is friction without value — it hands the steering wheel back to the user instead of holding the workflow. A clean source completion is a status line, not a decision point. Pause only at the points listed in "Legitimate Pause Points" — cross-ref checkpoint, real access failure, strategic decision, end of batch. Nothing else. |
 | Silent channel failure with no status reporting | Print per-channel status lines during execution. Include all channels in summary table with explicit status — even channels that were skipped or errored. |
 | Exceeding API rate limits | Follow rate limits from playbooks: EDGAR max 5 req/s, OpenAlex 10 req/s with mailto (1 req/s without), Tavily usage is monthly-quota-based. Space Bash curl calls with brief pauses if running multiple EDGAR queries. |
 | Missing User-Agent for SEC EDGAR | Guardrail 4: always include `User-Agent: ResearchAgent (contact@example.com)`. The value is defined in regulatory.md. |
