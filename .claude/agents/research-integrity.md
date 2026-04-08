@@ -50,15 +50,27 @@ When given a file to review (a source note, a draft, or a synthesis document), p
 - A finding backed by one source should use "single source suggests" language. A finding backed by 3+ should use "confirmed by multiple sources." Check for mismatches.
 - Flag: "CONFIDENCE INFLATED: Line [N] uses [strong language] but the finding traces to only [N] source(s)."
 
+### 8. Source Material Coverage
+- This check runs ONLY when invoked with BOTH a research plan path AND a source material digest path. When invoked with a single file, skip this check entirely.
+- Read both files. For each fact in the digest — every named entity, date, credential, stated fact, and stated assumption — verify one of the following is true:
+  a. It appears in the plan's "Research Subject" line, the Assumptions section, or a phase question.
+  b. It appears in the digest's "Out of Scope" section with a reason.
+  c. It is explicitly addressed by a phase question that references it by name.
+- If none of the above is true, flag: "UNPROCESSED SOURCE MATERIAL FACT: [the fact] from [filename in digest] does not appear in the research plan and is not listed as out of scope. The plan was generated without integrating this fact."
+- Also check for direct contradictions: if any phase question's framing contradicts a fact stated in the digest, flag: "PLAN-DIGEST CONTRADICTION: Phase [N] assumes [assumption] but [filename] states [contrary fact]."
+- The purpose of this check is to make source skimming detectable. A plan that was generated from the user's verbal description without reading the source files will produce many UNPROCESSED SOURCE MATERIAL FACT findings — that is the signal that the plan needs to be regenerated with the digest as ground truth.
+
 ## How to Use This Agent
 
 Invoke this agent after:
 - Writing a source note (check for internal inconsistencies)
 - Writing a draft via `/research:summarize-section` (check everything before running `/research:audit-claims`)
 - Writing a synthesis document (check everything, especially cross-phase drift)
+- `/research:init` generates a research plan when `source-material/` contained files (pass BOTH the plan path and the digest path so check 8 runs)
+- `/research:start-phase` detects new files in `source-material/` and the digest is regenerated (re-run check 8 against the current plan)
 - Any time something feels like it might have drifted
 
-Pass the filepath to review. The agent will read the file, read the relevant source notes, and report only issues found. If no issues are found, it will say: "No integrity issues found in [filename]."
+Pass the filepath to review. For check 8 specifically, pass two paths: the research plan and the source material digest. The agent will read the file(s), read the relevant source notes, and report only issues found. If no issues are found, it will say: "No integrity issues found in [filename]."
 
 ## Output Format
 

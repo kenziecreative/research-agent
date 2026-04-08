@@ -54,6 +54,7 @@ The user will provide a URL, file path, or pasted content.
    - Contradictions or tensions with previously processed sources (if any)
 6. **Add the source to `research/sources/registry.md`** — new row with source number, name, type, credibility rating, date, and note filename.
 7. **Update `research/STATE.md`** — increment both "Total count" and "Sources since last cross-reference."
+8. **Update the source material digest (if applicable).** If the source being processed is a file located in `source-material/`, check whether it is listed in `research/source-material-digest.md`. If the digest exists and the file is not listed, add it to the "Files Read" table with read status "full" and append any new named entities, dates, credentials, stated facts, or assumptions to the corresponding digest sections. If the digest does not exist but `source-material/` contains multiple files, note to the user that the digest is missing and suggest running `/research:start-phase` (which will prompt for retroactive digest generation). If the source is a URL or a file outside `source-material/`, skip this step.
 
 ## Guardrails
 
@@ -72,6 +73,7 @@ The user will provide a URL, file path, or pasted content.
 | Accepting source claims at face value without credibility assessment | Every note must include a credibility assessment. A company's blog post about its own product is low-credibility for performance claims regardless of how detailed it is. |
 | Processing sources for future phases instead of the current one | Check STATE.md for the active phase. Extract findings relevant to the current phase only. Note future-phase relevance in the Relevance field but do not tag those findings. |
 | Working from search snippets instead of full content | Always extract or read the full source content. Search snippets are for discovery, not for note-taking. Partial content leads to missing context and qualifier stripping. |
+| Processing a file from source-material/ without updating the digest | When the source path begins with `source-material/`, after writing the note, update `research/source-material-digest.md` with the file's contents (add to Files Read table, append new entities/dates/credentials/facts/assumptions). The digest is the reconciliation anchor for `/research:start-phase` — drift produces false blockers or misses real drops. |
 | Silently skipping blocked or paywalled sources | Never decide on your own to skip a source you can't access. Present the access failure to the user with options: they provide the content, explicitly skip it, or offer an alternative URL. The user decides, not the agent. |
 | Sticky fallback — using WebFetch for all sources after one Tavily failure | Fallbacks are per-source, not per-session. Always try `tavily_extract` first on every source. A failure on one URL does not mean Tavily won't work on the next. Reset to Tavily on every new source. |
 | Silently resolving contradictions within a source | When a source contains contradictory figures for the same metric, flag both values. Do not pick the one that fits the narrative. |

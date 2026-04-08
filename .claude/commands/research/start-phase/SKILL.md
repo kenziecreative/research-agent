@@ -12,6 +12,19 @@ Prepare to begin the next research phase by gathering all relevant context.
 
 !`cat research/STATE.md 2>/dev/null || echo "No STATE.md found — run /research:init first."`
 
+## Pre-check: Source Material Reconciliation (mandatory)
+
+Users sometimes drop files into `source-material/` mid-project. If an unprocessed drop is sitting there and you proceed to the next phase without integrating it, the phase framing will be wrong in the same way `/research:init` would have been wrong with an unread file at start.
+
+1. **List `source-material/`** — enumerate every non-dotfile (ignore `.gitkeep`, `.DS_Store`, dotfiles).
+2. **Read `research/source-material-digest.md`** if it exists. Extract the filename list from the "Files Read" table.
+3. **Diff the two lists.**
+   - **New files present in `source-material/` but not in the digest:** stop the phase briefing. Tell the user: "I found N new file(s) in source-material/ that weren't present when /research:init ran: [list]. Before starting Phase [N], these need to be integrated. Options: (a) run /research:process-source on each (they will be added to research/notes/ and the digest will be updated), (b) I can read them now and extend the digest without creating source notes, or (c) mark them out of scope with a reason. Which do you want?" Do not present the phase briefing until the user chooses and the chosen action completes. After integration, re-invoke the research-integrity agent against the updated plan and digest to confirm the new facts are reflected.
+   - **Files in the digest but missing from `source-material/`:** warn but do not block. "The digest references [filename] but it is no longer in source-material/. The user may have moved or deleted it — flag if the plan still depends on it."
+   - **Lists match exactly:** proceed to the Process section.
+4. **If `research/source-material-digest.md` does not exist** but `source-material/` contains non-dotfiles: this is a project initialized before the digest convention existed, or init failed silently. Tell the user: "source-material/ contains files but there is no digest. I will read every file now and generate research/source-material-digest.md, then verify the existing plan against it using research-integrity. Proceed?" Wait for confirmation, then perform the same Step 2b/2c logic from `/research:init` (full read, structured digest), then run the integrity check against the existing plan.
+5. **If `source-material/` is empty AND no digest exists:** this is the common case for projects that rely entirely on discovery. Skip this pre-check entirely and proceed to the Process section.
+
 ## Process
 
 1. **Read `research/STATE.md`** to determine the current active phase.
@@ -74,5 +87,6 @@ Present a briefing for the phase:
 | Missing carried-forward gaps that affect the new phase | Always check gaps.md for unresolved items from prior phases. An unresolved gap about market size from Phase 2 matters if Phase 5 asks about revenue projections. |
 | Ignoring prior assumptions that this phase could resolve | Always read `assumptions.md` if it exists. For each Open assumption, check whether this phase's questions could produce evidence that validates or challenges it. An assumption about market size from Phase 2 is relevant if Phase 5 asks about revenue projections. |
 | Skipping coverage snapshot when gaps.md exists | Always read and display gaps.md coverage data if the file exists. Lopsided coverage and adjacent-only matches are invisible without it — the user needs this to decide what sources to pursue. |
+| Skipping source-material reconciliation and starting a phase with an unprocessed user drop | Always diff `source-material/` against `source-material-digest.md` before presenting the phase briefing. A new file is a blocker, not a warning — the phase framing depends on its contents being integrated first. |
 
 This skill is read-only — it does NOT write any files.
