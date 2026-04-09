@@ -219,7 +219,19 @@ You can skip any that don't look relevant. After 5-8 sources I'll pause
 for cross-referencing.
 ```
 
-If the user says yes (or any affirmative), begin processing sources sequentially using `/research:process-source` for each URL. Track the count — after processing 5-8 sources, pause and present the cross-reference checkpoint:
+If the user says yes (or any affirmative), begin processing sources sequentially using `/research:process-source` for each URL — **in the main conversation, as the main agent**. Track the count — after processing 5-8 sources, pause and present the cross-reference checkpoint:
+
+**Do not delegate source processing to a subagent.** Do not spawn the Agent tool to "run the batch in parallel," "work through the queue," or "process sources while I handle something else." Each `process-source` call reads, extracts, writes a note, updates `research/sources/registry.md`, increments the cross-reference counter in `research/STATE.md`, and may surface a contradiction or access failure the user needs to see. All of that has to land in the main agent's context — not a subagent's window that returns a summary 15 minutes later — so that:
+
+- the cross-reference checkpoint actually interrupts the work visibly at source 5 instead of sitting as a silent task-list item a subagent walks past;
+- the user can react to contradictions, access failures, and surprises as they happen instead of reviewing them as a batch report;
+- STATE.md, registry.md, and the cross-ref counter update in real time (a subagent either can't see STATE.md updates made between sources or races with the main agent over the same file);
+- the commonplace book, assumptions, and prior source notes inform each processing call with fresh main-agent context, not a cold subagent context;
+- a `/clear` recovery can read STATE.md and know exactly where processing stopped, to the source, not to the last batch report.
+
+**Do not build a TodoWrite/TaskCreate task list of "Process Source 39, Process Source 40, Process Source 41, run cross-ref, Process Source 42…" to drive the batch.** The candidates file at `research/discovery/{phase}-candidates.md` IS the work queue. `research/STATE.md`'s "Sources since last cross-reference" counter IS the checkpoint trigger. The sources registry at `research/sources/registry.md` IS the completion ledger. A parallel task list duplicates that state in a place that disappears on `/clear` and drifts from the authoritative files. Read the candidates file top-to-bottom, process each source in-line in the main conversation, print one status line per source, stop at the cross-ref checkpoint, and resume — no task list, no subagent, no background queue.
+
+A one-line status per completed source is the right cadence (`✓ Source 39: AccessU 2022 Sponsors page — ACCESSIBLE, 6 findings, 0 contradictions`). The user does not want a progress bar; they want to see the work happening and to be able to interrupt at any point.
 
 ```
 Pausing after {N} sources to cross-reference before continuing.
@@ -410,6 +422,8 @@ If you catch yourself wanting to ask "should I keep going?" after a clean source
 |---|---|
 | Running discovery with no active phase | Pre-check step 1 reads `research/STATE.md`. If no active phase, error with guidance before any channel execution. |
 | Silently re-discovering a phase that was already completed (audit-claims forgot to advance STATE.md) | Pre-check step 1a detects `Verify` already checked on the active phase and refuses to run. `/research:audit-claims` owns phase closeout — if it skipped the STATE.md advance, discovery must not paper over it. Surface the inconsistency and make the user (or a targeted STATE.md edit) resolve it before any queries execute. |
+| Backgrounding source processing into a subagent or Agent-tool spawn after the user approves a batch | Source processing runs in the main conversation, full stop. A subagent loses the cross-ref checkpoint (it walks past the 5-source trigger silently because the main agent isn't watching), loses per-source STATE.md updates (they either race with the main agent or happen in bulk at the end), loses the user's ability to react to contradictions and access failures in real time, and loses recoverability on `/clear` (STATE.md lags by a whole batch). When the user approves a candidate batch, the main agent processes sources sequentially itself — one at a time, one status line per source, cross-ref at the threshold, done. Do not spawn the Agent tool for batch processing regardless of how many candidates are queued. |
+| Building a TodoWrite/TaskCreate task list to drive source processing | The candidates file is the queue, STATE.md is the counter, registry.md is the ledger. A parallel task list ("Process Source 39", "Process Source 40", "Run cross-ref at 5-source threshold", "Process Source 42", …) duplicates state that already exists in authoritative files, lives in a place that disappears on `/clear`, and turns the cross-ref checkpoint from a hard gate into just another checkbox a subagent will happily cross. Read the candidates file in order and process each source inline — no todo list wrapping the batch. |
 | Querying channels not relevant to the research type | Pre-check step 4 reads the type-channel map first. Only execute channels in the matched Discovery Group — never execute all 6 channels by default. |
 | Overwriting prior discovery work on re-run | Pre-check step 7 checks for existing candidates file. If it exists, append with timestamp separator and deduplicate by URL. Never overwrite. |
 | Processing sources without user approval | Guardrail 2: present prioritized candidates and ask the user before processing. Once approved, process sequentially — but the transition from discovery to processing requires explicit user approval. |
