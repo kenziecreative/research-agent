@@ -160,4 +160,15 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 | Synthesizing lopsided questions with confident language | Check gaps.md for lopsided flags on this section's questions. If a question has only 1 independent source, use "single source suggests" language — not "evidence shows" or "research confirms." |
 
 ## Output
-Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then tell the user: "This draft needs to pass `/research:audit-claims` before it moves to `outputs/`. Run `/research:audit-claims research/drafts/<filename>` now."
+
+Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:audit-claims research/drafts/<filename>` — Fact-check the draft against source notes before it moves to `outputs/`.
+
+**What to expect:** Audit-claims traces every factual claim to its source note, checks for range narrowing and qualifier stripping, and either promotes the draft to `outputs/` or lists specific issues to fix. This is a hard gate — nothing reaches `outputs/` without passing.
+
+───────────────────────────────────────────────────────────
+
+The "Also available" section is omitted here because audit-claims is the only legitimate next step after a draft is written — summarize-section → audit-claims is a required pipeline, not a choice.

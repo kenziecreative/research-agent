@@ -51,6 +51,22 @@ Only include this subsection if any questions have adjacent-only matches.
 
 **Recommendation:** [What to do next — more sources? ready for cross-ref? ready for synthesis?]
 
+If the recommendation is unambiguous (clear next step with high confidence — e.g., "one question has zero Direct sources, collect more" or "all questions have strong Direct coverage, ready for cross-ref"), render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:<recommended-command>` — <why this is the right next step for this phase's current state>
+
+**Also available:**
+- `/research:<alt-1>` — <when the user might want this instead>
+- `/research:<alt-2>` — <when the user might want this instead>
+
+**What to expect:** <What the recommended command will do given the phase's current coverage and any thin areas or lopsided flags identified above.>
+
+───────────────────────────────────────────────────────────
+
+If the recommendation is ambiguous (multiple valid paths depending on user priorities — e.g., "could collect one more source or move to synthesis, depends on risk tolerance"), do NOT render the transition prompt. The Recommendation line alone is enough — the user decides from that.
+
 ## Guardrails
 
 1. Report only what the source notes actually say. Do not interpret, extend, or strengthen findings based on general knowledge.

@@ -116,7 +116,19 @@ Wait for the user to respond. They may:
 - Challenge or comment on something the research surfaced
 - Say they're good to move on
 
-Only after the user is done, recommend clearing context and starting the next phase.
+Only after the user is done reacting to the debrief, render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/clear` then `/research:start-phase` — Start Phase [N+1] with a fresh context window.
+
+**Also available:**
+- `/research:progress` — See the overall project dashboard before clearing.
+- `/research:check-gaps` — Confirm no unresolved gaps from Phase [N] should be carried forward.
+
+**What to expect:** A fresh context window gives sharper analysis for the new phase. STATE.md and commonplace.md carry everything forward — no context is lost. Start-phase will read the research plan, gaps, commonplace entries, and open assumptions, and brief you on what Phase [N+1] needs.
+
+───────────────────────────────────────────────────────────
 
 ## Non-Negotiable Rules
 
@@ -137,4 +149,8 @@ Only after the user is done, recommend clearing context and starting the next ph
 | Conflating confidence with audit pass/fail — treating low confidence as a failure | Confidence tier measures evidence strength (how well-supported). Audit pass/fail measures evidence accuracy (how truthfully represented). A section with one source, accurately cited, passes the audit with Low confidence. Do not fail it for having thin evidence — flag the tier and let the user decide whether to add sources. |
 
 ## Output
-Scorecard summary and pass/fail status. If failed, list every issue with its location and what needs to change. If passed, confirm the promotion to `outputs/`.
+Scorecard summary and pass/fail status.
+
+**If failed:** list every issue with its location and what needs to change. Do NOT render a transition prompt — a failed audit is a loop, not a transition. The user fixes the draft and re-runs `/research:audit-claims` on the same file.
+
+**If passed:** confirm the promotion to `outputs/`, present the phase debrief (see above), wait for the user to react, and then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`). The transition prompt appears only after the user is done reacting to the debrief — not before.

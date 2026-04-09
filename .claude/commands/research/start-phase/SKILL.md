@@ -71,7 +71,19 @@ Present a briefing for the phase:
 
 **Skipped/Folded phases:** [List any, or "None"]
 
-**Recommended first step:** Run `/research:discover` to find candidate sources for this phase's questions, then process the best candidates with `/research:process-source`.
+Then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:discover` — Find candidate sources for Phase [N]'s questions using the type-channel map.
+
+**Also available:**
+- `/research:process-source <url-or-file>` — Skip discovery and process a specific source you already have.
+- `/research:progress` — See where you are in the overall project before deciding.
+
+**What to expect:** Discovery will surface a prioritized candidate list for this phase's channels. After you approve, processing runs sequentially with a mandatory cross-reference checkpoint every 5-8 sources.
+
+───────────────────────────────────────────────────────────
 
 ## Guardrails
 

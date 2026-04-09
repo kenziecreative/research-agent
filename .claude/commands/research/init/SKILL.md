@@ -460,9 +460,21 @@ Read the research plan in `research/research-plan.md` before starting. It define
 
 **Clear context between phases.** Each phase should start with a fresh context window. STATE.md and your research files carry everything forward — nothing critical lives in conversation history. A fresh context for each phase produces sharper analysis than a saturated one. Before clearing, ensure STATE.md is fully up to date with current position, completed work, and next action. After clearing, read STATE.md first before resuming work.
 
-**At the end of every phase, remind the user:** "Phase [N] is complete and STATE.md is updated. I've also appended any capture-worthy observations from this phase to research/commonplace.md so they survive the context clear. I'd recommend clearing context before starting Phase [N+1] — you'll get sharper results with a fresh window, and nothing is lost because STATE.md and commonplace.md carry everything forward."
+**At the end of every phase, render the transition prompt** (format defined in `.claude/reference/prompt-templates.md`):
 
-If no entries were added to commonplace.md during the phase, replace the middle sentence with "No commonplace observations were captured this phase" — do not invent entries just to have something to mention.
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/clear` then `/research:start-phase` — Start Phase [N+1] with a fresh context window.
+
+**Also available:**
+- `/research:progress` — See the overall project dashboard.
+- `/research:check-gaps` — Confirm coverage for Phase [N] before moving on.
+
+**What to expect:** Phase [N] is complete — STATE.md is updated and any capture-worthy observations have been appended to commonplace.md. A fresh context window gives sharper analysis for Phase [N+1]; start-phase will brief you on what the new phase needs.
+
+───────────────────────────────────────────────────────────
+
+If no entries were added to commonplace.md during the phase, replace the middle clause of "What to expect" with "No commonplace observations were captured this phase" — do not invent entries just to have something to mention.
 
 6. **[Type] Standards** — Include from the matching type template:
    - The "What to Validate/Explore/Analyze" section
