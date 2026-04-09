@@ -37,6 +37,7 @@ Users sometimes drop files into `source-material/` mid-project. If an unprocesse
     - This phase's source collection could plausibly produce evidence that validates or challenges it
     - It was logged in a prior phase (not the current one)
 5b. **Read `research/gaps.md`** (if it exists) and extract the Coverage Dashboard for the current phase. If gaps.md has been generated for any prior phases, show a coverage snapshot so the user can see existing coverage status and lopsided flags before deciding what to collect.
+5c. **Read `research/commonplace.md`** (if it exists) and scan it for entries from prior phases whose subject or observation overlaps with this phase's questions. Surface up to 3 most relevant entries as part of the briefing. Entries are indexed by date and phase in the H2 headers — use those plus the body text to judge relevance. An entry is relevant if its subject matches a question in the current phase, if it flagged a cross-cutting issue that affects the current phase, or if the user explicitly asked to remember something that connects to current work. If the file is empty or no entries are relevant, surface nothing — do not mention the commonplace book at all.
 
 ## Output
 
@@ -64,6 +65,10 @@ Present a briefing for the phase:
 - [Assumption description] (from Phase [N]): [basis]. Look for evidence that [what would validate/challenge].
 - [If none] No open assumptions from prior phases relate to this phase's questions.
 
+**Relevant commonplace entries:**
+- [Date] — Phase [N] — [one-line hook from the H2 header]: [1-2 line summary of why it matters for this phase]
+- [Only include this section if there are actually relevant entries. If commonplace.md is empty, does not exist, or has no entries relevant to this phase's questions, omit the section entirely — do not print a placeholder.]
+
 **Skipped/Folded phases:** [List any, or "None"]
 
 **Recommended first step:** Run `/research:discover` to find candidate sources for this phase's questions, then process the best candidates with `/research:process-source`.
@@ -76,6 +81,7 @@ Present a briefing for the phase:
 4. Carry forward only documented gaps and cross-reference patterns — do not carry forward interpretations or conclusions from conversation history.
 5. Do not silently skip `assumptions.md`. If the file exists and has Open entries, evaluate each against this phase's questions. Missing a relevant assumption means the user won't know to look for validating or challenging evidence.
 6. If gaps.md exists, always show the coverage snapshot. Do not skip it even if coverage looks adequate — lopsided flags and adjacent-only matches are not obvious from source counts alone.
+7. Do not silently skip `commonplace.md`. If the file exists and has entries from prior phases, scan them for relevance to the current phase. Missing a relevant entry means losing context the agent captured specifically so it would survive to this moment. If no entries are relevant, omit the section from the briefing — do not announce "no entries."
 
 ## Common Failure Modes
 
@@ -86,6 +92,7 @@ Present a briefing for the phase:
 | Overwhelming the briefing with prior-phase detail that obscures the current phase's questions | Keep prior findings to bullet points directly relevant to the new phase's questions. The full prior output is in research/outputs/ if needed. |
 | Missing carried-forward gaps that affect the new phase | Always check gaps.md for unresolved items from prior phases. An unresolved gap about market size from Phase 2 matters if Phase 5 asks about revenue projections. |
 | Ignoring prior assumptions that this phase could resolve | Always read `assumptions.md` if it exists. For each Open assumption, check whether this phase's questions could produce evidence that validates or challenges it. An assumption about market size from Phase 2 is relevant if Phase 5 asks about revenue projections. |
+| Ignoring prior commonplace entries at phase start | Always read `commonplace.md` if it exists. Prior observations may flag cross-cutting issues, strategic context, or user-requested reminders that apply to this phase. The file exists specifically so these survive context clears — using it is the whole point. Surface up to 3 relevant entries; omit the section entirely if none apply. |
 | Skipping coverage snapshot when gaps.md exists | Always read and display gaps.md coverage data if the file exists. Lopsided coverage and adjacent-only matches are invisible without it — the user needs this to decide what sources to pursue. |
 | Skipping source-material reconciliation and starting a phase with an unprocessed user drop | Always diff `source-material/` against `source-material-digest.md` before presenting the phase briefing. A new file is a blocker, not a warning — the phase framing depends on its contents being integrated first. |
 

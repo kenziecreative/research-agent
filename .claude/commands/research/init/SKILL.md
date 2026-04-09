@@ -460,7 +460,9 @@ Read the research plan in `research/research-plan.md` before starting. It define
 
 **Clear context between phases.** Each phase should start with a fresh context window. STATE.md and your research files carry everything forward — nothing critical lives in conversation history. A fresh context for each phase produces sharper analysis than a saturated one. Before clearing, ensure STATE.md is fully up to date with current position, completed work, and next action. After clearing, read STATE.md first before resuming work.
 
-**At the end of every phase, remind the user:** "Phase [N] is complete and STATE.md is updated. I'd recommend clearing context before starting Phase [N+1] — you'll get sharper results with a fresh window, and nothing is lost because STATE.md has everything."
+**At the end of every phase, remind the user:** "Phase [N] is complete and STATE.md is updated. I've also appended any capture-worthy observations from this phase to research/commonplace.md so they survive the context clear. I'd recommend clearing context before starting Phase [N+1] — you'll get sharper results with a fresh window, and nothing is lost because STATE.md and commonplace.md carry everything forward."
+
+If no entries were added to commonplace.md during the phase, replace the middle sentence with "No commonplace observations were captured this phase" — do not invent entries just to have something to mention.
 
 6. **[Type] Standards** — Include from the matching type template:
    - The "What to Validate/Explore/Analyze" section
@@ -480,9 +482,43 @@ The "Active phase" field in STATE.md tells you which phase to work on. Do not wo
 
 This is a long-running project. Clear context between research phases — each phase gets a fresh window for sharper analysis. STATE.md is the source of truth that carries everything forward. Before clearing context, always update STATE.md with current position, completed work, key decisions, and next action. After clearing or starting a new session: read `research/STATE.md` first. If unsure what's been done, run `/research:check-gaps` before starting new work.
 
-9. **Boundaries** — From the type-specific template.
+9. **Commonplace Book:**
 
-10. **Reference Protocols:**
+Research Agent maintains `research/commonplace.md` as a running record of observations worth preserving across context clears. This is NOT a research output, NOT a source note, NOT a draft, and NOT part of any audit or gate. Nothing reads it except the user. It exists so the user can come back later and find observations the agent made in the moment.
+
+**Append to `research/commonplace.md` at the end of any turn in which your response contained any of the following:**
+
+1. **A strategic implication derived from the research but not part of the research output.** Example: after processing 990 filings, you observe that the actual financial picture is materially worse than the board has been working with, and that may be a disclosure issue the Treasurer should know about. The financial facts go in source notes. The strategic implication for the user-as-board-member goes in the commonplace book.
+
+2. **A cross-cutting observation** that connects current evidence to something outside the current phase's scope. Example: a source from Phase 3 contains information relevant to a claim in Phase 1 that was already audited. Note it so the user knows to revisit.
+
+3. **Mid-reasoning synthesis** that you produced in chat but that does not land in a draft, output, or source note. Example: while explaining the decision between two options, you produce a paragraph of synthesis that captures *why* the decision matters — not the decision itself (which goes in STATE.md or notes-to-self.md) but the reasoning that makes it consequential.
+
+4. **An explicit user request** — "note this," "remember this," "capture that" or anything equivalent. This is the highest-priority trigger — the user is telling you directly.
+
+**Do NOT append for:**
+- Routine status updates ("processed source 12, added to notes")
+- Re-statements of what's already in a source note, draft, or output
+- Decision options you're presenting to the user — those are conversation artifacts
+- Generic conversational acknowledgments
+
+**When in doubt, append.** The file is cheap to maintain and scannable. Missing an observation the user wanted to keep is a worse failure than capturing one too many.
+
+**Entry format:**
+
+```markdown
+## [YYYY-MM-DD] — Phase [N] — [one-line hook]
+
+[The agent's observation in its own voice. Preserve the reasoning, not just the conclusion. Include enough context that this entry makes sense when read weeks later without the surrounding conversation.]
+```
+
+**Append timing:** Append at the end of the turn, before relinquishing control. If you produced a capture-worthy observation and the user's next message might be `/clear` or a context reset, appending before you end the turn is the last opportunity. Do not wait for the user to ask.
+
+**Do not ask permission.** Appending is a background behavior, like updating STATE.md. Asking "should I save this?" relies on the user recognizing in the moment which observations matter — which is the exact failure mode this file is designed to prevent.
+
+10. **Boundaries** — From the type-specific template.
+
+11. **Reference Protocols:**
 
 Detailed protocols are in `research/reference/`. Read the relevant file when you need the full protocol:
 
@@ -600,6 +636,32 @@ Permission gate decisions for writes to research/outputs/.
 
 - Copy `.claude/reference/templates/canonical-figures.json` to `research/reference/canonical-figures.json`
 
+- Write `research/commonplace.md` with the following initial content:
+
+```markdown
+# Commonplace Book
+
+A running record of observations this agent made while working on the project that are worth preserving across context clears.
+
+This file is NOT:
+- A research output (those go in `research/outputs/`)
+- A source note (those go in `research/notes/`)
+- A draft (those go in `research/drafts/`)
+- Part of any audit or gate (this file is never read by synthesis or audit skills)
+
+This file IS:
+- Strategic implications the agent derived from the research that aren't part of the research output itself
+- Cross-cutting observations that connect current evidence to something outside the current phase's scope
+- Mid-reasoning synthesis produced in chat but not committed to a draft or output
+- Anything the user explicitly asked to remember or note
+
+Entries are appended automatically by the agent when it produces an observation worth preserving. Each entry is dated and tagged with the phase it was produced during. The agent should append before ending a turn in which capture-worthy content was produced — including before recommending a context clear.
+
+The file is private to the user. It does not affect research outputs, audits, or synthesis. It exists so the user can come back later and find what was observed in the moment.
+
+---
+```
+
 ## Step 6: Verify
 
 Before reporting to the user, verify the scaffolding is complete:
@@ -609,6 +671,7 @@ Before reporting to the user, verify the scaffolding is complete:
    - `STATE.md`
    - `gaps.md`
    - `cross-reference.md`
+   - `commonplace.md`
    - `sources/registry.md`
    - `drafts/` (directory exists)
    - `outputs/` (directory exists)
