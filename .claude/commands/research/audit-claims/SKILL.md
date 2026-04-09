@@ -92,8 +92,49 @@ There is no percentage threshold. Every specific claim must check out. The score
 
 ## After Audit
 
-- **If PASS:** Move the file from `research/drafts/` to `research/outputs/`. Update `research/STATE.md` to reflect the output is finalized. Then present a **phase debrief** (see below).
-- **If FAIL:** Leave the file in `research/drafts/`. List every issue with line-level specifics and what needs to change. The user or agent must fix the issues in the draft, then run `/research:audit-claims` again on the same file. Do not promote until it passes.
+- **If PASS:**
+  1. **Promote the draft.** Move the file from `research/drafts/` to `research/outputs/`.
+  2. **Close out the phase in `research/STATE.md`.** A passing audit is the end of the current phase's cycle. STATE.md must be advanced *before* the debrief so that any subsequent `/clear` leaves the project in a correct state — the user may jump straight to `/research:discover` on resume without running `/research:start-phase`, and `discover`'s pre-check depends on "Active phase" already pointing at Phase N+1.
+
+     Perform all of the following writes in a single STATE.md update:
+     - **Check off Verify.** In `Current Phase Cycle → Phase N`, change `- [ ] **Verify** …` to `- [x] **Verify** …`. Confirm all five steps (Collect, Connect, Assess, Synthesize, Verify) are now checked. If any earlier step is still unchecked, stop and surface the discrepancy — do not silently check them.
+     - **Mark the phase complete in Completed Phases.** Change `- [ ] Phase N: [Name]` to `- [x] Phase N: [Name] — COMPLETE [YYYY-MM-DD]`.
+     - **Read `research/research-plan.md`** to determine Phase N+1's name. If Phase N was the final phase in the plan, skip to the "final phase" branch below.
+     - **Advance `Active phase`** in `Current Position` from `N — [Phase N Name]` to `N+1 — [Phase N+1 Name]`.
+     - **Reset `Cycle step`** to `Collect (1 of 5)`.
+     - **Reset `Blocking on`** to `Nothing — ready to start.` (unless a real blocker carried over, in which case preserve it and note the phase transition).
+     - **Replace the Current Phase Cycle block** with a fresh Phase N+1 cycle checklist, all five steps unchecked, using the same format as the Phase 1 template in `/research:init`:
+
+       ```markdown
+       ### Phase N+1: [Name]
+       - [ ] **Collect** — Sources gathered for this phase's questions (start with /research:discover)
+       - [ ] **Connect** — `/research:cross-ref` run, cross-reference.md current
+       - [ ] **Assess** — `/research:check-gaps` run, coverage confirmed for this phase
+       - [ ] **Synthesize** — `/research:summarize-section` run, draft in `drafts/`, integrity checked
+       - [ ] **Verify** — `/research:audit-claims` passed, output promoted to `outputs/`
+       ```
+
+       The completed Phase N checklist is NOT preserved in `Current Phase Cycle` — its record lives in `Completed Phases`. `Current Phase Cycle` always reflects exactly one active phase.
+     - **Reset `Sources Processed` counters for the new phase:**
+       - `Sources for current phase: 0`
+       - Leave `Total count`, `Sources since last cross-reference`, `Last cross-reference`, and `Last gap check` as-is — those are project-wide or will be reset by their respective skills.
+     - **Update `Next Action`** to a specific executable command for Phase N+1. Prefer:
+
+       ```
+       Run /research:start-phase to brief Phase N+1, or /research:discover to jump straight to source collection. No sources collected yet for Phase N+1.
+       ```
+
+       `Next Action` must be a concrete command the user can execute after a fresh session load, not a phase-level description.
+
+     **Final phase branch.** If Phase N was the final phase in the research plan:
+     - Set `Active phase: — all phases complete`.
+     - Set `Cycle step: — all cycles complete`.
+     - Do NOT generate a new Current Phase Cycle block — remove it or replace it with `*(No active phase — all phases complete.)*`.
+     - Update `Next Action` to: `Run /research:progress to review the full project dashboard. Consider running /research:check-gaps one final time to confirm no unresolved items before wrap-up.`
+
+  3. **Present the phase debrief** (see below). The debrief runs *after* STATE.md is advanced, not before.
+
+- **If FAIL:** Leave the file in `research/drafts/`. List every issue with line-level specifics and what needs to change. The user or agent must fix the issues in the draft, then run `/research:audit-claims` again on the same file. Do not promote until it passes. **Do not touch STATE.md on a failed audit** — the phase is still in the Verify step until the audit passes.
 
 ## Phase Debrief (after pass)
 
@@ -136,6 +177,7 @@ Only after the user is done reacting to the debrief, render the transition promp
 - **No soft passes.** Do not downgrade a high-severity issue to moderate to make the draft pass. If a claim doesn't trace to a source, it's unsupported regardless of whether the claim "feels right."
 - **Re-audit after fixes.** When a draft is fixed after a failed audit, run the full audit again — do not spot-check only the previously flagged issues. Fixes can introduce new problems.
 - **No confidence tier inflation.** Do not inflate confidence tiers. If a section relies on a single source, it is Low confidence regardless of how authoritative that source is. Single-source High confidence does not exist — triangulation requires multiple independent sources.
+- **A passing audit must advance STATE.md before the debrief.** Promotion, phase closeout (check off Verify, mark Phase N complete, advance Active phase to N+1, generate the new cycle checklist, reset Next Action) all happen in one atomic step before you present findings to the user. The debrief is for the user; the STATE.md advance is for the next session. The next session may start with `/clear` immediately followed by `/research:discover` (skipping `/research:start-phase` entirely) — if STATE.md still points at Phase N when that happens, discover will either error or silently re-discover a completed phase. If you cannot advance STATE.md cleanly — e.g., `research/research-plan.md` is missing Phase N+1 and Phase N was not marked as final, or the cycle checklist has unchecked steps you did not expect — stop, surface the discrepancy to the user, and do NOT leave STATE.md half-updated. Either the full closeout happens or none of it does.
 
 ## Common Failure Modes
 
@@ -147,6 +189,8 @@ Only after the user is done reacting to the debrief, render the transition promp
 | Post-fix spot-checking — only re-checking flagged issues after a fix | Re-run the full audit after fixes. Edits can introduce new mismatches, especially when adjusting ranges or qualifiers. |
 | Consistency blind spot — auditing the draft in isolation without checking other outputs | Always run the cross-document consistency check and canonical figures check. Same claim, different numbers across documents is high-severity. |
 | Conflating confidence with audit pass/fail — treating low confidence as a failure | Confidence tier measures evidence strength (how well-supported). Audit pass/fail measures evidence accuracy (how truthfully represented). A section with one source, accurately cited, passes the audit with Low confidence. Do not fail it for having thin evidence — flag the tier and let the user decide whether to add sources. |
+| Silent phase closeout — promoting the draft and presenting the debrief but leaving STATE.md pointing at the completed phase | On PASS, execute the full closeout sequence in `After Audit / If PASS` step 2 before presenting the debrief. Every write — check off Verify, mark Phase N complete, advance Active phase to N+1, reset Cycle step, replace Current Phase Cycle with a fresh Phase N+1 checklist, reset per-phase source counters, rewrite Next Action — must land in STATE.md atomically. If any part cannot be completed (e.g., research-plan.md has no Phase N+1), stop and surface the discrepancy instead of partially updating. The next session may skip `/research:start-phase` and run `/research:discover` directly — STATE.md must be correct before the debrief, not after. |
+| Leaving the completed phase's cycle checklist in Current Phase Cycle alongside the new one | `Current Phase Cycle` always reflects exactly one active phase. When advancing to Phase N+1, replace the Phase N checklist entirely — the completed record lives in `Completed Phases`, not in `Current Phase Cycle`. Two checklists in `Current Phase Cycle` is a bug, not a history feature. |
 
 ## Output
 Scorecard summary and pass/fail status.
