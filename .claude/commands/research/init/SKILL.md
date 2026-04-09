@@ -460,6 +460,23 @@ Read the research plan in `research/research-plan.md` before starting. It define
 
 **Clear context between phases.** Each phase should start with a fresh context window. STATE.md and your research files carry everything forward — nothing critical lives in conversation history. A fresh context for each phase produces sharper analysis than a saturated one. Before clearing, ensure STATE.md is fully up to date with current position, completed work, and next action. After clearing, read STATE.md first before resuming work.
 
+**Intra-phase clears are allowed at step boundaries when context is heavy.** The 5 steps within a phase (Collect → Connect → Assess → Synthesize → Verify) do not need to share conversation context — each step reads its own files and writes its own artifacts. When a single step consumes significant context (especially Collect with primary regulatory documents, large PDFs, or structured data files, or Synthesize with long source notes), you may clear context between that step and the next. The phase cycle continues from the same position after the clear.
+
+**When to recommend an intra-phase clear:**
+
+- **After Collect**, if the Collect batch processed 5+ sources AND any of the following apply: primary regulatory documents (990 XMLs, SEC filings, court records), large PDFs (>15 pages), structured data files (XML/CSV/JSON >50KB), or the context window estimate is above ~50% used.
+- **After Synthesize**, if the draft is long (>3000 words) or the source notes being synthesized are unusually rich (>5 long-form notes), AND Verify is the next step.
+- **Never mid-step.** Finish the current step (write all source notes, update STATE.md, complete pending file writes), then suggest the clear.
+- **Never if the phase cycle has only one step remaining.** If you're finishing Verify, the next clear is the phase-level clear — don't double-clear.
+
+**How to recommend an intra-phase clear:**
+
+At the end of a step where the criteria above apply, update STATE.md with a step-specific "Next Action" (see State Management section), then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`, Example 4) pointing at `/clear` followed by the next step's command. The user decides whether to accept — if they decline, continue to the next step in the same context window.
+
+**How to resume after an intra-phase clear:**
+
+On the next session, read STATE.md first. The "Cycle step" field tells you which step is active. The "Next Action" field is a specific command — execute it. Do not re-read prior step artifacts unless the current step's skill instructs you to.
+
 **At the end of every phase, render the transition prompt** (format defined in `.claude/reference/prompt-templates.md`):
 
 ───────────────────────────────────────────────────────────
@@ -489,6 +506,8 @@ On every new session or after context clear: Read `research/STATE.md` first. Don
 During work: Update state at every transition — phase start/end, meaningful task completion, user decisions. Check off cycle steps as they complete. Write state BEFORE doing anything expensive in case of compaction. A PreCompact hook will warn you if STATE.md is stale, but don't rely on it — update proactively.
 
 The "Active phase" field in STATE.md tells you which phase to work on. Do not work on any other phase. When the current phase's cycle checklist is fully checked, mark it complete, generate the next phase's cycle checklist, and update "Active phase."
+
+**Step-level updates for intra-phase clear support.** At the end of every step (Collect, Connect, Assess, Synthesize, Verify), update STATE.md's "Next Action" field with a specific command that points at the *next* step, not a phase-level description. Example: after finishing Collect for Phase 4, the Next Action should read "Run /research:cross-ref for Phase 4 — 6 sources are in research/notes/ ready for cross-referencing. Sources since last cross-reference: 6." This specificity is what makes an intra-phase clear safe — a session resume after the clear reads this field and knows exactly what command to run. Writing a phase-level Next Action ("Continue Phase 4") breaks intra-phase resume.
 
 8. **Context Management:**
 
@@ -605,6 +624,18 @@ When all five are checked, mark this phase complete below, update "Active phase"
 
 ## Next Action
 Begin Phase 1: Collect sources relevant to Phase 1 questions only.
+
+<!--
+The Next Action field is updated at every step boundary so that a session resume (including after an intra-phase clear) can pick up with a single, specific command. Example formats:
+
+- "Run /research:discover for Phase 4 — no sources collected yet."
+- "Run /research:cross-ref for Phase 4 — 6 sources are in research/notes/ ready for cross-referencing. Sources since last cross-reference: 6."
+- "Run /research:check-gaps for Phase 4 — cross-reference.md is current. Gap check is mandatory before Synthesize."
+- "Run /research:summarize-section for Phase 4 — gaps assessed, draft is next."
+- "Run /research:audit-claims research/drafts/04-phase-name.md for Phase 4 — draft written and integrity-checked."
+
+This field should always read like a command the user can execute, not a phase-level description ("Continue Phase 4" is too vague — a session resume can't act on that).
+-->
 ```
 
 Write to `research/STATE.md`.

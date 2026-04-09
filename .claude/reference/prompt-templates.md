@@ -104,6 +104,31 @@ These are the failure modes the template is designed to make impossible:
 ───────────────────────────────────────────────────────────
 ```
 
+**Example 4: Heavy Collect step → intra-phase clear → cross-ref**
+
+Use this pattern when the current step consumed significant context (primary documents, large PDFs, structured data files) and the next step would benefit from a fresh window. The phase cycle continues from the same position after the clear — intra-phase clears are a legitimate transition, not a phase end.
+
+```markdown
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/clear` then `/research:cross-ref` — Run cross-reference for Phase 4 in a fresh context window.
+
+**Also available:**
+- `/research:cross-ref` — Run cross-ref without clearing if you want to preserve the current conversation.
+- `/research:progress` — See where you are before deciding.
+
+**What to expect:** Collect for Phase 4 processed 6 sources including three 990 XML filings, a 31-page PDF, and a canonical figures correction cascade. Context is ~55% used. Cross-ref reads `research/notes/` directly and doesn't need the current conversation — a fresh window gives sharper pattern detection. STATE.md's Next Action field is updated so the next session can resume with one command.
+
+───────────────────────────────────────────────────────────
+```
+
+**Important — intra-phase clear rules:**
+
+- **Only at step boundaries, never mid-step.** Finish the current step (write all source notes, update STATE.md, complete pending file writes) before rendering this prompt. Clearing mid-step loses work.
+- **Only when the step is heavy.** After Collect with 5+ sources including primary regulatory documents (990 XMLs, SEC filings, court records), large PDFs (>15 pages), or structured data files (XML/CSV/JSON >50KB), or when context is estimated >50% used. After Synthesize when the draft is long (>3000 words) or the source notes are unusually rich.
+- **Never between Verify and phase-end.** The phase-level clear already handles that case — do not double-clear. If you just finished Verify and the phase audit passed, render the phase-level transition prompt (Example 3), not this one.
+- **STATE.md must be updated before rendering.** The Next Action field must read like a specific command (e.g., "Run /research:cross-ref for Phase 4 — 6 sources ready in research/notes/") so the next session can resume without needing the current conversation.
+
 ---
 
 ## Skills That Use This Template
