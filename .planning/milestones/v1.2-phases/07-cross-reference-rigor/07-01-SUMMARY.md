@@ -1,5 +1,5 @@
 ---
-phase: 01-cross-reference-rigor
+phase: 07-cross-reference-rigor
 plan: "01"
 subsystem: research-skills
 tags: [cross-ref, process-source, contradiction-detection, saturation-signals, source-laundering, origin-chain]
@@ -80,5 +80,5 @@ Files exist:
 - .claude/reference/templates/cross-reference.md: FOUND
 
 Commits:
-- 680e30e: feat(01-01): add origin chain capture to process-source and restructure cross-reference template
-- ca9d8c3: feat(01-01): enhance cross-ref skill with contradiction flagging, saturation signals, and laundering detection
+- 680e30e: feat(07-01): add origin chain capture to process-source and restructure cross-reference template
+- ca9d8c3: feat(07-01): enhance cross-ref skill with contradiction flagging, saturation signals, and laundering detection

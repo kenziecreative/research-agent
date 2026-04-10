@@ -73,7 +73,7 @@ Each task was committed atomically:
 1. **Task 1: Enhance phase-insight with independence and adjacency data from gaps.md** - `9863466` (feat)
 2. **Task 2: Add lopsided coverage advisory to summarize-section and coverage snapshot to start-phase** - `817f5c9` (feat)
 
-**Plan metadata:** (docs commit to follow)
+**Plan metadata:** `ba6e075` (docs)
 
 ## Files Created/Modified
 
