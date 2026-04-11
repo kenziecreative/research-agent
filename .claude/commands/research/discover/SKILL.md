@@ -206,22 +206,30 @@ Channel results:
   ...
 ```
 
-After printing the summary, present the top candidates in priority order (highest-credibility and most relevant first) and offer to begin processing:
+After printing the summary, present the top candidates in priority order and offer to begin processing.
+
+**Priority order is defined as:** (1) ACCESSIBLE status beats DISCOVERED status (ACCESSIBLE means we verified we can fetch the content; DISCOVERED means we found it but haven't verified access); (2) within each status, higher source credibility tier first (per `research/reference/source-standards.md`); (3) within each credibility tier, the candidate most directly relevant to the phase's central research questions first; (4) break remaining ties by source recency (newer first). Print the priority rank number alongside each candidate so the user can reference candidates by rank when responding.
 
 ```
-Top candidates for this phase:
+Top candidates for this phase (in priority order):
 
-1. {Title} — {source} — {why it's high priority}
-2. {Title} — {source} — {why it's high priority}
-3. {Title} — {source} — {why it's high priority}
+1. {Title} — {source} — {credibility tier} — {why it's high priority for this phase}
+2. {Title} — {source} — {credibility tier} — {why it's high priority for this phase}
+3. {Title} — {source} — {credibility tier} — {why it's high priority for this phase}
 ...
 
-Want me to start processing these? I'll work through them in priority order.
-You can skip any that don't look relevant. After 5-8 sources I'll pause
-for cross-referencing.
+Want me to start processing these? After 5-8 sources I'll pause for
+cross-referencing.
+
+Valid responses:
+  - `yes` or `all`           — process every candidate in priority order
+  - `top N` (e.g., `top 5`)  — process the first N candidates only
+  - `1, 3, 7`                — process these specific candidates by rank
+  - `skip 2, 5`              — process everything except those ranks
+  - `no` or `review first`   — stop and let me read the candidates file before deciding
 ```
 
-If the user says yes (or any affirmative), begin processing sources sequentially using `/research:process-source` for each URL — **in the main conversation, as the main agent**. Track the count — after processing 5-8 sources, pause and present the cross-reference checkpoint:
+Parse the user's response against that list. If the response is ambiguous (mixed signals, unclear rank references, or something outside the list — e.g., "yeah but only the good ones"), re-ask with the same valid-response list and wait for an unambiguous choice. Do not guess. Once the user gives an unambiguous choice, begin processing sources sequentially using `/research:process-source` for each URL — **in the main conversation, as the main agent**. Track the count — after processing 5-8 sources, pause and present the cross-reference checkpoint:
 
 **Do not delegate source processing to a subagent.** Do not spawn the Agent tool to "run the batch in parallel," "work through the queue," or "process sources while I handle something else." Each `process-source` call reads, extracts, writes a note, updates `research/sources/registry.md`, increments the cross-reference counter in `research/STATE.md`, and may surface a contradiction or access failure the user needs to see. All of that has to land in the main agent's context — not a subagent's window that returns a summary 15 minutes later — so that:
 

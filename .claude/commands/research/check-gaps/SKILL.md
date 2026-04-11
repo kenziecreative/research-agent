@@ -77,4 +77,24 @@ Assess research coverage against the research plan and identify what's missing.
 
 ## Output
 
-Dashboard summary showing coverage status per phase. Per-question detail with independent source counts, Direct/Adjacent classification, and lopsided flags. List the highest-priority gaps — unanswered questions and lopsided questions most important to the research.
+Dashboard summary showing coverage status per phase. Per-question detail with independent source counts, Direct/Adjacent classification, and lopsided flags.
+
+**Strength vocabulary (definition site — referenced by `/research:phase-insight`):**
+- **Strong:** ≥2 independent Direct sources (independence per the origin_chain map in step 5).
+- **Thin:** exactly 1 independent Direct source. This is the same condition as the Lopsided flag — "Thin" is the strength label, "Lopsided" is the coverage-dashboard flag.
+- **Unsupported:** 0 Direct sources (even if Adjacent sources exist — Adjacent matches never contribute to strength).
+
+**Highest-priority gaps** — render as a numbered list below the per-question detail, at most 10 items, in the format:
+
+```
+1. Phase [P] Q: '[question text]' — Status: [Not Started | Lopsided | Adjacent-only] — Blocking: [what a draft for this phase cannot claim without this gap filled]
+2. ...
+```
+
+Criticality order for the list:
+1. Not Started questions on phases whose Verify step is the *next* cycle step (i.e., synthesis is imminent and the question has no evidence).
+2. Lopsided (Thin) questions on any active or upcoming phase.
+3. Not Started questions on upcoming phases (beyond the next Verify).
+4. Adjacent-only questions on any phase.
+
+If more than 10 gaps qualify, show the top 10 by the criticality order above and add a final line: "and N more — see the per-question detail above."

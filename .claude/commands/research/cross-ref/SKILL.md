@@ -28,8 +28,13 @@ Analyze all processed source notes for cross-cutting patterns.
    - Count how many sources address it
    - For each source's findings on that question, classify as "new" (adds information not present in previously processed sources) or "confirmatory" (repeats or confirms existing findings)
    - Calculate saturation percentage: confirmatory / total findings for that question
-   - Set advisory: when aggregate saturation exceeds threshold (use 75% as default — if 75% or more of findings across all questions are confirmatory, trigger the advisory), display "Evidence is converging — additional sources are unlikely to shift the picture. Consider moving to synthesis for saturated questions."
-   - Per-question advisory: flag individual questions above 80% saturation as "saturated" and questions below 40% as "under-covered — prioritize discovery here"
+
+   **Thresholds and advisories (explicit):**
+   - **Question saturated:** confirmatory ratio **≥80%** — display per-question: "Q: [question] — saturated (N% confirmatory). Additional sources unlikely to shift this question."
+   - **Question under-covered:** confirmatory ratio **<40%** — display per-question: "Q: [question] — under-covered (N% confirmatory). Prioritize discovery here."
+   - **Aggregate saturation advisory:** when **≥75%** of findings *across all questions for the current phase* are confirmatory — display: "Evidence is converging — additional sources are unlikely to shift the picture. Consider moving to synthesis for saturated questions."
+
+   **Fire frequency:** these advisories regenerate on every cross-ref run. They are NOT sticky — if a question is still saturated on the next run, the advisory fires again. Do not suppress a repeated advisory; the user needs the current state each run.
 8. **Identify cross-cutting patterns** (convergence, gap clusters, temporal trends, source-type skew, outliers). When assessing pattern strength, apply shared-origin cluster adjustments: sources in the same cluster count as one data point.
 9. **Regenerate `research/cross-reference.md`** using the template structure (Dashboard -> Contradictions -> Saturation Summary -> Shared-Origin Clusters -> pattern types). Carry forward existing contradiction resolutions if the contradiction still exists. Drop resolutions for contradictions that no longer exist in the data. Update the dashboard counts.
 10. **Update `research/STATE.md`** — set last cross-reference date to today and reset "Sources since last cross-reference" to 0. **After the edit, re-read STATE.md and confirm `Last cross-reference` is today's date and `Sources since last cross-reference` is 0.** If either field does not match, do not report cross-ref as complete — surface the write failure with the expected vs. actual values and stop. The next `/research:process-source` call will trust this counter to decide whether to block on the checkpoint; silent drift here produces either a premature or a skipped checkpoint.

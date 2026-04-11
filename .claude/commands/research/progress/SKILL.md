@@ -75,9 +75,15 @@ Infrastructure: [N]/5 checks passed
 
 | Phase | Status | Sources | Draft | Audit | Output |
 |-------|--------|---------|-------|-------|--------|
-| 1. [Name] | Complete/Active/Pending | [N] | [Yes/No] | [Pass/Fail/—] | [Yes/No] |
+| 1. [Name] | Complete/Active/Pending | [N] | [Yes/No] | [Pass/Fail/Pending/—] | [Yes/No] |
 | 2. [Name] | ... | ... | ... | ... | ... |
 | ... | | | | | |
+
+**Audit column values:**
+- **Pass** — `/research:audit-claims` ran and passed; draft was promoted to `outputs/`.
+- **Fail** — `/research:audit-claims` ran and returned failures; draft is still in `drafts/` awaiting fixes.
+- **Pending** — a draft exists in `drafts/` for this phase but `/research:audit-claims` has not been run on it yet.
+- **—** — no draft exists for this phase yet (phase not yet at Synthesize step, or not started).
 
 **Source notes:** [N] total
 **Cross-reference patterns:** [N] identified

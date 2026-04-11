@@ -31,9 +31,20 @@ Analyze the current phase's research progress and identify what's strong and wha
 ### Phase [N] Insight: [Name]
 
 **Questions addressed:**
+
+Strength vocabulary is defined in `/research:check-gaps` — **Strong** = ≥2 independent Direct sources, **Thin** = exactly 1 independent Direct source (same condition as the Lopsided flag in gaps.md), **Unsupported** = 0 Direct sources. When Strength is Thin, always include `LOPSIDED` in the Notes column — they are the same condition under different labels. Contradictions go in the Notes column as `CONTRADICTION — <src-a> says X, <src-b> says Y; [resolved / unresolved]`.
+
 | Question | Direct Sources | Independent | Adjacent | Strength | Notes |
 |----------|---------------|-------------|----------|----------|-------|
-| [question] | [count] | [independent count] | [adjacent count] | Strong/Thin/Unsupported | [contradictions, gaps; "LOPSIDED — single independent source" if applicable] |
+| [question] | [count] | [independent count] | [adjacent count] | Strong/Thin/Unsupported | [Notes column — see examples below] |
+
+Example rows:
+
+| Question | Direct Sources | Independent | Adjacent | Strength | Notes |
+|----------|---------------|-------------|----------|----------|-------|
+| Q: Market size for X | 4 | 3 | 1 | Strong | CONTRADICTION — src-a.md says $4.7B, src-b.md says $3.1B; unresolved as of last cross-ref |
+| Q: User acquisition cost | 1 | 1 | 0 | Thin | LOPSIDED — single independent source (src-c.md), flagged in gaps.md |
+| Q: Retention by cohort | 0 | 0 | 2 | Unsupported | 2 adjacent-only matches (cover engagement, not retention); no Direct coverage |
 
 **Emerging patterns:**
 - [Patterns visible across sources for this phase]
