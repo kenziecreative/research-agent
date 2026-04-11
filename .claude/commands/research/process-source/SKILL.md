@@ -26,8 +26,8 @@ The user will provide a URL, file path, or pasted content.
 
    If the file exists but lacks a parseable markdown table (no header row, malformed separator, or structurally corrupted), stop and tell the user: "`research/sources/registry.md` exists but cannot be parsed as a markdown table. This is a registry corruption — restore from git or fix the file manually before processing more sources. Do not proceed." Do not silently recreate or repair a corrupted registry — the user needs to see it.
 3. **Check for duplicate processing.** Before fetching the source, search `research/sources/registry.md` for the URL (or filename for local files). Also check `research/notes/` for a note file with a matching URL in its header.
-   - If found in registry AND a complete note exists in `research/notes/`: warn the user: "This source was already processed — see research/notes/{file}. Process again to update, or skip?"
-   - If found in registry BUT the note file is missing or truncated: warn the user: "This source appears partially processed (registered but note is missing or incomplete). I'll re-process it from scratch."
+   - If found in registry AND a complete note exists in `research/notes/`: warn the user and present two explicit options: "This source was already processed — see `research/notes/{file}`. Pick one: **(a) overwrite** — I'll re-fetch, regenerate the note from scratch, and update the existing registry row in place. STATE.md counters are NOT incremented because this is not a new source. **(b) skip** — leave the existing note as-is and move on." Wait for `a` or `b`. Do not accept an ambiguous response — re-ask if needed.
+   - If found in registry BUT the note file is missing or truncated: warn the user: "This source appears partially processed (registered but note is missing or incomplete). I'll re-process it from scratch." This case is not a user choice — it's recovery from an interrupted prior run, and the fix is always re-process.
    - If not found anywhere: proceed normally.
 
    This prevents duplicate processing after context clears that interrupt mid-source, and avoids wasting extraction calls on sources already in the evidence base.
@@ -43,10 +43,12 @@ The user will provide a URL, file path, or pasted content.
    Reason: {what happened — domain block, paywall, etc.}
 
    Options:
-   1. You grab it — copy-paste the article text here, or save it to source-material/ and I'll read it from there
+   1. You grab it — paste the FULL article body here (not just the abstract, lede, or a summary — the full body including any tables, captions, and pullquotes the note will need to cite). Alternatively, save the full text to source-material/ with a filename matching the original title or URL slug and I'll read it from there.
    2. Skip this source — I'll note it as inaccessible and move on
    3. Try an alternative URL — if you have a cached/archived version
    ```
+
+   **Option 1 disambiguation:** if the user pastes content that looks like an abstract, an article preview, a list of bullet points from a marketing page, or anything notably shorter than a real article body, do not silently accept it. Ask: "That looks like a preview or abstract — is that the full article text, or is there more? If it's just the preview, I'll process it as an abstract-only source with reduced credibility weight and note the limitation in the source note. Tell me which one." Wait for the user to confirm before processing.
 
    Wait for the user to respond. Do not proceed until they choose. In a real research project, you wouldn't just ignore a source because it was hard to access.
 2. **Read `research/reference/source-standards.md`** for credibility assessment criteria and `.claude/reference/source-assessment-guide.md` for deeper assessment methods (methodology quality, conflict of interest, sample size, replication status).

@@ -38,7 +38,7 @@ Supports optional `--channel {name}` argument for targeted re-runs against a sin
 
 6. **If `--channel {name}` was provided**, filter the channel list to only that channel. Confirm it exists in the matched Discovery Group's channel list. If not found, error: "Channel '{name}' is not mapped for this phase. Available channels: {list}."
 
-7. **Check for existing candidates file** at `research/discovery/{phase}-candidates.md`. If it exists, new results will be appended with a timestamp separator and deduplicated by URL against existing entries. Note this to the user before proceeding.
+7. **Check for existing candidates file** at `research/discovery/{phase}-candidates.md`. **Mid-phase re-run contract:** the existing file is never overwritten. New results are appended below a `## Re-discovery: <ISO timestamp>` separator (format defined in Step 6). Duplicates are dropped by exact URL match against all prior entries in the file. Before proceeding, print to the user: "Existing candidates file found. This run will append as a re-discovery block. N existing URLs will be deduped against." Do not ask the user whether to append or overwrite — the append-with-dedup behavior is the contract, not a choice.
 
 ## Process
 
