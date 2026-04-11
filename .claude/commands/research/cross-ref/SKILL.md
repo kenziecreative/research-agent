@@ -32,7 +32,7 @@ Analyze all processed source notes for cross-cutting patterns.
    - Per-question advisory: flag individual questions above 80% saturation as "saturated" and questions below 40% as "under-covered — prioritize discovery here"
 8. **Identify cross-cutting patterns** (convergence, gap clusters, temporal trends, source-type skew, outliers). When assessing pattern strength, apply shared-origin cluster adjustments: sources in the same cluster count as one data point.
 9. **Regenerate `research/cross-reference.md`** using the template structure (Dashboard -> Contradictions -> Saturation Summary -> Shared-Origin Clusters -> pattern types). Carry forward existing contradiction resolutions if the contradiction still exists. Drop resolutions for contradictions that no longer exist in the data. Update the dashboard counts.
-10. **Update `research/STATE.md`** — set last cross-reference date to today and reset "Sources since last cross-reference" to 0.
+10. **Update `research/STATE.md`** — set last cross-reference date to today and reset "Sources since last cross-reference" to 0. **After the edit, re-read STATE.md and confirm `Last cross-reference` is today's date and `Sources since last cross-reference` is 0.** If either field does not match, do not report cross-ref as complete — surface the write failure with the expected vs. actual values and stop. The next `/research:process-source` call will trust this counter to decide whether to block on the checkpoint; silent drift here produces either a premature or a skipped checkpoint.
 
 ## Guardrails
 

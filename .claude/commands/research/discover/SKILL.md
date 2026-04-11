@@ -191,6 +191,8 @@ Write to `research/discovery/{phase}-candidates.md`. Create the `research/discov
 
 ### Step 7: Print completion summary and offer to process
 
+**Before printing the summary, verify the write succeeded.** Re-read `research/discovery/{phase}-candidates.md` and confirm it exists and contains the Summary table plus at least one channel section. If the read fails or the file is empty or missing the Summary table, do not print "Discovery complete" or "Results saved" — surface the write failure to the user with the target path, preserve the in-memory candidate list so the user can direct a retry, and stop. A silent write failure here would let the user move on to processing sources that were never actually recorded.
+
 ```
 Discovery complete.
   {N} candidates found across {M} channels.

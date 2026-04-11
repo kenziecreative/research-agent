@@ -53,7 +53,7 @@ The user will provide a URL, file path, or pasted content.
    - Direct quotes for important claims (with context)
    - Contradictions or tensions with previously processed sources (if any)
 6. **Add the source to `research/sources/registry.md`** — new row with source number, name, type, credibility rating, date, and note filename.
-7. **Update `research/STATE.md`** — increment both "Total count" and "Sources since last cross-reference."
+7. **Update `research/STATE.md`** — increment both "Total count" and "Sources since last cross-reference." **After the edit, re-read STATE.md and confirm both counters reflect the new value (old value + 1).** If the re-read shows either counter unchanged, do not report the source as processed — surface the write failure with the expected vs. actual values, and stop before moving on to the next step. The cross-ref checkpoint depends on this counter being correct; silent drift here produces a silently-overdue cross-reference.
 8. **Update the source material digest (if applicable).** If the source being processed is a file located in `source-material/`, check whether it is listed in `research/source-material-digest.md`. If the digest exists and the file is not listed, add it to the "Files Read" table with read status "full" and append any new named entities, dates, credentials, stated facts, or assumptions to the corresponding digest sections. If the digest does not exist but `source-material/` contains multiple files, note to the user that the digest is missing and suggest running `/research:start-phase` (which will prompt for retroactive digest generation). If the source is a URL or a file outside `source-material/`, skip this step.
 
 ## Guardrails

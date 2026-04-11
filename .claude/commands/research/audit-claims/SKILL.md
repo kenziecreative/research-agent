@@ -78,6 +78,8 @@ The user will provide a filepath to audit (should be a file in `research/drafts/
 
 9. **Write audit report to `research/audits/<original-filename>-audit.md`** with: scorecard, pass/fail determination, findings table, list of claims that need correction, and the confidence tier table (section name, tier, rationale) from step 8a.
 
+   **After writing, verify the write succeeded.** Re-read the file path you just wrote and confirm it exists and contains the scorecard, findings table, and confidence tier table sections. If the read fails or any of those sections is missing, do not report "audit report written" — surface the write failure to the user with the exact path that failed, and do not advance to the pass/fail step until the write is confirmed.
+
 ## Pass/Fail Criteria
 
 A draft passes when:
