@@ -15,6 +15,16 @@ The user will provide a URL, file path, or pasted content.
 
 1. **Read `research/STATE.md`** and check "Sources since last cross-reference."
 2. **If the count is 5 or higher, stop.** Tell the user: "Cross-reference is overdue (N sources since last `/research:cross-ref`). Run `/research:cross-ref` before processing more sources." Do not proceed until cross-ref is run.
+2a. **Verify `research/sources/registry.md` exists and is parseable.** If the file does not exist, create it with the empty header row before proceeding (first-source case — this is normal for a new project):
+
+   ```markdown
+   # Source Registry
+
+   | # | Name | Type | Credibility | Date | Note file |
+   |---|------|------|-------------|------|-----------|
+   ```
+
+   If the file exists but lacks a parseable markdown table (no header row, malformed separator, or structurally corrupted), stop and tell the user: "`research/sources/registry.md` exists but cannot be parsed as a markdown table. This is a registry corruption — restore from git or fix the file manually before processing more sources. Do not proceed." Do not silently recreate or repair a corrupted registry — the user needs to see it.
 3. **Check for duplicate processing.** Before fetching the source, search `research/sources/registry.md` for the URL (or filename for local files). Also check `research/notes/` for a note file with a matching URL in its header.
    - If found in registry AND a complete note exists in `research/notes/`: warn the user: "This source was already processed — see research/notes/{file}. Process again to update, or skip?"
    - If found in registry BUT the note file is missing or truncated: warn the user: "This source appears partially processed (registered but note is missing or incomplete). I'll re-process it from scratch."
@@ -49,7 +59,7 @@ The user will provide a URL, file path, or pasted content.
    - Origin chain — whether this source is primary (original data/research) or secondary (reporting on someone else's findings). If secondary, record the original source it cites (name, author, date if available). If the source cites multiple original sources for different claims, record the origin for each major claim separately.
    - Key findings — the important claims, data points, and arguments from this source
    - Relevance — which research plan phases this source informs
-   - Finding tags applied to key claims (use the project's tag set from CLAUDE.md)
+   - Finding tags applied to key claims. Tag set fallback chain: **(1)** read `CLAUDE.md` and use the Finding Tags section; **(2)** if that section is missing (init drifted or project predates the convention), fall back to the type template at `.claude/reference/templates/types/{research-type}.md` where `{research-type}` comes from CLAUDE.md's `research-type` field; **(3)** if neither source yields a tag set, do not invent tags — record "Tag set unavailable — CLAUDE.md and type template both missing the Finding Tags section. Tags not applied to this note." in the note's Finding Tags field and continue. Never fabricate tags.
    - Direct quotes for important claims (with context)
    - Contradictions or tensions with previously processed sources (if any)
 6. **Add the source to `research/sources/registry.md`** — new row with source number, name, type, credibility rating, date, and note filename.

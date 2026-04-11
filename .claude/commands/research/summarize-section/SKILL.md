@@ -91,7 +91,7 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 8. **Write a draft section** to `research/drafts/<part-number>-<section-slug>.md`:
    - Lead with findings, support with evidence
    - Every finding answers "so what does this mean?"
-   - Apply the project's finding tags to key conclusions
+   - Apply the project's finding tags to key conclusions. Tag set fallback chain: **(1)** read `CLAUDE.md` and use the Finding Tags section; **(2)** if missing, fall back to the type template at `.claude/reference/templates/types/{research-type}.md`; **(3)** if neither source has a tag set, do not invent tags — render findings without tags and add an explicit note in the draft's opening metadata: "Finding tags unavailable for this project — CLAUDE.md and type template both missing the Finding Tags section. Tagging skipped." Do not block synthesis on missing tags.
    - Cite sources inline using `[Source: <note-filename>]`
    - Use prose paragraphs, not bullet lists (except for data tables and key findings)
    - Present contradictions when sources disagree

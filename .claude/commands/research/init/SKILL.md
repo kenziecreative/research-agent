@@ -418,6 +418,7 @@ Do not create files outside this structure for research artifacts. Working files
 
 | Skill | Trigger | Job |
 |-------|---------|-----|
+| Init | `/research:init` | Scaffolds a new research project: directory structure, CLAUDE.md, STATE.md, reference files, research plan |
 | Process Source | `/research:process-source <url-or-file>` | Processes raw source into structured note |
 | Cross-Reference | `/research:cross-ref` | Finds patterns across all processed notes |
 | Gap Tracker | `/research:check-gaps` | Maps research coverage, identifies holes |
@@ -735,8 +736,8 @@ If anything is missing, create it before proceeding. If the CLAUDE.md references
 
 Tell the user what was created. Include:
 - The research type selected
-- The number of phases in the research plan
 - The finding tags for this project type
+- **The phase table.** Render every phase from the research plan as a markdown table with these three columns: `#`, `Phase`, `Expected Outcome`. One row per phase — do not collapse, summarize as an arrow chain, or report only the count. Pull each phase's expected outcome from the synthesis line / output description in `research/research-plan.md` and condense it to one sentence that names what the phase will produce or settle. The synthesis phase is a row like every other phase. This table is mandatory — if you find yourself writing "Phases: N — A → B → C" instead of a table, stop and render the table.
 - The ten research skills available: `/research:init`, `/research:discover`, `/research:process-source`, `/research:cross-ref`, `/research:check-gaps`, `/research:summarize-section`, `/research:audit-claims`, `/research:start-phase`, `/research:phase-insight`, `/research:progress`
 - Next steps: review the research plan in `research/research-plan.md`, then start Phase 1 with `/research:discover`
 - Reminder to clear context between phases for sharper analysis
