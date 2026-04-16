@@ -34,7 +34,21 @@ Supports optional `--channel {name}` argument for targeted re-runs against a sin
 - Print: "Using type-channel map (keyword matching)"
 - Read the type-channel map at `.claude/reference/discovery/type-channel-maps/{research-type}.md`. Parse `active-channels` from the frontmatter. Find the Discovery Group whose Phases list matches (or partially matches, via keyword) the current active phase name. The matched Discovery Group determines which channels to query and their priority order (Primary, Secondary).
 
-5. **If no Discovery Group matches the current phase**, report: "No discovery channels mapped for this phase — this phase uses existing sources." and stop. This is expected for synthesis and output phases.
+5. **If no Discovery Group matches the current phase**, this is a synthesis phase — no new source collection is needed. Report: "No discovery channels mapped for Phase [N] — this is a synthesis phase that produces outputs from existing findings." Then render a synthesis-phase transition prompt and stop:
+
+   ───────────────────────────────────────────────────────────
+
+   **▶ NEXT:** `/research:summarize-section` — Draft outputs from existing findings.
+
+   **Also available:**
+   - `/research:check-gaps` — Verify coverage is adequate before drafting.
+   - `/research:cross-ref` — Refresh cross-reference patterns before synthesis.
+
+   **Cycle guidance:** Collect, Connect, and Assess are no-ops for synthesis phases — mark them complete when ready. The core work is Synthesize and Verify.
+
+   ───────────────────────────────────────────────────────────
+
+   Do not proceed to channel resolution or query execution.
 
 6. **If `--channel {name}` was provided**, filter the channel list to only that channel. Confirm it exists in the matched Discovery Group's channel list. If not found, error: "Channel '{name}' is not mapped for this phase. Available channels: {list}."
 

@@ -38,6 +38,10 @@ Users sometimes drop files into `source-material/` mid-project. If an unprocesse
     - It was logged in a prior phase (not the current one)
 5b. **Read `research/gaps.md`** (if it exists) and extract the Coverage Dashboard for the current phase. If gaps.md has been generated for any prior phases, show a coverage snapshot so the user can see existing coverage status and lopsided flags before deciding what to collect.
 5c. **Read `research/commonplace.md`** (if it exists) and scan it for entries from prior phases whose subject or observation overlaps with this phase's questions. Surface up to 3 most relevant entries as part of the briefing. Entries are indexed by date and phase in the H2 headers — use those plus the body text to judge relevance. An entry is relevant if its subject matches a question in the current phase, if it flagged a cross-cutting issue that affects the current phase, or if the user explicitly asked to remember something that connects to current work. If the file is empty or no entries are relevant, surface nothing — do not mention the commonplace book at all.
+6. **Determine if this is a synthesis phase** — check whether the current phase has discovery channels mapped:
+   - Read `research/discovery/strategy.md` if it exists. Look up the current phase name. If the phase is listed with channels, it is a discovery phase. If the phase is absent, listed as "no discovery," or has an empty channel list, it is a synthesis phase.
+   - If `strategy.md` does not exist, fall back to reading the type-channel map at `.claude/reference/discovery/type-channel-maps/{research-type}.md` (get the research type from `CLAUDE.md`). Check whether any Discovery Group's phase keywords match the current phase name. No match = synthesis phase.
+   - Store the result (discovery vs. synthesis) for use in the transition prompt.
 
 ## Output
 
@@ -71,7 +75,9 @@ Present a briefing for the phase:
 
 **Skipped/Folded phases:** [List any, or "None"]
 
-Then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+Then render the appropriate transition prompt based on whether this is a discovery or synthesis phase (determined in step 6):
+
+**If this is a discovery phase** (channels are mapped):
 
 ───────────────────────────────────────────────────────────
 
@@ -82,6 +88,21 @@ Then render the transition prompt (format defined in `.claude/reference/prompt-t
 - `/research:progress` — See where you are in the overall project before deciding.
 
 **What to expect:** Discovery will surface a prioritized candidate list for this phase's channels. After you approve, processing runs sequentially with a mandatory cross-reference checkpoint every 5-8 sources.
+
+───────────────────────────────────────────────────────────
+
+**If this is a synthesis phase** (no discovery channels mapped):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:summarize-section` — This is a synthesis phase. No new source collection is needed — draft outputs from existing Phase 1–[N-1] findings.
+
+**Also available:**
+- `/research:check-gaps` — Verify coverage is adequate before drafting.
+- `/research:cross-ref` — Refresh cross-reference patterns before synthesis.
+- `/research:progress` — See where you are in the overall project before deciding.
+
+**What to expect:** Collect, Connect, and Assess are no-ops for synthesis phases (mark them complete when ready). The core work is Synthesize and Verify.
 
 ───────────────────────────────────────────────────────────
 
