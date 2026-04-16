@@ -144,7 +144,13 @@ There is no percentage threshold. Every specific claim must check out. The score
 
   3. **Present the phase debrief** (see below). The debrief runs *after* STATE.md is advanced, not before.
 
-- **If FAIL:** Leave the file in `research/drafts/`. List every issue with line-level specifics and what needs to change. The user or agent must fix the issues in the draft, then run `/research:audit-claims` again on the same file. Do not promote until it passes. **Do not touch STATE.md on a failed audit** — the phase is still in the Verify step until the audit passes.
+- **If FAIL:** Leave the file in `research/drafts/`. List every issue with line-level specifics and what needs to change. Do not promote until it passes. **Do not touch STATE.md on a failed audit** — the phase is still in the Verify step until the audit passes.
+
+  **Apply mechanical fixes directly.** For each issue where the correction is mechanical — a misattributed range, a typo'd figure, a wrong citation pointing at a note that exists, a qualifier strip that matches canonical data — apply the fix to the draft without asking permission. Mechanical means: the correct value or wording is already knowable from the source notes, canonical-figures.json, or an analogous fix already made elsewhere in the same draft. After fixing, list each fix applied (file, line, before → after) so the user can see what changed. Then tell the user: "Fixes applied. Re-run `/research:audit-claims <filepath>` to verify."
+
+  **Do not apply non-mechanical fixes.** If a fix requires judgment — choosing between two plausible sources, rewriting a claim whose support is missing entirely, resolving a contradiction the draft got wrong — list the issue and stop. The user must decide.
+
+  **Never auto-re-run the audit.** Even after applying mechanical fixes, do not chain into another `/research:audit-claims` call. Re-audit is always user-invoked so each audit is a fresh, full check (fixes can introduce new problems).
 
 ## Phase Debrief (after pass)
 
@@ -205,6 +211,6 @@ Only after the user is done reacting to the debrief, render the transition promp
 ## Output
 Scorecard summary and pass/fail status.
 
-**If failed:** list every issue with its location and what needs to change. Do NOT render a transition prompt — a failed audit is a loop, not a transition. The user fixes the draft and re-runs `/research:audit-claims` on the same file.
+**If failed:** list every issue with its location and what needs to change. Apply mechanical fixes directly (see "If FAIL" above for the mechanical-vs-judgment distinction) and list each fix applied. Do NOT render a transition prompt — a failed audit is a loop, not a transition. After fixes are applied, tell the user to re-run `/research:audit-claims` on the same file; do not auto-invoke it.
 
 **If passed:** confirm the promotion to `outputs/`, present the phase debrief (see above), wait for the user to react, and then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`). The transition prompt appears only after the user is done reacting to the debrief — not before.
