@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # /research:init — Initialize a Structured Research Project
 
+> **Model requirement:** This workflow is designed to run on **Claude Opus 4.6** (1M context window). Running on Sonnet 4.6 (200k) will hit context limits mid-project as source notes accumulate. Before proceeding, confirm with the user that they are running on Opus, or advise them to restart with `claude --model claude-opus-4-6`.
+
 You are scaffolding a new research project. This skill creates the research infrastructure: directory structure, CLAUDE.md, STATE.md, reference protocols, source registry, gap tracker, cross-reference file, and a research plan tailored to the project's topic and type.
 
 ## Step 1: Gather Project Information
@@ -160,7 +162,7 @@ Read the matching type template from `.claude/reference/templates/types/` to get
 
 Read the type-channel map from `.claude/reference/discovery/type-channel-maps/{research-type}.md`. You will pass this content to the plan-generator subagent so it can produce the discovery strategy alongside the research plan.
 
-Launch an agent (use `subagent_type: "general-purpose"`, model: `sonnet`) to generate the research plan. Provide the agent with:
+Launch an agent (use `subagent_type: "general-purpose"`, model: `opus`) to generate the research plan. Provide the agent with:
 - The research type
 - The verbal topic description the user provided in Question 2 (preserved verbatim)
 - The full contents of `research/source-material-digest.md` if it exists (the structured facts extracted from every file in `source-material/` during Step 2). If no digest exists because `source-material/` was empty, note this explicitly to the subagent.
