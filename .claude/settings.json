@@ -1,4 +1,7 @@
 {
+  "env": {
+    "PATH": "$HOME/.local/bin:$PATH"
+  },
   "hooks": {
     "PreToolUse": [
       {

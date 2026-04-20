@@ -1,7 +1,7 @@
 ---
 name: academic
 description: Academic paper and scholarly source discovery via OpenAlex API
-allowed-tools: [Bash, tavily_search, WebSearch]
+allowed-tools: [Bash, WebSearch]
 channel-type: academic
 ---
 
@@ -107,22 +107,28 @@ Reference `.claude/reference/discovery/channel-playbooks/web-search.md` for cano
 
 **Primary:** Bash curl to OpenAlex API (`https://api.openalex.org`)
 
-**Fallback (if OpenAlex unavailable):** `tavily_search` with academic domain scoping:
+**Tier 2 [Tavily fallback]:** `tvly search` with academic domain scoping:
+```bash
+tvly search "{topic} site:scholar.google.com OR site:arxiv.org OR site:pubmed.ncbi.nlm.nih.gov" --depth advanced --max-results 8 --json
 ```
-query: "{topic} site:scholar.google.com OR site:arxiv.org OR site:pubmed.ncbi.nlm.nih.gov"
-search_depth: "advanced"
-max_results: 8
-```
-Label results: "via Tavily (OpenAlex fallback)"
+Label results: "via tvly (OpenAlex fallback)"
 
-**Without Tavily:** WebSearch with academic domain keywords:
+**Tier 3 [Firecrawl fallback]:** `npx firecrawl-cli search` with academic keywords:
+```bash
+npx firecrawl-cli search "{topic} academic paper arxiv pubmed" --limit 8 --format json
+```
+Label results: "via Firecrawl (OpenAlex+tvly fallback)"
+
+**Tier 4 [WebSearch fallback]:** WebSearch with academic domain keywords:
 ```
 query: "{topic} academic paper OR research study OR systematic review"
 ```
-Label results: "via WebSearch (OpenAlex+Tavily fallback)". Warn user that results will be less targeted — quality filtering not available.
+Label results: "via WebSearch (OpenAlex+tvly+Firecrawl fallback)". Warn user that results will be less targeted — quality filtering not available.
 
-**Unavailable criteria:** Trigger fallback when:
-- HTTP 5xx response from api.openalex.org
+> The agent works out of the box with zero CLIs installed — WebSearch is always available.
+
+**Unavailable criteria:** Trigger next tier when:
+- HTTP 5xx response from api.openalex.org (or non-zero exit from CLI)
 - Request timeout > 15 seconds
 - HTTP 429 rate limit (without mailto parameter — add mailto and retry once before falling back)
 
@@ -136,7 +142,11 @@ Label results: "via WebSearch (OpenAlex+Tavily fallback)". Warn user that result
 
 **Daily cap:** None documented for reasonable usage (hundreds of requests per session is fine).
 
-**Best practice:** Always include `mailto={email}` parameter. For bulk retrieval, use cursor-based pagination with `cursor=*` parameter rather than high `per_page` values.
+**Tavily (`tvly search`, fallback):** ~1,000 searches/month on free tier.
+
+**Firecrawl (`npx firecrawl-cli search`, fallback):** Free tier: 500 credits/month; each search consumes credits based on result count.
+
+**Best practice:** Always include `mailto={email}` parameter for OpenAlex. For bulk retrieval, use cursor-based pagination with `cursor=*` parameter rather than high `per_page` values.
 
 ---
 

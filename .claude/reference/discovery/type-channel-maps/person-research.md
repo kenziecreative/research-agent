@@ -122,11 +122,11 @@ URL construction: https://patents.google.com/?inventor={person_name}&after=prior
 ```
 Substitute `{person_name}` = URL-encoded full name, `{year_minus_5}` = current year minus 5.
 
-Execution: Construct URL, then use `tavily_extract` to retrieve patent listings, OR present constructed URL to user if `tavily_extract` is unavailable.
+Execution: Construct URL, then use `tvly extract` to retrieve patent listings, OR present constructed URL to user if `tvly extract` is unavailable.
 
 **Specialized registries — academic and research professionals (expertise validation phase):**
 ```
-tavily_search:
+tvly search:
   query: "{person_name} {field} researcher profile publications"
   include_domains: ["orcid.org", "researchgate.net", "scholar.google.com", "academia.edu"]
   search_depth: "advanced"
@@ -135,7 +135,7 @@ tavily_search:
 
 **Specialized registries — licensed professionals (career arc, expertise validation phases):**
 ```
-tavily_search:
+tvly search:
   query: "{person_name} {credential_type} license certification verified"
   search_depth: "advanced"
   max_results: 3

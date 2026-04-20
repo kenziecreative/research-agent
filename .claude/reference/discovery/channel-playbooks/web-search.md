@@ -2,7 +2,7 @@
 name: web-search
 description: General web discovery via Tavily search
 allowed-tools:
-  - tavily_search
+  - Bash
   - WebSearch
 channel-type: web-search
 ---
@@ -29,20 +29,20 @@ channel-type: web-search
 
 ## 2. Tool Configuration
 
-**Primary tool:** `tavily_search`
+**Primary tool:** `tvly search` (Tavily CLI via Bash)
 
 **Core parameters:**
 
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| `search_depth` | `"advanced"` | Use for all research queries; `"basic"` only for quick fact checks |
-| `max_results` | 5–8 | Higher for broad topic searches, lower for entity lookups |
-| `topic` | `"general"` or `"news"` | `"news"` activates recency ranking and `days` parameter |
-| `include_domains` | `[]` (empty) | Leave empty for general web; populate for domain-scoped searches |
-| `exclude_domains` | omit or `[]` | Add known low-quality domains if needed |
-| `days` | 90 | Only valid when `topic: "news"`; adjust for recency requirements |
+| CLI Flag | Value | Notes |
+|----------|-------|-------|
+| `--depth` | `advanced` | Use for all research queries; `basic` only for quick fact checks |
+| `--max-results` | 5–8 | Higher for broad topic searches, lower for entity lookups |
+| `--topic` | `general` or `news` | `news` activates recency ranking and `--time-range` flag |
+| `--include-domains` | `"domain1,domain2"` | Leave omitted for general web; populate for domain-scoped searches |
+| `--time-range` | `month` or `year` | Only valid when `--topic news`; adjust for recency requirements |
+| `--json` | (flag) | Always include for structured output |
 
-**Authentication:** Tavily API key configured via MCP server. No per-request authentication needed.
+**Authentication:** Tavily CLI authenticates via `TAVILY_API_KEY` environment variable or `tvly login`.
 
 ---
 
@@ -50,13 +50,8 @@ channel-type: web-search
 
 ### Template A — Topic Search
 
-```
-tavily_search(
-  query="{topic} {context_keywords}",
-  search_depth="advanced",
-  max_results=8,
-  topic="general"
-)
+```bash
+tvly search "{topic} {context_keywords}" --depth advanced --max-results 8 --topic general --json
 ```
 
 **Placeholder substitution:**
@@ -69,13 +64,8 @@ tavily_search(
 
 ### Template B — Entity Search
 
-```
-tavily_search(
-  query="{entity_name} {entity_type}",
-  search_depth="advanced",
-  max_results=5,
-  include_domains=[]
-)
+```bash
+tvly search "{entity_name} {entity_type}" --depth advanced --max-results 5 --json
 ```
 
 **Placeholder substitution:**
@@ -88,19 +78,13 @@ tavily_search(
 
 ### Template C — News/Recent Search
 
-```
-tavily_search(
-  query="{topic} recent developments",
-  search_depth="advanced",
-  max_results=5,
-  topic="news",
-  days=90
-)
+```bash
+tvly search "{topic} recent developments" --depth advanced --max-results 5 --topic news --time-range month --json
 ```
 
 **Placeholder substitution:**
 - `{topic}` — subject of interest
-- Adjust `days` to match recency requirement (30 = last month, 90 = last quarter, 365 = last year)
+- Adjust `--time-range` to match recency requirement (`week` = last week, `month` = last month, `year` = last year)
 
 **Use when:** The research brief calls for recent developments, current events, or time-bounded discovery.
 
@@ -144,7 +128,7 @@ Channel-level source ranking for results returned via web-search. These tiers ra
 
 | Status | Meaning | Next Action |
 |--------|---------|-------------|
-| `DISCOVERED` | URL returned by search; content not yet verified accessible | Attempt extraction with `tavily_extract` or direct fetch |
+| `DISCOVERED` | URL returned by search; content not yet verified accessible | Attempt extraction with `tvly extract` or direct fetch |
 | `ACCESSIBLE` | Content confirmed reachable and extractable; key facts visible | Extract and process; move to research notes |
 | `PROCESSED` | Content extracted and integrated into research notes; claim traced | No further action needed; cite in output |
 
@@ -162,39 +146,48 @@ Channel-level source ranking for results returned via web-search. These tiers ra
 
 ## 6. Degradation Behavior
 
-**Primary tool:** `tavily_search`
+**Tier 1 (primary):** `tvly search` (Tavily CLI)
 
-**Fallback:** `WebSearch` (if Tavily unavailable)
+**Tier 2 [Firecrawl fallback]:** `npx firecrawl-cli search` (secondary)
 
-**Unavailability criteria:**
-- HTTP 5xx response from Tavily MCP server
+**Tier 3 [WebSearch fallback]:** `WebSearch` (tertiary, built-in)
+
+> The agent works out of the box with zero CLIs installed — WebSearch is always available.
+
+**Unavailability criteria (trigger next tier):**
+- Non-zero exit code from CLI command
 - Request timeout > 30 seconds
 - Rate limit response (429 or equivalent)
 - Authentication failure (API key invalid or expired)
 
 **Fallback protocol:**
-1. Detect unavailability via one of the criteria above
-2. Switch to `WebSearch` for the same query
-3. Label all results obtained via fallback as: `"via WebSearch (Tavily fallback)"`
-4. Note in research log: "Tavily unavailable — using WebSearch fallback. Results will be less targeted: no include_domains filtering, no topic parameter, no days scoping."
+1. Detect Tier 1 unavailability via one of the criteria above
+2. Switch to Tier 2: `npx firecrawl-cli search "{query}" --limit 5 --format json`
+3. Label results: `"via Firecrawl (tvly fallback)"`
+4. If Tier 2 also fails, switch to Tier 3: `WebSearch` for the same query
+5. Label results: `"via WebSearch (tvly+Firecrawl fallback)"`
+6. Note in research log which tier succeeded and any limitations (no `--include-domains` scoping, no `--topic` parameter, etc.)
 
-**Degradation impact:** WebSearch is a direct functional replacement for general web discovery. The primary limitations are:
-- No `include_domains` scoping (results are broader)
-- No `topic: "news"` with `days` parameter (recency filtering is manual)
-- Result quality may be lower for specialized queries
+**Degradation impact by tier:**
+- **Tier 2 (Firecrawl):** Full-text search with content extraction; lacks `--topic` and `--time-range` flags; results are broader
+- **Tier 3 (WebSearch):** No `include_domains` scoping, no topic parameter, no time-range scoping; result quality may be lower for specialized queries
 
-**Recovery:** On subsequent research sessions, verify Tavily availability and re-run degraded queries if result quality was insufficient.
+**Recovery:** On subsequent research sessions, verify Tier 1 availability and re-run degraded queries if result quality was insufficient.
 
 ---
 
 ## 7. Rate Limits
 
-**Tavily:**
+**Tavily (`tvly search`):**
 - Free tier: ~1,000 searches/month (shared across all channels)
 - No per-second throttle required for typical research sessions (1–20 searches per session)
-- If approaching monthly limit: prioritize searches, batch related queries, use `max_results` conservatively
-- Rate limit detection: 429 response → trigger degradation behavior (Section 6)
+- If approaching monthly limit: prioritize searches, batch related queries, use `--max-results` conservatively
+- Rate limit detection: 429 response or non-zero exit → trigger degradation behavior (Section 6)
 
-**WebSearch (fallback):**
+**Firecrawl (`npx firecrawl-cli search`, fallback):**
+- Free tier: 500 credits/month; each search consumes credits based on result count
+- Credit-conscious: use `--limit` conservatively
+
+**WebSearch (tertiary fallback):**
 - No documented hard limit; use conservatively
 - Avoid repeated identical queries — cache results within a session

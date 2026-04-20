@@ -1,7 +1,7 @@
 ---
 name: regulatory
 description: Government filings and regulatory document discovery via EDGAR and ProPublica APIs
-allowed-tools: [Bash, tavily_search, WebSearch]
+allowed-tools: [Bash, WebSearch]
 channel-type: regulatory
 ---
 
@@ -115,31 +115,33 @@ Reference `.claude/reference/discovery/channel-playbooks/web-search.md` for cano
 
 **Primary:** Bash curl to EDGAR EFTS and ProPublica APIs
 
-**Fallback for EDGAR (if unavailable):** `tavily_search` with SEC domain scoping:
+**Tier 2 [Tavily fallback] for EDGAR (if unavailable):**
+```bash
+tvly search "{company_name} SEC filing {form_type}" --depth advanced --max-results 5 --include-domains "sec.gov" --json
 ```
-query: "{company_name} SEC filing {form_type}"
-include_domains: ["sec.gov"]
-search_depth: "advanced"
-max_results: 5
-```
-Label results: "via Tavily (EDGAR fallback)"
+Label results: "via tvly (EDGAR fallback)"
 
-**Fallback for nonprofits (if ProPublica unavailable):** `tavily_search` with nonprofit-focused domains:
+**Tier 2 [Tavily fallback] for nonprofits (if ProPublica unavailable):**
+```bash
+tvly search "{org_name} 990 filing nonprofit annual report" --depth advanced --max-results 5 --include-domains "propublica.org,guidestar.org,candid.org" --json
 ```
-query: "{org_name} 990 filing nonprofit annual report"
-include_domains: ["propublica.org", "guidestar.org", "candid.org"]
-search_depth: "advanced"
-max_results: 5
-```
-Label results: "via Tavily (ProPublica fallback)"
+Label results: "via tvly (ProPublica fallback)"
 
-**Without Tavily:** WebSearch with site-scoped queries:
+**Tier 3 [Firecrawl fallback]:**
+```bash
+npx firecrawl-cli search "{company_name} SEC filing {form_type} site:sec.gov" --limit 5 --format json
+```
+Label results: "via Firecrawl (EDGAR+tvly fallback)" or "via Firecrawl (ProPublica+tvly fallback)"
+
+**Tier 4 [WebSearch fallback]:** WebSearch with site-scoped queries:
 - For-profit: `{company_name} 10-K site:sec.gov`
 - Nonprofit: `{org_name} 990 site:propublica.org`
-Label results: "via WebSearch (EDGAR+Tavily fallback)" or "via WebSearch (ProPublica+Tavily fallback)". Results will be less structured — filing index pages rather than API JSON.
+Label results: "via WebSearch (EDGAR+tvly+Firecrawl fallback)" or "via WebSearch (ProPublica+tvly+Firecrawl fallback)". Results will be less structured — filing index pages rather than API JSON.
 
-**Unavailable criteria:** Trigger fallback when:
-- HTTP 5xx response from API
+> The agent works out of the box with zero CLIs installed — WebSearch is always available.
+
+**Unavailable criteria:** Trigger next tier when:
+- HTTP 5xx response from API (or non-zero exit from CLI)
 - Request timeout > 15 seconds
 - HTTP 429 rate limit (back off and retry once after 5 seconds before falling back)
 
@@ -150,6 +152,10 @@ Label results: "via WebSearch (EDGAR+Tavily fallback)" or "via WebSearch (ProPub
 **EDGAR (SEC policy):** Maximum 10 requests per second. Exceeding this may result in IP blocks from the SEC. For bulk queries, pace at 5 req/s to stay safely within limits.
 
 **ProPublica Nonprofit Explorer:** No documented rate limit. Use 2 requests per second as a safe default to avoid triggering undocumented throttling.
+
+**Tavily (`tvly search`, fallback):** ~1,000 searches/month on free tier.
+
+**Firecrawl (`npx firecrawl-cli search`, fallback):** Free tier: 500 credits/month; each search consumes credits based on result count.
 
 **Best practice:** Always include the required `User-Agent` header for EDGAR requests. The SEC actively blocks requests without proper User-Agent identification.
 

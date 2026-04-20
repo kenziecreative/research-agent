@@ -34,7 +34,15 @@ The user will provide a URL, file path, or pasted content.
 
 ## Process
 
-1. **Fetch the content.** For URLs, always attempt `tavily_extract` first — on every source, every phase, every time. If Tavily fails for a specific source, fall back to `WebFetch` for that source only. On the next source, try `tavily_extract` again. Fallbacks are per-source, not per-session — a Tavily failure on one URL does not mean Tavily is broken for all URLs. For files, read them directly. Do not work from search snippets.
+1. **Fetch the content.** For URLs, try each extraction tier in order on every source, every phase, every time:
+   - **Tier 1:** `tvly extract "{url}" --format markdown` (via Bash)
+   - **Tier 2:** `npx firecrawl-cli scrape "{url}" --format markdown --only-main-content` (via Bash)
+   - **Tier 3:** `WebFetch` (built-in — always available, no CLI needed)
+   - **Floor:** `npx playwright pdf "{url}" /tmp/extract-$(date +%s).pdf` then Read the PDF
+
+   If a tier fails for a specific source, try the next tier for that source only. On the next source, start from Tier 1 again. Fallbacks are per-source, not per-session — a failure on one URL does not mean the tool is broken for all URLs.
+
+   For local files: if the file is a PDF, try `pdftotext "{path}" /tmp/{basename}.txt` first (via Bash), then read the text file. If `pdftotext` is not installed (command not found), fall back to reading the PDF directly with the Read tool. For non-PDF files, read them directly. Do not work from search snippets.
 
    **If the source cannot be fetched** (domain blocks agents, paywall, 403, timeout, or any other access failure): do NOT silently skip the source or decide you have enough without it. Present the situation to the user and offer options:
 
@@ -89,7 +97,7 @@ The user will provide a URL, file path, or pasted content.
 | Working from search snippets instead of full content | Always extract or read the full source content. Search snippets are for discovery, not for note-taking. Partial content leads to missing context and qualifier stripping. |
 | Processing a file from source-material/ without updating the digest | When the source path begins with `source-material/`, after writing the note, update `research/source-material-digest.md` with the file's contents (add to Files Read table, append new entities/dates/credentials/facts/assumptions). The digest is the reconciliation anchor for `/research:start-phase` — drift produces false blockers or misses real drops. |
 | Silently skipping blocked or paywalled sources | Never decide on your own to skip a source you can't access. Present the access failure to the user with options: they provide the content, explicitly skip it, or offer an alternative URL. The user decides, not the agent. |
-| Sticky fallback — using WebFetch for all sources after one Tavily failure | Fallbacks are per-source, not per-session. Always try `tavily_extract` first on every source. A failure on one URL does not mean Tavily won't work on the next. Reset to Tavily on every new source. |
+| Sticky fallback — using a lower tier for all sources after one failure | Fallbacks are per-source, not per-session. Always start from Tier 1 (`tvly extract`) on every source. A failure on one URL does not mean that tier won't work on the next. Reset to Tier 1 on every new source. |
 | Silently resolving contradictions within a source | When a source contains contradictory figures for the same metric, flag both values. Do not pick the one that fits the narrative. |
 | Missing origin chain — not recording whether a source is primary or secondary | Every source note must include an origin chain field. If the source's originality status is unclear from the content, record "Origin unclear — could not determine from extracted content" rather than omitting the field. |
 | Delegating source processing to a spawned subagent (Agent tool) — individual or batch | `/research:process-source` runs in the main conversation, not a subagent. A spawned subagent has a cold context (no commonplace book, no prior source notes in memory, no in-session contradictions), races with the main agent over STATE.md and registry.md, can't be interrupted by the user mid-source, and — in batch mode — silently walks past the cross-reference checkpoint because the main agent isn't watching the counter. Process each source inline. If the candidate list is long and you are tempted to "parallelize" by spawning subagents, resist: the bottleneck isn't agent throughput, it's the cross-ref cadence and user visibility. |

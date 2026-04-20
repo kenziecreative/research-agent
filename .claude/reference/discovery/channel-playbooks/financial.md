@@ -2,7 +2,7 @@
 name: financial
 description: Financial filings, market data, and investment research discovery
 allowed-tools:
-  - tavily_search
+  - Bash
   - WebSearch
 channel-type: financial
 ---
@@ -31,18 +31,19 @@ channel-type: financial
 
 ## 2. Tool Configuration
 
-**Primary tool:** `tavily_search`
+**Primary tool:** `tvly search` (Tavily CLI via Bash)
 
 **Core parameters:**
 
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| `search_depth` | `"advanced"` | Standard for all financial queries |
-| `max_results` | 5 | Financial queries benefit from precision over volume |
-| `topic` | `"finance"` or `"general"` | `"finance"` for market/earnings queries; `"general"` for SEC filings |
-| `include_domains` | See templates | Domain lists defined per query variant |
+| CLI Flag | Value | Notes |
+|----------|-------|-------|
+| `--depth` | `advanced` | Standard for all financial queries |
+| `--max-results` | 5 | Financial queries benefit from precision over volume |
+| `--topic` | `general` | Default topic for financial queries |
+| `--include-domains` | See templates | Domain lists defined per query variant |
+| `--json` | (flag) | Always include for structured output |
 
-**Authentication:** Tavily API key via MCP server. No financial platform-specific authentication needed.
+**Authentication:** Tavily CLI authenticates via `TAVILY_API_KEY` environment variable or `tvly login`.
 
 ---
 
@@ -50,34 +51,22 @@ channel-type: financial
 
 ### Template A — SEC Filings Search
 
-```
-tavily_search(
-  query="{company_name} SEC filing 10-K OR 10-Q OR 8-K",
-  search_depth="advanced",
-  max_results=5,
-  include_domains=["sec.gov", "investor.*.com", "ir.*.com"]
-)
+```bash
+tvly search "{company_name} SEC filing 10-K OR 10-Q OR 8-K" --depth advanced --max-results 5 --include-domains "sec.gov" --json
 ```
 
 **Placeholder substitution:**
 - `{company_name}` — legal company name or common name (e.g., "Alphabet Inc", "Apple")
 - Adjust filing type (`10-K OR 10-Q OR 8-K`) to match the specific filing sought
 
-**Use when:** Looking for official SEC submissions. `sec.gov` is the authoritative source; `investor.*.com` and `ir.*.com` patterns target company investor relations pages.
-
-**Note on wildcard domains:** `investor.*.com` and `ir.*.com` wildcard behavior in Tavily `include_domains` is unconfirmed. If wildcards do not resolve, use `sec.gov` alone and supplement with direct EDGAR access via the regulatory channel.
+**Use when:** Looking for official SEC submissions. `sec.gov` is the authoritative source. Supplement with direct EDGAR access via the regulatory channel for deeper filing retrieval.
 
 ---
 
 ### Template B — Market and Financial Data
 
-```
-tavily_search(
-  query="{company_name} revenue earnings financial results",
-  search_depth="advanced",
-  max_results=5,
-  include_domains=["finance.yahoo.com", "bloomberg.com", "reuters.com", "wsj.com", "ft.com", "seekingalpha.com"]
-)
+```bash
+tvly search "{company_name} revenue earnings financial results" --depth advanced --max-results 5 --include-domains "finance.yahoo.com,bloomberg.com,reuters.com,wsj.com,ft.com,seekingalpha.com" --json
 ```
 
 **Placeholder substitution:**
@@ -90,14 +79,8 @@ tavily_search(
 
 ### Template C — Investment Analysis
 
-```
-tavily_search(
-  query="{company_name} analysis valuation",
-  search_depth="advanced",
-  max_results=5,
-  topic="finance",
-  include_domains=["morningstar.com", "fool.com", "seekingalpha.com"]
-)
+```bash
+tvly search "{company_name} analysis valuation" --depth advanced --max-results 5 --topic general --include-domains "morningstar.com,fool.com,seekingalpha.com" --json
 ```
 
 **Placeholder substitution:**
@@ -154,33 +137,41 @@ See `web-search.md` Section 5 for canonical definitions of `DISCOVERED`, `ACCESS
 
 ## 6. Degradation Behavior
 
-**Primary tool:** `tavily_search`
+**Tier 1 (primary):** `tvly search` (Tavily CLI)
 
-**Fallback:** `WebSearch` with domain-scoped queries
+**Tier 2 [Firecrawl fallback]:** `npx firecrawl-cli search` (secondary)
 
-**Unavailability criteria:**
-- HTTP 5xx response from Tavily MCP server
+**Tier 3 [WebSearch fallback]:** `WebSearch` (tertiary, built-in)
+
+> The agent works out of the box with zero CLIs installed — WebSearch is always available.
+
+**Unavailability criteria (trigger next tier):**
+- Non-zero exit code from CLI command
 - Request timeout > 30 seconds
 - Rate limit response (429)
 - Authentication failure
 
 **Fallback protocol:**
-1. Detect unavailability via criteria above
-2. Construct `WebSearch` queries with explicit site operators:
+1. Detect Tier 1 unavailability via criteria above
+2. Switch to Tier 2: `npx firecrawl-cli search "{company_name} SEC filing 10-K" --limit 5 --format json`
+3. Label results: `"via Firecrawl (tvly fallback)"`
+4. If Tier 2 also fails, switch to Tier 3: `WebSearch` with site-scoped queries:
    - `site:sec.gov {company_name} 10-K`
    - `site:finance.yahoo.com {company_name} earnings`
    - `site:reuters.com {company_name} financial results`
-3. Label all results: `"via WebSearch (Tavily fallback)"`
-4. Note in research log: "Tavily unavailable — financial discovery via WebSearch. Results will be less targeted; include_domains scoping not available."
+5. Label results: `"via WebSearch (tvly+Firecrawl fallback)"`
+6. Note in research log which tier succeeded and any limitations
 
-**Degradation impact:** Financial data discovery is heavily web-based, so WebSearch degradation has lower impact than API-based channels. SEC filings and major financial news are well-indexed by general search engines. Direct EDGAR access via the regulatory channel (Plan 02) provides a complementary path that is not affected by Tavily availability.
+**Degradation impact:** Financial data discovery is heavily web-based, so fallback tiers have lower impact than API-based channels. SEC filings and major financial news are well-indexed by general search engines. Direct EDGAR access via the regulatory channel (Plan 02) provides a complementary path that is not affected by Tavily availability.
 
 ---
 
 ## 7. Rate Limits
 
-**Tavily:** Same limits as web-search channel (~1,000 searches/month on free tier). Financial queries tend to be more targeted and fewer in number — typical financial research uses 5–10 queries per company.
+**Tavily (`tvly search`):** Same limits as web-search channel (~1,000 searches/month on free tier). Financial queries tend to be more targeted and fewer in number — typical financial research uses 5–10 queries per company.
 
-**WebSearch (fallback):** No documented hard limit; use conservatively.
+**Firecrawl (`npx firecrawl-cli search`, fallback):** Free tier: 500 credits/month; each search consumes credits based on result count. Use `--limit` conservatively.
+
+**WebSearch (tertiary fallback):** No documented hard limit; use conservatively.
 
 **EDGAR direct access (regulatory channel):** SEC imposes rate limits on EDGAR full-text search API — see regulatory channel playbook (Plan 02) for specific limits.

@@ -1,7 +1,7 @@
 ---
 name: discover
 description: "Execute type-aware, multi-channel source discovery for the current research phase"
-allowed-tools: [tavily_search, Bash, WebSearch, tavily_extract, Read, Grep, Glob]
+allowed-tools: [Bash, WebSearch, Read, Grep, Glob]
 ---
 
 # /research:discover
@@ -96,20 +96,26 @@ For each channel:
 - `{email}` → `research-agent@example.com` (OpenAlex polite pool parameter)
 - `{current_year}` → current year
 
-**e.** Execute the query using the primary tool specified in the playbook (tavily_search, Bash curl, etc.)
+**e.** Execute the query using the primary tool specified in the playbook (`tvly search` via Bash, `Bash curl`, etc.). Tools are tried in tier order — if the primary tool fails (command not found, timeout, API error), try the next tier per the playbook's degradation chain.
 
 **f.** Cap results at **8 sources maximum** per channel per query. If an API returns more, take the top 8 by relevance score or citation count. Never include more than 8.
 
-**g.** Print result status: "{Channel Name}: found {N}" or "{Channel Name}: error — {reason}" or "{Channel Name}: degraded — using WebSearch fallback, found {N}" or "{Channel Name}: skipped (not mapped for this phase)"
+**g.** Print result status: "{Channel Name}: found {N}" or "{Channel Name}: error — {reason}" or "{Channel Name}: degraded — using {fallback tool} fallback, found {N}" or "{Channel Name}: skipped (not mapped for this phase)"
 
 **h.** If a channel fails (timeout, rate limit, API error, tool unavailable), log the specific failure reason, continue to the next channel. Never abort discovery because one channel failed.
 
 ### Step 3: Degradation handling
 
-- **Tavily unavailable (any Tavily channel):** Switch to WebSearch-only mode automatically. Print prominent warning: "WARNING: Tavily unavailable. Switching all Tavily channels to WebSearch fallback. Results labeled '[WebSearch fallback]'." Label all affected results inline.
+Tools are organized in tiers. On failure, try the next tier automatically:
+- **Tier 1** (`tvly search`/`tvly extract`) — richest params, primary tool
+- **Tier 2** (`npx firecrawl-cli search`/`npx firecrawl-cli scrape`) — secondary, broader results
+- **Tier 3** (`WebSearch`/`WebFetch`) — built-in, always available, no CLI needed
+
+- **Tier 1 unavailable (tvly not installed or API error):** Try Tier 2 automatically. Print warning: "WARNING: tvly unavailable — using Firecrawl fallback." Label results: `[Firecrawl fallback]`.
+- **Tier 2 also unavailable:** Try Tier 3 (WebSearch). Print warning: "WARNING: CLI tools unavailable — using WebSearch fallback. Results will be less targeted." Label results: `[WebSearch fallback]`.
 - **The attempt IS the check** — no pre-flight availability detection. Try the tool, handle failure inline.
-- **HTTP API failure (OpenAlex, EDGAR, ProPublica):** Log as channel error, attempt Tavily fallback, then WebSearch fallback per the playbook's degradation chain.
-- **Absolute floor:** If even WebSearch fails for all channels, produce the candidates file with empty channel sections and an all-channels-failed status report. Never leave the user without a file.
+- **HTTP API failure (OpenAlex, EDGAR, ProPublica):** Log as channel error, attempt `tvly search` fallback → `npx firecrawl-cli search` → `WebSearch` per the playbook's degradation chain.
+- **Absolute floor:** If all tiers fail for all channels, produce the candidates file with empty channel sections and an all-channels-failed status report. Never leave the user without a file.
 
 ### Step 4: Deduplicate
 
@@ -123,7 +129,7 @@ Before writing, check if `research/discovery/{phase}-candidates.md` already exis
 
 Apply the canonical status taxonomy (DISCOVERED / ACCESSIBLE / PROCESSED) to each result:
 
-- **ACCESSIBLE**: Tavily returned full content snippets, OR source is known open-access (e.g., OpenAlex `is_oa=true`, Wikipedia, government data portals, arxiv.org, SEC EDGAR filings)
+- **ACCESSIBLE**: Search tool returned full content snippets, OR source is known open-access (e.g., OpenAlex `is_oa=true`, Wikipedia, government data portals, arxiv.org, SEC EDGAR filings)
 - **DISCOVERED**: URL returned but content not verified — applies to URL-only results, paywalled domains (wsj.com, ft.com, bloomberg.com, economist.com, hbr.org), Google Patents constructed URLs, and any result where only a title/snippet was returned without confirmed content extraction
 - **PROCESSED**: Reserved — do not assign PROCESSED status during discovery. This status is set by process-source when the source is fully extracted and integrated into research notes.
 
@@ -301,41 +307,41 @@ Apply this pattern at every pause point — cross-ref checkpoints, end-of-candid
 
 ---
 
-## Channel Execution: Tavily-Based Channels
+## Channel Execution: Search-Based Channels
+
+All search-based channels use the tiered tool chain: `tvly search` (Tier 1) → `npx firecrawl-cli search` (Tier 2) → `WebSearch` (Tier 3). Each channel's playbook defines the specific parameters. The summaries below show the key params for Tier 1; fallback tiers use equivalent query text with fewer filtering options.
 
 ### Web Search (channel-type: web-search)
 
-Primary tool: `tavily_search`
+Primary tool: `tvly search` (via Bash)
 
 Execution parameters (from web-search.md playbook):
-- `topic: "general"` for background/overview phases
-- `topic: "news"` with `days: 90` for recent-developments phases
-- `include_domains`: leave empty for general web search (returns broadest results)
-- `exclude_domains`: exclude low-credibility aggregators if specified in playbook
+- `--topic general` for background/overview phases
+- `--topic news --time-range month` for recent-developments phases
+- `--include-domains`: leave empty for general web search (returns broadest results)
+- `--exclude-domains`: exclude low-credibility aggregators if specified in playbook
 
-Fallback: `WebSearch` with the same query text. Label results: `[WebSearch fallback]`
+Fallback chain: `npx firecrawl-cli search` (label: `[Firecrawl fallback]`) → `WebSearch` (label: `[WebSearch fallback]`)
 
 ### Financial (channel-type: financial)
 
-Primary tool: `tavily_search`
+Primary tool: `tvly search` (via Bash)
 
 Execution parameters (from financial.md playbook):
-- `topic: "finance"` for market, earnings, and investment queries
-- `include_domains: ["sec.gov", "finance.yahoo.com", "bloomberg.com", "reuters.com", "wsj.com", "ft.com", "marketwatch.com"]`
-- Note: wildcard domains (e.g., `investor.*.com`) are unconfirmed in Tavily — if the playbook lists wildcards, replace with explicit domains from the target company's investor relations URL.
+- `--topic finance` for market, earnings, and investment queries
+- `--include-domains "sec.gov,finance.yahoo.com,bloomberg.com,reuters.com,wsj.com,ft.com,marketwatch.com"`
 
-Fallback: `WebSearch` with `site:sec.gov OR site:finance.yahoo.com` operators. Label results: `[WebSearch fallback]`
+Fallback chain: `npx firecrawl-cli search` with `site:` operators in query → `WebSearch` with `site:` operators
 
 ### Social Signals (channel-type: social-signals)
 
-Primary tool: `tavily_search`
+Primary tool: `tvly search` (via Bash)
 
 Execution parameters (from social-signals.md playbook):
-- `topic: "general"` or `topic: "news"` depending on query type
-- `include_domains: ["reddit.com", "news.ycombinator.com", "stackoverflow.com", "twitter.com", "linkedin.com", "medium.com"]`
-- Note: wildcard community domains (e.g., `community.*.com`) are unconfirmed in Tavily — omit wildcards and use only the explicit domains listed above.
+- `--topic general` or `--topic news` depending on query type
+- `--include-domains "reddit.com,news.ycombinator.com,stackoverflow.com,twitter.com,linkedin.com,medium.com"`
 
-Fallback: `WebSearch` with `site:reddit.com OR site:news.ycombinator.com` operators. Label results: `[WebSearch fallback]`
+Fallback chain: `npx firecrawl-cli search` with `site:` operators → `WebSearch` with `site:` operators
 
 ### Domain-Specific (channel-type: domain-specific)
 
@@ -343,26 +349,24 @@ Read the type-channel map's "Domain-Specific Sources" section to identify which 
 
 **Patent Search hook** (company-for-profit, technology research types):
 - Construct Google Patents URL: `https://patents.google.com/?q={research_subject}&assignee={company_name}`
-- Attempt `tavily_extract` on the constructed URL to get patent listings
-- If `tavily_extract` is unavailable or returns no results: log the URL as DISCOVERED with note "extraction unavailable — manual review required"
+- Attempt `tvly extract` on the constructed URL to get patent listings. If unavailable, try `npx firecrawl-cli scrape`. If both fail: log the URL as DISCOVERED with note "extraction unavailable — manual review required"
 - Status: DISCOVERED (patent content requires individual extraction)
 
 **Industry Databases hook** (for-profit, market-industry types):
-- Use `tavily_search` with domain scoping to Crunchbase, PitchBook, CB Insights per the hook template in the type-channel map
-- `include_domains: ["crunchbase.com", "pitchbook.com", "cbinsights.com"]`
+- Use `tvly search --include-domains "crunchbase.com,pitchbook.com,cbinsights.com"` per the hook template
 - Status: DISCOVERED for paywalled databases, ACCESSIBLE for free-tier results
 
 **Educational Resources hook** (curriculum-research type only):
-- Use `tavily_search` per the educational resources hook template
+- Use `tvly search` per the educational resources hook template
 - Target curriculum aggregators, open courseware, learning platforms
 - Status: ACCESSIBLE for open platforms, DISCOVERED for gated content
 
 **Specialized Registries hook** (person-research type only):
-- Use `tavily_search` per the specialized registries hook template
+- Use `tvly search` per the specialized registries hook template
 - Target LinkedIn, professional association directories, academic profiles
 - Status: DISCOVERED (profile content requires individual extraction)
 
-Fallback for all domain-specific hooks: `WebSearch` with `site:` operators for the target domains.
+Fallback for all domain-specific hooks: `npx firecrawl-cli search` with `site:` operators → `WebSearch` with `site:` operators.
 
 ---
 
@@ -386,8 +390,9 @@ Key parameters:
 Rate limit: 10 req/s with mailto, 1 req/s without.
 
 Fallback chain (per academic.md):
-1. `tavily_search` with academic domain scoping (scholar.google.com, arxiv.org, pubmed.ncbi.nlm.nih.gov) — label: `[via Tavily fallback]`
-2. `WebSearch` with academic domain keywords — label: `[via WebSearch fallback]`
+1. `tvly search --include-domains "scholar.google.com,arxiv.org,pubmed.ncbi.nlm.nih.gov"` — label: `[via tvly fallback]`
+2. `npx firecrawl-cli search` with academic domain keywords — label: `[via Firecrawl fallback]`
+3. `WebSearch` with academic domain keywords — label: `[via WebSearch fallback]`
 
 ### Regulatory (channel-type: regulatory)
 
@@ -407,8 +412,9 @@ Primary: `Bash` curl to EDGAR EFTS and ProPublica APIs
 - Status: ACCESSIBLE — IRS 990 data is public record
 
 Fallback chain (per regulatory.md):
-1. `tavily_search` with `include_domains: ["sec.gov", "projects.propublica.org"]`
-2. `WebSearch` with `site:sec.gov OR site:projects.propublica.org`
+1. `tvly search --include-domains "sec.gov,projects.propublica.org"` — label: `[via tvly fallback]`
+2. `npx firecrawl-cli search` with `site:` operators — label: `[via Firecrawl fallback]`
+3. `WebSearch` with `site:sec.gov OR site:projects.propublica.org` — label: `[via WebSearch fallback]`
 
 ---
 
@@ -421,7 +427,7 @@ Fallback chain (per regulatory.md):
 5. **Include `mailto=research-agent@example.com` for all OpenAlex API requests.** This activates the 10 req/s polite pool. Without it, rate limit is 1 req/s.
 6. **Do not run all domain-specific hooks.** Only execute the hooks specified in the current research type's channel map. Running patent search for a non-profit research project wastes time and produces irrelevant results.
 7. **When a channel fails, continue with remaining channels.** Never abort discovery due to a single channel failure. Log the failure, report it in the summary table, move on.
-8. **Label all degraded and fallback results inline.** Every result from a fallback method must be tagged with the actual method used: `[via WebSearch fallback]`, `[via Tavily fallback]`, etc.
+8. **Label all degraded and fallback results inline.** Every result from a fallback method must be tagged with the actual method used: `[Firecrawl fallback]`, `[WebSearch fallback]`, `[via tvly fallback]`, etc.
 
 ---
 
@@ -453,11 +459,11 @@ If you catch yourself wanting to ask "should I keep going?" after a clean source
 | Processing sources without user approval | Guardrail 2: present prioritized candidates and ask the user before processing. Once approved, process sequentially — but the transition from discovery to processing requires explicit user approval. |
 | Accountability avoidance — asking "should I continue?" after every clean source completion | Once the user approved the batch, you were told yes. Re-asking between successful sources is friction without value — it hands the steering wheel back to the user instead of holding the workflow. A clean source completion is a status line, not a decision point. Pause only at the points listed in "Legitimate Pause Points" — cross-ref checkpoint, real access failure, strategic decision, end of batch. Nothing else. |
 | Silent channel failure with no status reporting | Print per-channel status lines during execution. Include all channels in summary table with explicit status — even channels that were skipped or errored. |
-| Exceeding API rate limits | Follow rate limits from playbooks: EDGAR max 5 req/s, OpenAlex 10 req/s with mailto (1 req/s without), Tavily usage is monthly-quota-based. Space Bash curl calls with brief pauses if running multiple EDGAR queries. |
+| Exceeding API rate limits | Follow rate limits from playbooks: EDGAR max 5 req/s, OpenAlex 10 req/s with mailto (1 req/s without), Tavily and Firecrawl usage is credit-based. Space Bash curl calls with brief pauses if running multiple EDGAR queries. |
 | Missing User-Agent for SEC EDGAR | Guardrail 4: always include `User-Agent: ResearchAgent (contact@example.com)`. The value is defined in regulatory.md. |
 | Assigning PROCESSED status during discovery | Pre-check: PROCESSED is reserved for process-source. Assign only DISCOVERED or ACCESSIBLE during discovery. |
 | Running domain-specific hooks for wrong research type | Guardrail 6: read the type-channel map's hook list. Only run hooks that appear in the current research type's channel map. |
-| wildcard include_domains failing in Tavily | If a playbook lists wildcard domains (e.g., `investor.*.com`), replace with explicit domain list. Wildcards are unconfirmed in Tavily — use specific URLs instead. |
+| wildcard include-domains failing in tvly | If a playbook lists wildcard domains (e.g., `investor.*.com`), replace with explicit domain list. Wildcards are unconfirmed in tvly's `--include-domains` — use specific URLs instead. |
 
 ---
 

@@ -174,7 +174,7 @@ Apply to groups: 4 (Technology), 8 (Emerging Trends)
 Query guidance:
 - Search by technology keyword and date range for innovation tracking
 - Use for Groups 4 and 8 when the research question involves IP landscape or innovation direction
-- Construct Google Patents URL, then extract via tavily_extract
+- Construct Google Patents URL, then extract via tvly extract
 
 ---
 

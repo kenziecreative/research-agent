@@ -60,7 +60,7 @@ Before generating any plan, you must fully read every document the user has prov
 
 ### 2a. Save pasted or referenced content to source-material/
 
-If the user's Question 2 answer included a document path, URL, or pasted content, save it to `source-material/` with a descriptive filename — use the document's own title or a short slug derived from its first heading, not "source.txt" or "doc1.md". For URLs, fetch the full content with `tavily_extract` first; `WebFetch` is the per-source fallback. Never work from search snippets here — the plan generator will use what you save as ground truth.
+If the user's Question 2 answer included a document path, URL, or pasted content, save it to `source-material/` with a descriptive filename — use the document's own title or a short slug derived from its first heading, not "source.txt" or "doc1.md". For URLs, fetch the full content with `tvly extract` first; fall back to `npx firecrawl-cli scrape`, then `WebFetch` if CLIs unavailable. Never work from search snippets here — the plan generator will use what you save as ground truth.
 
 ### 2b. List and read every file in source-material/
 
@@ -326,7 +326,7 @@ These rules exist because agents can confabulate a subject when the provided des
 - Synthesis phase always produces at minimum an executive summary and a full report
 - Be specific in "be skeptical of" — name source types that tend to mislead for this topic
 
-You have access to `tavily_search` and `WebFetch` — use `tavily_search` as your primary research tool (not WebSearch, which is the degraded fallback). Do preliminary research so the phases and questions are grounded, not generic. Derive the appropriate date range from the topic and research questions — do not assume a default. A historical analysis needs historical dates, a current-state analysis needs recent data, a projection needs future-looking ranges. **Preliminary research is for context only — it does not change the subject you were given.**
+You have access to `tvly search` and `WebFetch` — use `tvly search` as your primary research tool (not WebSearch, which is the degraded fallback). Do preliminary research so the phases and questions are grounded, not generic. Derive the appropriate date range from the topic and research questions — do not assume a default. A historical analysis needs historical dates, a current-state analysis needs recent data, a projection needs future-looking ranges. **Preliminary research is for context only — it does not change the subject you were given.**
 
 Write the final research plan to `research/research-plan.md`.
 
@@ -560,7 +560,7 @@ Detailed protocols are in `research/reference/`. Read the relevant file when you
 |----------|------|-----------|
 | Source & Evidence Standards | `research/reference/source-standards.md` | Processing sources, citing evidence, assessing credibility |
 | Writing & File Standards | `research/reference/writing-standards.md` | Writing output sections, naming files |
-| Tools Guide (Tavily) | `research/reference/tools-guide.md` | Using Tavily search, extract, map, or crawl |
+| Tools Guide | `research/reference/tools-guide.md` | Using tvly, firecrawl-cli, and WebSearch/WebFetch for research discovery and extraction |
 
 Write the assembled CLAUDE.md to `CLAUDE.md`.
 

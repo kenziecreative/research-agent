@@ -2,7 +2,7 @@
 name: social-signals
 description: Social platforms and community discussion discovery
 allowed-tools:
-  - tavily_search
+  - Bash
   - WebSearch
 channel-type: social-signals
 ---
@@ -30,19 +30,19 @@ channel-type: social-signals
 
 ## 2. Tool Configuration
 
-**Primary tool:** `tavily_search`
+**Primary tool:** `tvly search` (Tavily CLI via Bash)
 
 **Core parameters:**
 
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| `search_depth` | `"advanced"` | Standard for all community discovery |
-| `max_results` | 5–8 | Higher for community discussion; lower for expert opinion |
-| `topic` | `"general"` | Default; no `"news"` topic for social signals |
-| `include_domains` | See templates | Platform-scoped lists defined per query variant |
-| `days` | omit | Use only if recency is explicitly required |
+| CLI Flag | Value | Notes |
+|----------|-------|-------|
+| `--depth` | `advanced` | Standard for all community discovery |
+| `--max-results` | 5–8 | Higher for community discussion; lower for expert opinion |
+| `--topic` | `general` | Default; no `news` topic for social signals |
+| `--include-domains` | See templates | Platform-scoped lists defined per query variant |
+| `--json` | (flag) | Always include for structured output |
 
-**Authentication:** Tavily API key via MCP server. No platform-specific authentication needed — Tavily surfaces publicly indexed content only.
+**Authentication:** Tavily CLI authenticates via `TAVILY_API_KEY` environment variable or `tvly login`.
 
 ---
 
@@ -50,13 +50,8 @@ channel-type: social-signals
 
 ### Template A — Community Discussion
 
-```
-tavily_search(
-  query="{topic} discussion",
-  search_depth="advanced",
-  max_results=8,
-  include_domains=["reddit.com", "news.ycombinator.com", "stackoverflow.com", "community.*.com"]
-)
+```bash
+tvly search "{topic} discussion" --depth advanced --max-results 8 --include-domains "reddit.com,news.ycombinator.com,stackoverflow.com" --json
 ```
 
 **Placeholder substitution:**
@@ -64,19 +59,14 @@ tavily_search(
 
 **Use when:** Seeking community perspectives, practitioner debate, or user experience reports on a topic. Reddit and HN surface high-signal discussions across most technology, business, and social topics.
 
-**Note on wildcard domains:** `community.*.com` pattern behavior in Tavily `include_domains` is unconfirmed. If wildcard does not resolve correctly, replace with explicit community domains relevant to the research domain (e.g., `community.openai.com`, `community.atlassian.com`).
+**Note on community domains:** Add explicit community domains relevant to the research domain as needed (e.g., append `community.openai.com` or `community.atlassian.com` to the `--include-domains` list).
 
 ---
 
 ### Template B — Expert Opinion
 
-```
-tavily_search(
-  query="{topic} {entity_name} review OR opinion OR analysis",
-  search_depth="advanced",
-  max_results=5,
-  include_domains=["twitter.com", "x.com", "linkedin.com", "medium.com", "substack.com"]
-)
+```bash
+tvly search "{topic} {entity_name} review OR opinion OR analysis" --depth advanced --max-results 5 --include-domains "twitter.com,x.com,linkedin.com,medium.com,substack.com" --json
 ```
 
 **Placeholder substitution:**
@@ -89,19 +79,14 @@ tavily_search(
 
 ### Template C — Forum/Niche Discovery
 
-```
-tavily_search(
-  query="{topic} forum",
-  search_depth="basic",
-  max_results=5,
-  topic="general"
-)
+```bash
+tvly search "{topic} forum" --depth basic --max-results 5 --topic general --json
 ```
 
 **Placeholder substitution:**
 - `{topic}` — the specific domain or interest area (e.g., "organic chemistry reactions", "landlord tenant law California")
 
-**Use when:** The research domain has dedicated forums or niche communities not covered by mainstream platforms. `search_depth: "basic"` is intentional — this is a discovery query to identify communities, not extract deep content.
+**Use when:** The research domain has dedicated forums or niche communities not covered by mainstream platforms. `--depth basic` is intentional — this is a discovery query to identify communities, not extract deep content.
 
 ---
 
@@ -146,31 +131,39 @@ See `web-search.md` Section 5 for canonical definitions of `DISCOVERED`, `ACCESS
 
 ## 6. Degradation Behavior
 
-**Primary tool:** `tavily_search`
+**Tier 1 (primary):** `tvly search` (Tavily CLI)
 
-**Fallback:** `WebSearch` with site-specific queries
+**Tier 2 [Firecrawl fallback]:** `npx firecrawl-cli search` (secondary)
 
-**Unavailability criteria:**
-- HTTP 5xx response from Tavily MCP server
+**Tier 3 [WebSearch fallback]:** `WebSearch` (tertiary, built-in)
+
+> The agent works out of the box with zero CLIs installed — WebSearch is always available.
+
+**Unavailability criteria (trigger next tier):**
+- Non-zero exit code from CLI command
 - Request timeout > 30 seconds
 - Rate limit response (429)
 - Authentication failure
 
 **Fallback protocol:**
-1. Detect unavailability via criteria above
-2. Construct `WebSearch` queries with explicit site operators:
+1. Detect Tier 1 unavailability via criteria above
+2. Switch to Tier 2: `npx firecrawl-cli search "{topic} discussion site:reddit.com" --limit 8 --format json`
+3. Label results: `"via Firecrawl (tvly fallback)"`
+4. If Tier 2 also fails, switch to Tier 3: `WebSearch` with site-scoped queries:
    - `site:reddit.com {topic} discussion`
    - `site:news.ycombinator.com {topic}`
    - `site:twitter.com {topic} {entity_name}`
-3. Label all results: `"via WebSearch (Tavily fallback)"`
-4. Note in research log: "Tavily unavailable — social signals via WebSearch with site: operators. Coverage limited to indexed public content; no include_domains scoping."
+5. Label results: `"via WebSearch (tvly+Firecrawl fallback)"`
+6. Note in research log which tier succeeded and any limitations
 
-**Degradation impact:** WebSearch site: operators partially replicate `include_domains` behavior but are less reliable. Results may include more noise from SEO-optimized social aggregation sites. Increase skepticism threshold for fallback results.
+**Degradation impact:** Tier 2 (Firecrawl) provides good coverage but lacks `--include-domains` scoping. Tier 3 (WebSearch) site: operators partially replicate domain scoping but are less reliable. Results may include more noise from SEO-optimized social aggregation sites. Increase skepticism threshold for fallback results.
 
 ---
 
 ## 7. Rate Limits
 
-**Tavily:** Same limits as web-search channel (~1,000 searches/month on free tier). Social signals queries tend to return noisier results — do not compensate by running more queries; instead refine the query.
+**Tavily (`tvly search`):** Same limits as web-search channel (~1,000 searches/month on free tier). Social signals queries tend to return noisier results — do not compensate by running more queries; instead refine the query.
 
-**WebSearch (fallback):** No documented hard limit; use conservatively and avoid repeated identical queries within a session.
+**Firecrawl (`npx firecrawl-cli search`, fallback):** Free tier: 500 credits/month; each search consumes credits based on result count. Use `--limit` conservatively.
+
+**WebSearch (tertiary fallback):** No documented hard limit; use conservatively and avoid repeated identical queries within a session.

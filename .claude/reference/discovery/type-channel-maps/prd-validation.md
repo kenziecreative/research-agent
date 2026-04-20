@@ -125,7 +125,7 @@ Apply to groups: 2 (Technical Architecture)
 Query guidance:
 - Search by technology keywords for prior art — determines if proposed architecture is novel or established
 - Search by potential competitor names to map IP holdings that could affect technical choices
-- Use `tavily_extract` on constructed Google Patents URLs
+- Use `tvly extract` on constructed Google Patents URLs
 
 ### Industry Databases (Competitive and Market Validation)
 **Use for:** Market assumption and competitive alternative phases

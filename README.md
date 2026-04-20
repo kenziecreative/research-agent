@@ -62,7 +62,22 @@ The system is designed to produce research you can trust because you can trace i
 
 ## Getting Started
 
-You'll need [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and the [Tavily MCP server](https://docs.tavily.com/) configured for web search and source extraction.
+You'll need [Claude Code](https://docs.anthropic.com/en/docs/claude-code). The system works out of the box with zero additional tools — it falls back to Claude Code's built-in `WebSearch` and `WebFetch`. For better results (domain filtering, topic scoping, structured JSON), install the CLI tools below.
+
+### Prerequisites (optional but recommended)
+
+| Tool | Install | API Key |
+|------|---------|---------|
+| **[Tavily CLI](https://tavily.com/)** | `pip install tavily-cli` | `tvly login` or set `TAVILY_API_KEY` |
+| **[Firecrawl CLI](https://firecrawl.dev/)** | `npm install -g firecrawl-cli` | `firecrawl login` or set `FIRECRAWL_API_KEY` |
+| **[Playwright](https://playwright.dev/)** | `npm install -g playwright` | None needed |
+| **pdftotext** (for local PDFs) | `brew install poppler` | None needed |
+
+The system uses a 3-tier fallback chain: Tavily CLI (primary) → Firecrawl CLI (secondary) → WebSearch/WebFetch (tertiary). If a tool isn't installed, the next tier runs automatically. You can start a research project with nothing installed and add CLIs later for better discovery.
+
+**PATH note:** If you installed `tvly` via pip/pipx/uv, ensure `~/.local/bin` is in your PATH. The project's `.claude/settings.json` adds it automatically for Claude Code sessions.
+
+### Clone and Start
 
 ```bash
 git clone https://github.com/kenziecreative/research-agent.git your-project-name
@@ -83,17 +98,19 @@ That walks you through setup — research type, topic, and project location. Fro
 
 ## External APIs Used by Discovery
 
-The `/research:discover` command calls several free, public APIs to find sources across different channels. **No API keys or accounts are required** — these are all open-access. The system degrades gracefully if any are unavailable; it skips the channel and reports what happened.
+The `/research:discover` command calls several APIs to find sources across different channels. The system degrades gracefully if any are unavailable — it tries the next tier and reports what happened.
 
 | API | What It Does | Who Should Know |
 |-----|-------------|----------------|
+| **[Tavily](https://tavily.com/)** | Web search, news, financial sources, and social signals. The primary discovery engine. | Invoked via `tvly` CLI. Requires `TAVILY_API_KEY`. Used for web-search, financial, social-signals, and domain-specific channels. |
+| **[Firecrawl](https://firecrawl.dev/)** | Web search and content extraction. Secondary/fallback discovery engine. | Invoked via `npx firecrawl-cli`. Requires `FIRECRAWL_API_KEY`. Credit-based pricing. |
 | **[OpenAlex](https://openalex.org/)** | Searches academic papers by topic. Returns titles, authors, citation counts, DOIs, and open-access links. | Sends HTTP requests to `api.openalex.org` with a `mailto` parameter for polite pool access. No auth required. Free and open. |
 | **[SEC EDGAR EFTS](https://efts.sec.gov/LATEST/search-index?q=)** | Searches SEC filings (10-K, 10-Q, 8-K, DEF 14A, S-1) by company name or CIK. | Sends HTTP requests to `efts.sec.gov` with a `User-Agent` header identifying the tool, per SEC's [fair access policy](https://www.sec.gov/os/accessing-edgar-data). Rate-limited to 5 req/s. Free, public data. |
 | **[ProPublica Nonprofit Explorer](https://projects.propublica.org/nonprofits/api)** | Looks up nonprofit organizations by name or EIN. Returns 990 filing data, revenue, and links to full PDF filings. | Sends HTTP requests to `projects.propublica.org`. No auth required. Free and open. |
-| **[Google Patents](https://patents.google.com/)** | Constructs search URLs for patent discovery by assignee or inventor. | Builds a URL that gets extracted via Tavily — no direct API call to Google. |
-| **[Tavily](https://tavily.com/)** | Web search, news, financial sources, and social signals. The primary discovery engine. | Requires the Tavily MCP server to be configured (you set this up during install). Used for web-search, financial, social-signals, and domain-specific channels. |
+| **[Google Patents](https://patents.google.com/)** | Constructs search URLs for patent discovery by assignee or inventor. | Builds a URL that gets extracted via `tvly extract` or `npx firecrawl-cli scrape`. |
+| **WebSearch / WebFetch** | Claude Code built-in web tools. Tertiary fallback — always available with no setup. | No API key needed. Less targeted than CLI tools but ensures the project works out of the box. |
 
-All HTTP API calls are made via `curl` in the terminal. You can see exactly what's being requested. Nothing is sent to these services other than search queries derived from your research topic.
+All CLI and HTTP API calls are made via Bash in the terminal. You can see exactly what's being requested. Nothing is sent to these services other than search queries derived from your research topic.
 
 ## Commands
 

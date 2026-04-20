@@ -120,7 +120,7 @@ Curriculum research uses the Educational Resources type hook from the domain-spe
 
 **Academic standards databases (domain landscape, skill decomposition, existing programs phases):**
 ```
-tavily_search:
+tvly search:
   query: "{subject} standards framework {grade_level_or_professional_level}"
   include_domains: ["corestandards.org", "nextgenscience.org", "iste.org", "ed.gov", "achieve.org"]
   search_depth: "advanced"
@@ -129,7 +129,7 @@ tavily_search:
 
 **Open Educational Resources — existing programs (competing approaches, existing programs phases):**
 ```
-tavily_search:
+tvly search:
   query: "{topic} open educational resource curriculum"
   include_domains: ["oer.commons.org", "merlot.org", "openstax.org", "opened.com", "khanacademy.org"]
   search_depth: "advanced"
@@ -138,7 +138,7 @@ tavily_search:
 
 **Professional credentialing databases (skill decomposition, existing programs phases):**
 ```
-tavily_search:
+tvly search:
   query: "{field} certification requirements competencies"
   include_domains: ["shrm.org", "pmi.org", "isaca.org", "isc2.org", "comptia.org"]
   search_depth: "advanced"
