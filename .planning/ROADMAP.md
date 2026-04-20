@@ -35,7 +35,7 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
 **Milestone Goal:** Deepen evidence traceability from individual claims through cross-phase figures, expand index diversity for honest source counting, and make discovery reproducible.
 
 - [x] **Phase 11: Claim Graph Foundation** - Represent claims as graph nodes with edges to sources and canonical figures (completed 2026-04-20)
-- [ ] **Phase 12: Claim Graph Operations** - Transitive drift detection, per-claim confidence, and weakest-link rollup
+- [x] **Phase 12: Claim Graph Operations** - Transitive drift detection, per-claim confidence, and weakest-link rollup (completed 2026-04-20)
 - [ ] **Phase 13: Academic & Evidence Layer Expansion** - Crossref + Unpaywall academic channel additions; absence-vs-contradiction gap distinction
 - [ ] **Phase 14: Web Channel Diversity** - Exa neural search as parallel web-search tier with deduplication against Tavily
 - [ ] **Phase 15: Retrieval Provenance** - Structured retrieval log for reproducible discovery
@@ -69,7 +69,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 12-01-PLAN.md — Drift detection, issue type, weakest-link rollup, and drift_warning lifecycle in audit-claims
-- [ ] 12-02-PLAN.md — Drift warning surfacing in research-integrity agent check 9
+- [x] 12-02-PLAN.md — Drift warning surfacing in research-integrity agent check 9
 
 ### Phase 13: Academic & Evidence Layer Expansion
 **Goal**: Academic discovery queries Crossref and Unpaywall alongside OpenAlex; gap analysis distinguishes absence of evidence from evidence against
@@ -136,7 +136,7 @@ Plans:
 | 1-6 | v1.1 | 10/10 | Complete | 2026-03-30 |
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 12. Claim Graph Operations | v1.3 | 1/2 | In Progress|  |
+| 12. Claim Graph Operations | v1.3 | 2/2 | Complete   | 2026-04-20 |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
