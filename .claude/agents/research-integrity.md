@@ -66,6 +66,9 @@ When given a file to review (a source note, a draft, or a synthesis document), p
 - For each claim node in the graph whose `phase` matches the current phase under review: verify the `confidence_tier` in the graph matches the tier shown for that section in the audit report (if an audit report exists in `research/audits/`).
 - Flag: "CLAIM GRAPH INCONSISTENCY: claim [id] in claim-graph.json has confidence_tier [A], but the audit report for [phase output] shows [B] for section [section]. The graph may have been written from a stale audit pass."
 - This check is advisory — it surfaces drift between the graph and the audit record, but does not block promotion.
+- Additionally, for any claim node with a `drift_warning` field, surface the warning:
+  "DRIFT WARNING ACTIVE: claim [id] references figure [figure_id]. Expected value: [expected_value], current canonical value: [canonical_value]. The claim has not been re-audited since this figure changed. Run `/research:audit-claims` on the relevant draft to clear or confirm this warning."
+- Drift warnings are advisory — they do not block promotion. Surface them so the human is prompted to act; do not silently pass over nodes with a `drift_warning` field set.
 
 ## How to Use This Agent
 
