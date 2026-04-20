@@ -1,6 +1,6 @@
 ---
 name: web-search
-description: General web discovery via Tavily search
+description: General web discovery via Tavily search and Exa neural search
 allowed-tools:
   - Bash
   - WebSearch
@@ -11,7 +11,7 @@ channel-type: web-search
 
 ## 1. Channel Overview
 
-**What this channel discovers:** General web content — articles, blog posts, official pages, news, documentation, and public-facing organizational content. The broadest discovery channel and the default fallback for other channels when their specialized tools are unavailable.
+**What this channel discovers:** General web content — articles, blog posts, official pages, news, documentation, and public-facing organizational content via Tavily search and Exa neural search. The broadest discovery channel and the default fallback for other channels when their specialized tools are unavailable.
 
 **When to use it:**
 - General topic research without a specific domain constraint
@@ -43,6 +43,27 @@ channel-type: web-search
 | `--json` | (flag) | Always include for structured output |
 
 **Authentication:** Tavily CLI authenticates via `TAVILY_API_KEY` environment variable or `tvly login`.
+
+**API 2 — Exa (Secondary, Neural Search):**
+
+**Tool:** Exa Search API (via Bash curl)
+
+**Base URL:** `https://api.exa.ai/search`
+
+**Authentication:** `EXA_API_KEY` environment variable. Free tier: 1,000 searches/month.
+
+**Core parameters:**
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| `query` | (string) | Natural language query; Exa optimizes for semantic relevance |
+| `numResults` | 8 | Per D-03: 8-result cap per tool within channel |
+| `type` | `auto` | Per D-04: routes to neural or keyword via Exa's internal categorization |
+| `useAutoprompt` | `true` | Let Exa refine the query for better semantic retrieval |
+| `startPublishedDate` | (ISO date, optional) | Filter to results published after this date |
+| `category` | (optional) | One of: company, research paper, news, pdf, github, tweet, personal site |
+
+**Response format:** JSON with `results[]` array. Each result has: `title`, `url`, `publishedDate`, `author`, `score`.
 
 ---
 
@@ -87,6 +108,78 @@ tvly search "{topic} recent developments" --depth advanced --max-results 5 --top
 - Adjust `--time-range` to match recency requirement (`week` = last week, `month` = last month, `year` = last year)
 
 **Use when:** The research brief calls for recent developments, current events, or time-bounded discovery.
+
+---
+
+### Exa Query Templates
+
+### Template D — Exa Topic Search (Neural)
+
+```bash
+curl -s -X POST "https://api.exa.ai/search" \
+  -H "x-api-key: $EXA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "{topic} {context_keywords}",
+    "numResults": 8,
+    "type": "auto",
+    "useAutoprompt": true
+  }'
+```
+
+**Placeholder substitution:**
+- `{topic}` — the primary research subject
+- `{context_keywords}` — 1-3 constraining terms from the research brief
+
+**Use when:** Broad topic coverage is needed and Tavily has already returned its results. Exa's neural mode surfaces semantically relevant pages that SEO-optimized results may miss.
+
+---
+
+### Template E — Exa Entity Search
+
+```bash
+curl -s -X POST "https://api.exa.ai/search" \
+  -H "x-api-key: $EXA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "{entity_name} {entity_type}",
+    "numResults": 8,
+    "type": "auto",
+    "useAutoprompt": true,
+    "category": "{category}"
+  }'
+```
+
+**Placeholder substitution:**
+- `{entity_name}` — proper name of the entity
+- `{entity_type}` — category term that disambiguates
+- `{category}` — (optional) one of: company, research paper, news, personal site. Omit the field entirely if no category applies.
+
+**Use when:** Researching a specific named entity. Use `category` to bias results toward the entity type.
+
+---
+
+### Template F — Exa Recent Search
+
+```bash
+curl -s -X POST "https://api.exa.ai/search" \
+  -H "x-api-key: $EXA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "{topic} recent developments",
+    "numResults": 8,
+    "type": "auto",
+    "useAutoprompt": true,
+    "startPublishedDate": "{iso_date}",
+    "category": "news"
+  }'
+```
+
+**Placeholder substitution:**
+- `{topic}` — subject of interest
+- `{iso_date}` — ISO 8601 date (e.g., "2024-01-01") for the start of the recency window
+
+**Use when:** The research brief calls for recent developments. Use `startPublishedDate` to bound the time window.
 
 ---
 
@@ -174,6 +267,17 @@ Channel-level source ranking for results returned via web-search. These tiers ra
 
 **Recovery:** On subsequent research sessions, verify Tier 1 availability and re-run degraded queries if result quality was insufficient.
 
+**Exa degradation (if api.exa.ai unavailable):**
+
+If Exa is unavailable (API key absent, timeout > 15 seconds, HTTP 5xx, HTTP 429, or non-zero exit from curl), skip silently. Log a one-line channel status note: `Exa: unavailable — web search results from Tavily only`. Do not retry. Do not block. Do not trigger Tavily fallbacks — Exa and Tavily are independent parallel tools within the same channel (per D-13). Discovery continues with Tavily results only.
+
+**Unavailability criteria for Exa:**
+- `EXA_API_KEY` environment variable not set
+- HTTP 5xx response from api.exa.ai
+- Request timeout > 15 seconds
+- HTTP 429 (rate limit exceeded)
+- Non-zero exit code from curl command
+
 ---
 
 ## 7. Rate Limits
@@ -191,3 +295,9 @@ Channel-level source ranking for results returned via web-search. These tiers ra
 **WebSearch (tertiary fallback):**
 - No documented hard limit; use conservatively
 - Avoid repeated identical queries — cache results within a session
+
+**Exa (API 2, parallel neural search):**
+- Free tier: 1,000 searches/month
+- No per-second throttle required for typical research sessions (1-20 searches per session)
+- Monthly cap is shared with all Exa usage — budget searches conservatively if approaching limit
+- Rate limit detection: 429 response or non-zero exit from curl → trigger Exa degradation (Section 6)
