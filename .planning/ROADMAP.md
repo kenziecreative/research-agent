@@ -34,7 +34,7 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
 
 **Milestone Goal:** Deepen evidence traceability from individual claims through cross-phase figures, expand index diversity for honest source counting, and make discovery reproducible.
 
-- [ ] **Phase 11: Claim Graph Foundation** - Represent claims as graph nodes with edges to sources and canonical figures
+- [x] **Phase 11: Claim Graph Foundation** - Represent claims as graph nodes with edges to sources and canonical figures (completed 2026-04-20)
 - [ ] **Phase 12: Claim Graph Operations** - Transitive drift detection, per-claim confidence, and weakest-link rollup
 - [ ] **Phase 13: Academic & Evidence Layer Expansion** - Crossref + Unpaywall academic channel additions; absence-vs-contradiction gap distinction
 - [ ] **Phase 14: Web Channel Diversity** - Exa neural search as parallel web-search tier with deduplication against Tavily
@@ -54,8 +54,8 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   4. The claim graph persists in a queryable structure within the project directory
 **Plans**: 2 plans
 Plans:
-- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [x] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [x] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 
 ### Phase 12: Claim Graph Operations
 **Goal**: The claim graph supports transitive drift detection, per-claim confidence scoring, and weakest-link section rollups
@@ -68,8 +68,8 @@ Plans:
   4. Drift flags are visible in audit-claims output before the user promotes to synthesis
 **Plans**: 2 plans
 Plans:
-- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [x] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [x] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 
 ### Phase 13: Academic & Evidence Layer Expansion
 **Goal**: Academic discovery queries Crossref and Unpaywall alongside OpenAlex; gap analysis distinguishes absence of evidence from evidence against
@@ -135,7 +135,7 @@ Plans:
 | 1-5 | v1.0 | 15/15 | Complete | 2026-03-29 |
 | 1-6 | v1.1 | 10/10 | Complete | 2026-03-30 |
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
-| 11. Claim Graph Foundation | v1.3 | 0/2 | Not started | - |
+| 11. Claim Graph Foundation | v1.3 | 2/2 | Complete   | 2026-04-20 |
 | 12. Claim Graph Operations | v1.3 | 0/? | Not started | - |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
