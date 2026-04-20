@@ -104,7 +104,7 @@ For each channel:
 
 **h.** If a channel fails (timeout, rate limit, API error, tool unavailable), log the specific failure reason, continue to the next channel. Never abort discovery because one channel failed.
 
-**i.** Accumulate a retrieval log entry for this channel-tool execution. Do not write to disk yet — collect entries in memory for batch write after Step 6. Each entry is a JSON object with these fields:
+**i.** Accumulate a retrieval log entry for this channel-tool execution. Do not write to disk yet — collect entries in memory for batch write to `research/reference/retrieval-log.json` after Step 6. Each entry is a JSON object with these fields:
 
 | Field | Type | Value |
 |-------|------|-------|
@@ -230,6 +230,23 @@ Write to `research/discovery/{phase}-candidates.md`. Create the `research/discov
 
 ...
 ```
+
+### Step 6a: Append retrieval log entries
+
+After the candidates file write and verification succeed, write the accumulated log entries to `research/reference/retrieval-log.json`.
+
+**Read-modify-write pattern** (mirrors claim-graph.json write in audit-claims step 8b):
+
+1. **Read** `research/reference/retrieval-log.json`.
+   - If the file does not exist: initialize with `{"entries": []}` and proceed.
+   - If it exists but fails to parse as JSON: log a warning and skip the log write without failing the discovery run. Print: "WARNING: retrieval-log.json could not be parsed — log entries not written. Discovery output is unaffected." Do not block the user from proceeding.
+   - If it parses correctly: load the existing `entries` array.
+2. **Append** all retrieval log entry objects accumulated during Step 2 to the `entries` array.
+   - Write the entire updated JSON back to `research/reference/retrieval-log.json`.
+   - One entry per channel-tool execution. Entry order within this batch: channel priority order (Primary channels before Secondary channels), matching the execution order from Step 2.
+3. **Verify** the write succeeded: re-read the file and confirm it parses as valid JSON and the entry count has increased by the expected number. If verification fails: print "WARNING: retrieval-log.json write failed — log entries not persisted. Discovery output is unaffected." Do not fail or retry discovery.
+
+**Failure contract:** If the discover run crashes before Step 6 (the candidates file write), no log entries are written. If Step 6 fails (candidates file not written), do not attempt Step 6a. The candidates file and retrieval log are peers — both exist or neither exists for a given run.
 
 ### Step 7: Print completion summary and offer to process
 
@@ -472,6 +489,7 @@ Fallback chain (per regulatory.md):
 6. **Do not run all domain-specific hooks.** Only execute the hooks specified in the current research type's channel map. Running patent search for a non-profit research project wastes time and produces irrelevant results.
 7. **When a channel fails, continue with remaining channels.** Never abort discovery due to a single channel failure. Log the failure, report it in the summary table, move on.
 8. **Label all degraded and fallback results inline.** Every result from a fallback method must be tagged with the actual method used: `[Firecrawl fallback]`, `[WebSearch fallback]`, `[via tvly fallback]`, etc.
+9. **Retrieval log write must never block discovery.** If `retrieval-log.json` cannot be read, parsed, or written, print a WARNING and proceed. The candidates file is the primary artifact — the retrieval log is supplementary infrastructure. Never abort discovery, never retry the write, never ask the user to fix the file before continuing.
 
 ---
 
@@ -508,6 +526,7 @@ If you catch yourself wanting to ask "should I keep going?" after a clean source
 | Assigning PROCESSED status during discovery | Pre-check: PROCESSED is reserved for process-source. Assign only DISCOVERED or ACCESSIBLE during discovery. |
 | Running domain-specific hooks for wrong research type | Guardrail 6: read the type-channel map's hook list. Only run hooks that appear in the current research type's channel map. |
 | wildcard include-domains failing in tvly | If a playbook lists wildcard domains (e.g., `investor.*.com`), replace with explicit domain list. Wildcards are unconfirmed in tvly's `--include-domains` — use specific URLs instead. |
+| Retrieval log write failure blocking discovery output | Step 6a non-blocking contract: if retrieval-log.json cannot be read, parsed, or written, print WARNING and proceed. The candidates file is the primary artifact. Never abort, retry, or ask the user to resolve before continuing. |
 
 ---
 
