@@ -110,8 +110,8 @@ Plans:
   3. Re-running discover with the same inputs produces a log entry that can be compared to the prior entry to detect result drift
 **Plans**: 2 plans
 Plans:
-- [ ] 15-01-PLAN.md — [to be planned]
-- [ ] 15-02-PLAN.md — [to be planned]
+- [ ] 15-01-PLAN.md — Log entry accumulation in discover Step 2 and batch write Step 6a to retrieval-log.json
+- [ ] 15-02-PLAN.md — Scaffold empty retrieval-log.json in init Step 5, verify checklist, and CLAUDE.md tree
 
 ### Phase 16: CLI Polish
 **Goal**: All 10 skills present output with consistent structure, clear next-action guidance, plain language, and progressive disclosure for long responses
