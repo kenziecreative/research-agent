@@ -138,6 +138,6 @@ Plans:
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 12. Claim Graph Operations | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 14. Web Channel Diversity | v1.3 | 2/2 | Complete   | 2026-04-20 |
+| 14. Web Channel Diversity | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
 | 16. CLI Polish | v1.3 | 0/? | Not started | - |
