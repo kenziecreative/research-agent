@@ -76,6 +76,27 @@ The user will provide a filepath to audit (should be a file in `research/drafts/
 
    Record the tier and a one-sentence rationale for each section. Add to the scorecard output (step 8) after severity distribution.
 
+8b. **Write claim graph nodes to `research/reference/claim-graph.json`.**
+
+   For every factual claim traced in step 5, construct a claim node using the data already in context:
+   - `id` — sequential prefix (c001, c002, ...) + slug from first 4-5 words of claim text (lowercase, hyphenated, non-alphanumeric stripped). Example: `"c001-market-size-exceeds-four"`. Sequential prefix guarantees uniqueness; slug makes IDs human-scannable.
+   - `text` — the claim text as traced in step 5
+   - `phase` — current phase number (read from `research/STATE.md` `Active phase` field)
+   - `section` — section name from the audit pass
+   - `confidence_tier` — tier computed in step 8a for this claim's section (High / Moderate / Low / Insufficient)
+   - `source_files` — array of note filenames traced in step 5
+   - `figure_ids` — array of figure IDs from canonical-figures.json that appear in this claim (empty array `[]` if none)
+   - `evidence_directness` — Direct / Indirect classification from step 8a
+   - `source_count` — integer count of independent sources from step 8a
+
+   Read `research/reference/claim-graph.json`. If the file does not exist, create it with `{"claims": []}`. If it exists but fails to parse as JSON, log a warning in the audit report and skip the graph write — do not fail the audit.
+
+   For claims already present in the graph (matched by `phase` + `section` + `text` equality), overwrite the existing node with the new data. For new claims, append to the `claims` array.
+
+   Write the updated JSON back to `research/reference/claim-graph.json`.
+
+   **After writing, verify the write succeeded.** Re-read the file and confirm it parses as valid JSON with a `claims` array. If the read fails or the array is missing, log: "WARNING: claim-graph.json write failed — graph incomplete for this phase. Re-run `/research:audit-claims` to retry graph write without re-running the full audit." Do not fail the audit or block promotion.
+
 9. **Write audit report to `research/audits/<original-filename>-audit.md`** with: scorecard, pass/fail determination, findings table, list of claims that need correction, and the confidence tier table (section name, tier, rationale) from step 8a.
 
    **After writing, verify the write succeeded.** Re-read the file path you just wrote and confirm it exists and contains the scorecard, findings table, and confidence tier table sections. If the read fails or any of those sections is missing, do not report "audit report written" — surface the write failure to the user with the exact path that failed, and do not advance to the pass/fail step until the write is confirmed.
@@ -212,6 +233,7 @@ Only after the user is done reacting to the debrief, render the transition promp
 | Silent phase closeout — promoting the draft and presenting the debrief but leaving STATE.md pointing at the completed phase | On PASS, execute the full closeout sequence in `After Audit / If PASS` step 2 before presenting the debrief. Every write — check off Verify, mark Phase N complete, advance Active phase to N+1, reset Cycle step, replace Current Phase Cycle with a fresh Phase N+1 checklist, reset per-phase source counters, rewrite Next Action — must land in STATE.md atomically. If any part cannot be completed (e.g., research-plan.md has no Phase N+1), stop and surface the discrepancy instead of partially updating. The next session may skip `/research:start-phase` and run `/research:discover` directly — STATE.md must be correct before the debrief, not after. |
 | Leaving the completed phase's cycle checklist in Current Phase Cycle alongside the new one | `Current Phase Cycle` always reflects exactly one active phase. When advancing to Phase N+1, replace the Phase N checklist entirely — the completed record lives in `Completed Phases`, not in `Current Phase Cycle`. Two checklists in `Current Phase Cycle` is a bug, not a history feature. |
 | Listing issues without applying mechanical fixes — stopping after the report instead of editing the draft | On FAIL, the 4-step sequence is mandatory: classify → apply mechanical fixes → list changes → tell user to re-run. If a fix is mechanical (correct value knowable from sources), apply it with the Edit tool. Do not present fixes as suggestions — make the edits. |
+| Graph write blocking audit promotion — treating a claim-graph.json write failure as an audit failure | Graph write is supplementary infrastructure, not an evidence gate. If claim-graph.json cannot be written or parsed, log a WARNING in the audit report but continue to the pass/fail determination. The audit gate protects research quality; the graph is for downstream traceability (Phase 12). Never fail an audit or block promotion due to a graph write issue. |
 
 ## Output
 Scorecard summary and pass/fail status.
