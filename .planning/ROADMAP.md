@@ -136,7 +136,7 @@ Plans:
 | 1-6 | v1.1 | 10/10 | Complete | 2026-03-30 |
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 12. Claim Graph Operations | v1.3 | 2/2 | Complete   | 2026-04-20 |
+| 12. Claim Graph Operations | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
