@@ -82,8 +82,8 @@ Plans:
   4. All three academic integrations degrade gracefully when an API is unavailable
 **Plans**: 2 plans
 Plans:
-- [x] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [x] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [ ] 13-01-PLAN.md — Crossref + Unpaywall integration in academic channel playbook
+- [ ] 13-02-PLAN.md — Contradicts classification and Evidence Against status in gap analysis
 **UI hint**: no
 
 ### Phase 14: Web Channel Diversity
@@ -97,8 +97,8 @@ Plans:
   4. Exa integration degrades gracefully when the API key is absent or the call fails
 **Plans**: 2 plans
 Plans:
-- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [ ] 14-01-PLAN.md — [to be planned]
+- [ ] 14-02-PLAN.md — [to be planned]
 
 ### Phase 15: Retrieval Provenance
 **Goal**: Every discovery call is logged with its query, channel, and returned URLs so any discovery run can be reproduced or audited
@@ -110,8 +110,8 @@ Plans:
   3. Re-running discover with the same inputs produces a log entry that can be compared to the prior entry to detect result drift
 **Plans**: 2 plans
 Plans:
-- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [ ] 15-01-PLAN.md — [to be planned]
+- [ ] 15-02-PLAN.md — [to be planned]
 
 ### Phase 16: CLI Polish
 **Goal**: All 10 skills present output with consistent structure, clear next-action guidance, plain language, and progressive disclosure for long responses
@@ -124,8 +124,8 @@ Plans:
   4. Skills that produce more than one screen of output lead with a summary section and gate details behind a clear separator or explicit prompt
 **Plans**: 2 plans
 Plans:
-- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [ ] 16-01-PLAN.md — [to be planned]
+- [ ] 16-02-PLAN.md — [to be planned]
 **UI hint**: yes
 
 ## Progress
@@ -137,7 +137,7 @@ Plans:
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 12. Claim Graph Operations | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
+| 13. Academic & Evidence Layer Expansion | v1.3 | 0/2 | Planning complete | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
 | 16. CLI Polish | v1.3 | 0/? | Not started | - |
