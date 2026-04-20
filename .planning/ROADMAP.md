@@ -52,7 +52,10 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   2. Each claim node carries edges pointing to the source note(s) that support it
   3. Each claim node carries an edge to any canonical figure it references (where applicable)
   4. The claim graph persists in a queryable structure within the project directory
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 
 ### Phase 12: Claim Graph Operations
 **Goal**: The claim graph supports transitive drift detection, per-claim confidence scoring, and weakest-link section rollups
@@ -63,7 +66,10 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   2. Each claim node displays an individual confidence tier derived from its source evidence
   3. A section's reported confidence tier equals the lowest confidence tier of any claim within it
   4. Drift flags are visible in audit-claims output before the user promotes to synthesis
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 
 ### Phase 13: Academic & Evidence Layer Expansion
 **Goal**: Academic discovery queries Crossref and Unpaywall alongside OpenAlex; gap analysis distinguishes absence of evidence from evidence against
@@ -74,7 +80,10 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   2. Papers found via OpenAlex or Crossref that have paywalled URLs are augmented with legal OA copy links from Unpaywall
   3. Gap analysis output explicitly labels uncovered research questions as either "no sources found" or "sources contradict hypothesis" rather than a single gap status
   4. All three academic integrations degrade gracefully when an API is unavailable
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 **UI hint**: no
 
 ### Phase 14: Web Channel Diversity
@@ -86,7 +95,10 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   2. URLs that appear in both Exa and Tavily results are collapsed to a single candidate entry
   3. The source of each candidate (Tavily, Exa, or both) is visible in the candidate list
   4. Exa integration degrades gracefully when the API key is absent or the call fails
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 
 ### Phase 15: Retrieval Provenance
 **Goal**: Every discovery call is logged with its query, channel, and returned URLs so any discovery run can be reproduced or audited
@@ -96,7 +108,10 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   1. After running discover, a retrieval log file exists containing the query string, channel name, and all returned URLs for that call
   2. The log is structured such that a user can filter entries by phase, channel, or query without parsing free text
   3. Re-running discover with the same inputs produces a log entry that can be compared to the prior entry to detect result drift
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 
 ### Phase 16: CLI Polish
 **Goal**: All 10 skills present output with consistent structure, clear next-action guidance, plain language, and progressive disclosure for long responses
@@ -107,7 +122,10 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
   2. Every skill ends with a next-action block naming the recommended next command and at least one alternative
   3. Transition text in all skills reads in plain, direct language with no academic hedging or jargon
   4. Skills that produce more than one screen of output lead with a summary section and gate details behind a clear separator or explicit prompt
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 **UI hint**: yes
 
 ## Progress
@@ -117,7 +135,7 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
 | 1-5 | v1.0 | 15/15 | Complete | 2026-03-29 |
 | 1-6 | v1.1 | 10/10 | Complete | 2026-03-30 |
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
-| 11. Claim Graph Foundation | v1.3 | 0/? | Not started | - |
+| 11. Claim Graph Foundation | v1.3 | 0/2 | Not started | - |
 | 12. Claim Graph Operations | v1.3 | 0/? | Not started | - |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
