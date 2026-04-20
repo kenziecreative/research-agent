@@ -314,14 +314,36 @@ All search-based channels use the tiered tool chain: `tvly search` (Tier 1) → 
 ### Web Search (channel-type: web-search)
 
 Primary tool: `tvly search` (via Bash)
+Secondary tool: Exa Search API (via Bash curl to `https://api.exa.ai/search`)
 
-Execution parameters (from web-search.md playbook):
+**Execution order:** Tavily first (up to 8 results), then Exa second (up to 8 results). Dedup collapses URL matches before presenting combined candidates. Maximum pre-dedup output: 16 candidates from web search.
+
+**Tavily execution parameters** (from web-search.md playbook):
 - `--topic general` for background/overview phases
 - `--topic news --time-range month` for recent-developments phases
 - `--include-domains`: leave empty for general web search (returns broadest results)
 - `--exclude-domains`: exclude low-credibility aggregators if specified in playbook
 
-Fallback chain: `npx firecrawl-cli search` (label: `[Firecrawl fallback]`) → `WebSearch` (label: `[WebSearch fallback]`)
+**Exa execution parameters** (from web-search.md playbook):
+- Authentication: `EXA_API_KEY` environment variable (free tier: 1,000 searches/month)
+- Search type: `auto` (routes to neural or keyword via Exa's internal categorization)
+- `numResults`: 8
+- `useAutoprompt`: true (lets Exa refine the query for semantic relevance)
+- Optional: `startPublishedDate` for time-bounded queries, `category` for entity-type biasing
+
+**Cross-tool deduplication** (per web-search.md Section 8):
+- Dedup key: exact URL string equality (no normalization)
+- Priority: Tavily entry kept; Exa duplicate silently dropped
+- Surviving duplicate tagged `[Tavily+Exa]`; Tavily-only tagged `[Tavily]`; Exa-only tagged `[Exa]`
+
+**Combined status line** (report after both tools complete):
+```
+Web Search: {N} results (Tavily: {n1}, Exa-only: {n2}, deduped: {n3}) [degraded: {list}]
+```
+
+**Tavily fallback chain** (unchanged): `npx firecrawl-cli search` (label: `[Firecrawl fallback]`) → `WebSearch` (label: `[WebSearch fallback]`)
+
+**Exa degradation:** If `EXA_API_KEY` is absent, or Exa returns error/timeout, skip silently. Log: `Exa: unavailable — web search results from Tavily only`. Exa failure does not trigger Tavily fallbacks — they are independent parallel tools.
 
 ### Financial (channel-type: financial)
 
