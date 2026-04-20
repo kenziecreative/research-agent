@@ -47,18 +47,18 @@
 
 | Requirement | Phase | Verified |
 |-------------|-------|----------|
-| TRACE-01 | — | — |
-| TRACE-02 | — | — |
-| TRACE-03 | — | — |
-| TRACE-04 | — | — |
-| TRACE-05 | — | — |
-| DISC-01 | — | — |
-| DISC-02 | — | — |
-| DISC-03 | — | — |
-| DISC-04 | — | — |
-| PROV-01 | — | — |
-| PROV-02 | — | — |
-| UX-01 | — | — |
-| UX-02 | — | — |
-| UX-03 | — | — |
-| UX-04 | — | — |
+| TRACE-01 | Phase 11 | — |
+| TRACE-02 | Phase 12 | — |
+| TRACE-03 | Phase 12 | — |
+| TRACE-04 | Phase 12 | — |
+| TRACE-05 | Phase 13 | — |
+| DISC-01 | Phase 13 | — |
+| DISC-02 | Phase 13 | — |
+| DISC-03 | Phase 14 | — |
+| DISC-04 | Phase 14 | — |
+| PROV-01 | Phase 15 | — |
+| PROV-02 | Phase 15 | — |
+| UX-01 | Phase 16 | — |
+| UX-02 | Phase 16 | — |
+| UX-03 | Phase 16 | — |
+| UX-04 | Phase 16 | — |
