@@ -1,36 +1,34 @@
 ---
 gsd_state_version: 1.0
-milestone: none
-milestone_name: none
-status: complete
-stopped_at: v1.2 milestone completed
-last_updated: "2026-04-04T00:00:00Z"
-last_activity: 2026-04-04 — v1.2 milestone archived
+milestone: v1.3
+milestone_name: Evidence Depth & Retrieval Integrity
+status: defining-requirements
+stopped_at: milestone started, defining requirements
+last_updated: "2026-04-20T00:00:00Z"
+last_activity: 2026-04-20 — Milestone v1.3 started
 progress:
   total_phases: 0
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
-  percent: 100
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-04)
+See: .planning/PROJECT.md (updated 2026-04-20)
 
 **Core value:** Every claim in the research output must trace to a specific, credibility-assessed source. If it can't be traced, it doesn't ship.
-**Current focus:** Planning next milestone
+**Current focus:** Defining requirements for v1.3
 
 ## Current Position
 
-Phase: N/A — between milestones
-Plan: N/A
-Status: v1.2 shipped, ready for /gsd:new-milestone
-Last activity: 2026-04-04 — v1.2 Evidence Quality & Analytical Rigor milestone archived
-
-Progress: [██████████] 100% (v1.2 complete)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-20 — Milestone v1.3 started
 
 ## Accumulated Context
 
@@ -49,6 +47,6 @@ None active.
 
 ## Session Continuity
 
-Last session: 2026-04-04
-Stopped at: v1.2 milestone completed
+Last session: 2026-04-20
+Stopped at: Milestone v1.3 started, defining requirements
 Resume file: None

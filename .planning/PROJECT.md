@@ -54,7 +54,16 @@ Shipped in v1.2:
 
 ### Active
 
-(No active milestone — use `/gsd:new-milestone` to define next)
+## Current Milestone: v1.3 Evidence Depth & Retrieval Integrity
+
+**Goal:** Deepen evidence traceability from individual claims through cross-phase figures, expand index diversity for honest source counting, and make discovery reproducible.
+
+**Target features:**
+- Claim graph — claims as nodes with edges to source notes and canonical figures; transitive drift detection across phases
+- Crossref + Unpaywall — academic channel expansion alongside OpenAlex for metadata gaps and legal OA copies
+- Exa as parallel web-search tier — neural/semantic index diversity surfacing non-SEO sources
+- Per-claim confidence propagation — weakest-link rollup from claims to section tiers
+- Retrieval replay logging — query, channel, and URL logging per discovery call for reproducibility
 
 ### Out of Scope
 
@@ -104,5 +113,22 @@ Shipped in v1.2:
 | Lopsided advisory (not gate) | Consistent with staleness advisory pattern; warns but doesn't block | ✓ Good |
 | Infrastructure checks read-only (no Bash) | Consistent with progress skill's allowed-tools constraint | ✓ Good |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-04-04 after v1.2 milestone*
+*Last updated: 2026-04-20 — v1.3 milestone started*
