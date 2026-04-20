@@ -97,7 +97,7 @@ Plans:
   4. Exa integration degrades gracefully when the API key is absent or the call fails
 **Plans**: 2 plans
 Plans:
-- [ ] 14-01-PLAN.md — Exa tool config, query templates, degradation, rate limits, and Section 8 dedup/attribution in web-search.md
+- [x] 14-01-PLAN.md — Exa tool config, query templates, degradation, rate limits, and Section 8 dedup/attribution in web-search.md
 - [ ] 14-02-PLAN.md — Extend discover/SKILL.md Web Search subsection with dual-tool execution documentation
 
 ### Phase 15: Retrieval Provenance
@@ -138,6 +138,6 @@ Plans:
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 12. Claim Graph Operations | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 14. Web Channel Diversity | v1.3 | 0/2 | Planned | - |
+| 14. Web Channel Diversity | v1.3 | 1/2 | In Progress|  |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
 | 16. CLI Polish | v1.3 | 0/? | Not started | - |
