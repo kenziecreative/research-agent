@@ -60,6 +60,13 @@ When given a file to review (a source note, a draft, or a synthesis document), p
 - Also check for direct contradictions: if any phase question's framing contradicts a fact stated in the digest, flag: "PLAN-DIGEST CONTRADICTION: Phase [N] assumes [assumption] but [filename] states [contrary fact]."
 - The purpose of this check is to make source skimming detectable. A plan that was generated from the user's verbal description without reading the source files will produce many UNPROCESSED SOURCE MATERIAL FACT findings — that is the signal that the plan needs to be regenerated with the digest as ground truth.
 
+### 9. Claim Graph Consistency
+- This check applies only when `research/reference/claim-graph.json` exists and the file under review is a phase output (`research/outputs/`) or draft (`research/drafts/`).
+- Read `research/reference/claim-graph.json`. If the file does not exist, skip this check without comment (the graph is scaffolded at init but populated only after the first audit-claims run).
+- For each claim node in the graph whose `phase` matches the current phase under review: verify the `confidence_tier` in the graph matches the tier shown for that section in the audit report (if an audit report exists in `research/audits/`).
+- Flag: "CLAIM GRAPH INCONSISTENCY: claim [id] in claim-graph.json has confidence_tier [A], but the audit report for [phase output] shows [B] for section [section]. The graph may have been written from a stale audit pass."
+- This check is advisory — it surfaces drift between the graph and the audit record, but does not block promotion.
+
 ## How to Use This Agent
 
 Invoke this agent after:
@@ -68,6 +75,7 @@ Invoke this agent after:
 - Writing a synthesis document (check everything, especially cross-phase drift)
 - `/research:init` generates a research plan when `source-material/` contained files (pass BOTH the plan path and the digest path so check 8 runs)
 - `/research:start-phase` detects new files in `source-material/` and the digest is regenerated (re-run check 8 against the current plan)
+- After `/research:audit-claims` writes claim nodes to claim-graph.json (check 9 catches graph-audit consistency drift)
 - Any time something feels like it might have drifted
 
 Pass the filepath to review. For check 8 specifically, pass two paths: the research plan and the source material digest. The agent will read the file(s), read the relevant source notes, and report only issues found. If no issues are found, it will say: "No integrity issues found in [filename]."
