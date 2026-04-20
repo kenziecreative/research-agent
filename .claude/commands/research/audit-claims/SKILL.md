@@ -62,11 +62,16 @@ The user will provide a filepath to audit (should be a file in `research/drafts/
    - Issues found: N mismatches, N unsourced, N drift, N range narrowed
    - Severity distribution: N high, N moderate, N low
 
-   Section confidence tiers:
-   - [Section name]: [Tier] — [brief rationale: e.g., "3 credible sources, direct evidence, no staleness"]
-   - [Section name]: [Tier] — [brief rationale]
+   - Drift warnings: N claims referencing figures that have changed since last audit
+     (claim IDs: [id1, id2, ...] — review canonical-figures.json for current values)
 
-   Overall confidence: [Tier of lowest section] (weakest-link determines overall)
+   Section confidence tiers (weakest-link per section from claim graph):
+   - [Section name]: [minimum tier among claims in this section] — weakest claim: [claim id], [rationale]
+   - [Section name]: [minimum tier] — weakest claim: [claim id], [rationale]
+
+   Tier ordering: Insufficient (0) < Low (1) < Moderate (2) < High (3). For each section, group claim nodes by `section` field from claim-graph.json, take the minimum `confidence_tier` value. The node with the lowest score is the weakest link for that section.
+
+   Overall confidence: [minimum tier across all sections] (weakest-link determines overall)
 
 8a. **Compute per-section confidence tier:**
 
@@ -108,6 +113,8 @@ The user will provide a filepath to audit (should be a file in `research/drafts/
    Read `research/reference/claim-graph.json`. If the file does not exist, create it with `{"claims": []}`. If it exists but fails to parse as JSON, log a warning in the audit report and skip the graph write — do not fail the audit.
 
    For claims already present in the graph (matched by `phase` + `section` + `text` equality), overwrite the existing node with the new data. For new claims, append to the `claims` array.
+
+   **Drift warning lifecycle:** On re-audit, the drift detection pass in step 6a evaluates all figure_ids against the current canonical registry before step 8b runs. If a previously drifted figure now matches (drift resolved), the node written here will have no `drift_warning` field. If drift persists, the `drift_warning` set by step 6a will be included in the overwritten node. Step 8b does not independently manage drift_warning — it inherits whatever state step 6a established for each node.
 
    Write the updated JSON back to `research/reference/claim-graph.json`.
 
@@ -250,6 +257,7 @@ Only after the user is done reacting to the debrief, render the transition promp
 | Leaving the completed phase's cycle checklist in Current Phase Cycle alongside the new one | `Current Phase Cycle` always reflects exactly one active phase. When advancing to Phase N+1, replace the Phase N checklist entirely — the completed record lives in `Completed Phases`, not in `Current Phase Cycle`. Two checklists in `Current Phase Cycle` is a bug, not a history feature. |
 | Listing issues without applying mechanical fixes — stopping after the report instead of editing the draft | On FAIL, the 4-step sequence is mandatory: classify → apply mechanical fixes → list changes → tell user to re-run. If a fix is mechanical (correct value knowable from sources), apply it with the Edit tool. Do not present fixes as suggestions — make the edits. |
 | Graph write blocking audit promotion — treating a claim-graph.json write failure as an audit failure | Graph write is supplementary infrastructure, not an evidence gate. If claim-graph.json cannot be written or parsed, log a WARNING in the audit report but continue to the pass/fail determination. The audit gate protects research quality; the graph is for downstream traceability (Phase 12). Never fail an audit or block promotion due to a graph write issue. |
+| Skipping drift detection when claim-graph.json exists — missing drift warnings because graph parse is slow or unexpected | Always attempt drift detection when claim-graph.json exists and parses. A drift_warning in the claim graph means a canonical figure changed after a claim was written — surfacing it is the point. Only skip if the file is absent or unparseable. |
 
 ## Output
 Scorecard summary and pass/fail status.
