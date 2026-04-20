@@ -301,3 +301,47 @@ If Exa is unavailable (API key absent, timeout > 15 seconds, HTTP 5xx, HTTP 429,
 - No per-second throttle required for typical research sessions (1-20 searches per session)
 - Monthly cap is shared with all Exa usage — budget searches conservatively if approaching limit
 - Rate limit detection: 429 response or non-zero exit from curl → trigger Exa degradation (Section 6)
+
+---
+
+## 8. Deduplication and Priority Rules
+
+**Query order:** Tavily first, Exa second (per D-02). Tavily executes and returns up to 8 results. Exa then executes and returns up to 8 results. Dedup collapses overlaps before presenting combined candidates.
+
+**Deduplication by URL:** If a URL appears in both Tavily and Exa results (matched by exact URL string equality — no normalization, no trailing-slash stripping, no protocol comparison), the Tavily entry is kept as the primary candidate. The Exa entry is silently dropped. The surviving candidate receives the `[Tavily+Exa]` attribution tag to indicate both engines found it.
+
+**No data merge:** Unlike academic.md's Crossref gap-filling, web-search dedup is pure collapse. Tavily metadata (title, snippet) is kept; Exa metadata for the duplicate is discarded. This keeps the contract simple — URL string equality is the only dedup key.
+
+**Source attribution tags:** Every candidate in the web-search channel carries an engine attribution tag after its status tag:
+
+| Tag | Meaning |
+|-----|---------|
+| `[Tavily]` | Found by Tavily only |
+| `[Exa]` | Found by Exa only (not in Tavily results) |
+| `[Tavily+Exa]` | Found by both; Tavily entry kept, Exa match collapsed |
+
+**Candidate format with attribution:**
+```
+- [ACCESSIBLE] [Tavily] Title — URL
+- [DISCOVERED] [Exa] Title — URL
+- [ACCESSIBLE] [Tavily+Exa] Title — URL
+```
+
+The engine tag appears immediately after the status tag (`[ACCESSIBLE]`, `[DISCOVERED]`, `[PROCESSED]`) and before the title. This extends the existing tag idiom used by `[Firecrawl fallback]` and `[WebSearch fallback]`.
+
+**Channel status line:** After both APIs complete (or Exa degrades), report a single web-search channel status line:
+
+```
+Web Search: {N} results (Tavily: {n1}, Exa-only: {n2}, deduped: {n3}) [degraded: {list}]
+```
+
+Where:
+- `{N}` = total unique candidates presented (n1 + n2, after dedup)
+- `{n1}` = results from Tavily (including those that were also in Exa, tagged [Tavily+Exa])
+- `{n2}` = results from Exa that were NOT in Tavily results
+- `{n3}` = number of Exa results dropped due to URL match with Tavily
+- `{list}` = names any tool that was unavailable during this run (e.g., "Exa"); empty if both succeeded
+
+**Exa-only mode:** If Tavily degrades but Exa succeeds, all Exa results are tagged `[Exa]` and reported normally. The status line shows `Tavily: 0` and notes `[degraded: Tavily]`.
+
+**Tavily-only mode:** If Exa degrades, all Tavily results are tagged `[Tavily]`. Status line shows `Exa-only: 0, deduped: 0` and notes `[degraded: Exa]`.
