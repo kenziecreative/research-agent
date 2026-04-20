@@ -36,7 +36,7 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
 
 - [x] **Phase 11: Claim Graph Foundation** - Represent claims as graph nodes with edges to sources and canonical figures (completed 2026-04-20)
 - [x] **Phase 12: Claim Graph Operations** - Transitive drift detection, per-claim confidence, and weakest-link rollup (completed 2026-04-20)
-- [ ] **Phase 13: Academic & Evidence Layer Expansion** - Crossref + Unpaywall academic channel additions; absence-vs-contradiction gap distinction
+- [x] **Phase 13: Academic & Evidence Layer Expansion** - Crossref + Unpaywall academic channel additions; absence-vs-contradiction gap distinction (completed 2026-04-20)
 - [ ] **Phase 14: Web Channel Diversity** - Exa neural search as parallel web-search tier with deduplication against Tavily
 - [ ] **Phase 15: Retrieval Provenance** - Structured retrieval log for reproducible discovery
 - [ ] **Phase 16: CLI Polish** - Consistent formatting, next-action blocks, approachable language, and progressive disclosure across all 10 skills
@@ -82,8 +82,8 @@ Plans:
   4. All three academic integrations degrade gracefully when an API is unavailable
 **Plans**: 2 plans
 Plans:
-- [ ] 13-01-PLAN.md — Crossref + Unpaywall integration in academic channel playbook
-- [ ] 13-02-PLAN.md — Contradicts classification and Evidence Against status in gap analysis
+- [x] 13-01-PLAN.md — Crossref + Unpaywall integration in academic channel playbook
+- [x] 13-02-PLAN.md — Contradicts classification and Evidence Against status in gap analysis
 **UI hint**: no
 
 ### Phase 14: Web Channel Diversity
@@ -137,7 +137,7 @@ Plans:
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 12. Claim Graph Operations | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 13. Academic & Evidence Layer Expansion | v1.3 | 0/2 | Planning complete | - |
+| 13. Academic & Evidence Layer Expansion | v1.3 | 2/2 | Complete   | 2026-04-20 |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
 | 16. CLI Polish | v1.3 | 0/? | Not started | - |
