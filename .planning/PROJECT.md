@@ -78,7 +78,8 @@ Shipped in v1.2:
 - Built on Claude Code with slash commands in `.claude/commands/research/`
 - Uses Tavily MCP server for web search and content extraction
 - v1.2 shipped evidence quality gates: contradiction/saturation/laundering detection in cross-ref, staleness/confidence/assumptions in the synthesis pipeline, independence-aware gap analysis, infrastructure health visibility
-- Discovery channels: Tavily (web/financial/social/domain), OpenAlex (academic), EDGAR EFTS (regulatory filings), ProPublica (nonprofits), Google Patents (URL construction)
+- Discovery channels: Tavily (web/financial/social/domain), OpenAlex + Crossref + Unpaywall (academic), EDGAR EFTS (regulatory filings), ProPublica (nonprofits), Google Patents (URL construction)
+- Gap analysis distinguishes absence of evidence from evidence-against (Contradicts classification + Evidence Against status)
 - Discover skill is a thin orchestrator — all channel intelligence lives in playbooks, not the skill
 - Init generates per-project discovery strategy mapping phases to channels
 - Known tech debt: audit-claims staleness input lacks explicit Read instruction for type template (INT-01, advisory-only impact)
@@ -131,4 +132,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-20 — Phase 12 (Claim Graph Operations) complete*
+*Last updated: 2026-04-20 — Phase 13 (Academic & Evidence Layer Expansion) complete*
