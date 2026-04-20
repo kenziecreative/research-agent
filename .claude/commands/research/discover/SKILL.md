@@ -129,8 +129,8 @@ Before writing, check if `research/discovery/{phase}-candidates.md` already exis
 
 Apply the canonical status taxonomy (DISCOVERED / ACCESSIBLE / PROCESSED) to each result:
 
-- **ACCESSIBLE**: Search tool returned full content snippets, OR source is known open-access (e.g., OpenAlex `is_oa=true`, Wikipedia, government data portals, arxiv.org, SEC EDGAR filings)
-- **DISCOVERED**: URL returned but content not verified — applies to URL-only results, paywalled domains (wsj.com, ft.com, bloomberg.com, economist.com, hbr.org), Google Patents constructed URLs, and any result where only a title/snippet was returned without confirmed content extraction
+- **ACCESSIBLE**: Search tool returned full content snippets, OR source is known open-access (e.g., OpenAlex `is_oa=true`, Unpaywall `best_oa_location.url` present and non-null, Wikipedia, government data portals, arxiv.org, SEC EDGAR filings)
+- **DISCOVERED**: URL returned but content not verified — applies to URL-only results, paywalled domains (wsj.com, ft.com, bloomberg.com, economist.com, hbr.org), Google Patents constructed URLs, and any result where only a title/snippet was returned without confirmed content extraction. Academic papers with `is_oa=false` from OpenAlex or Crossref begin as DISCOVERED; Unpaywall lookup (per academic.md Section 8) may upgrade them to ACCESSIBLE inline during the same discovery pass if a legal OA copy is found.
 - **PROCESSED**: Reserved — do not assign PROCESSED status during discovery. This status is set by process-source when the source is fully extracted and integrated into research notes.
 
 When uncertain, default to DISCOVERED. Better to underestimate than to claim accessibility incorrectly.

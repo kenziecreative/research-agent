@@ -1,6 +1,6 @@
 ---
 name: academic
-description: Academic paper and scholarly source discovery via OpenAlex API
+description: Academic paper and scholarly source discovery via OpenAlex, Crossref, and Unpaywall APIs
 allowed-tools: [Bash, WebSearch]
 channel-type: academic
 ---
@@ -19,15 +19,28 @@ channel-type: academic
 
 ## 2. Tool Configuration
 
-**Primary tool:** Bash (curl to OpenAlex HTTP API)
+**Primary tool:** Bash (curl to three HTTP APIs)
 
-**Authentication:** None required — OpenAlex is fully open access.
+**Authentication:** None required for any API.
 
-**Base URL:** `https://api.openalex.org`
+**API 1 — OpenAlex:**
+- Base URL: `https://api.openalex.org`
+- Authentication: None required — OpenAlex is fully open access.
+- Polite pool: Include `mailto` parameter with a contact email for priority rate limit tier (10 req/s vs 1 req/s without).
+- Response format: JSON
+- Returns: Paper metadata including title, DOI, authors, citation count, open-access status, and OA URL
 
-**Polite pool:** Include `mailto` parameter with a contact email for priority rate limit tier (10 req/s vs 1 req/s without).
+**API 2 — Crossref:**
+- Base URL: `https://api.crossref.org/works`
+- Authentication: None required — polite pool via `mailto` query parameter (same as OpenAlex convention)
+- Response format: JSON
+- Returns: Paper metadata including DOI, title, authors, citation count (is-referenced-by-count), publication date, and primary URL
 
-**Response format:** JSON
+**API 3 — Unpaywall:**
+- Base URL: `https://api.unpaywall.org/v2/{doi}`
+- Authentication: None required — email parameter required for identification: `?email={email}`
+- Response format: JSON
+- Returns: Open access status, best OA location URL, license, and OA type (gold/green/hybrid/bronze/closed)
 
 ---
 
@@ -59,6 +72,48 @@ curl -s "https://api.openalex.org/works?search={topic}&filter=from_publication_d
 ```
 
 Substitute: `{topic}` = search phrase, `{year_minus_5}` = current year minus 5 (e.g., `2020` if current year is 2025), `{email}` = contact email.
+
+### Crossref Query Templates
+
+### Template D — Crossref Topic Search
+Find papers on a subject via Crossref, sorted by relevance:
+
+```bash
+curl -s "https://api.crossref.org/works?query={topic}&rows=8&sort=relevance&order=desc&mailto={email}"
+```
+
+Substitute: `{topic}` = search phrase (URL-encode spaces as `+`), `{email}` = contact email for polite pool.
+
+### Template E — Crossref Author Search
+Find papers by a specific author:
+
+```bash
+curl -s "https://api.crossref.org/works?query.author={author_name}&rows=8&sort=published&order=desc&mailto={email}"
+```
+
+Substitute: `{author_name}` = author name (URL-encode spaces as `+`), `{email}` = contact email.
+
+### Template F — Crossref DOI Lookup
+Retrieve full metadata for a known DOI:
+
+```bash
+curl -s "https://api.crossref.org/works/{doi}?mailto={email}"
+```
+
+Substitute: `{doi}` = full DOI (e.g., `10.1038/s41586-020-2649-2`), `{email}` = contact email.
+
+### Unpaywall Lookup
+
+### Template G — Unpaywall OA Check
+Check if a paywalled paper has a legal open-access copy:
+
+```bash
+curl -s "https://api.unpaywall.org/v2/{doi}?email={email}"
+```
+
+Substitute: `{doi}` = full DOI (e.g., `10.1038/s41586-020-2649-2`), `{email}` = contact email.
+
+**Trigger condition:** Call only when a paper has `is_oa=false` (from OpenAlex) or no OA indicator (from Crossref). Do not call for papers already known to be open access. Bounded by the existing 8-result-per-channel cap — worst case 8 Unpaywall calls per query.
 
 ---
 
@@ -105,7 +160,7 @@ Reference `.claude/reference/discovery/channel-playbooks/web-search.md` for cano
 
 ## 6. Degradation Behavior
 
-**Primary:** Bash curl to OpenAlex API (`https://api.openalex.org`)
+**Primary:** Bash curl to OpenAlex, Crossref, and Unpaywall APIs
 
 **Tier 2 [Tavily fallback]:** `tvly search` with academic domain scoping:
 ```bash
@@ -127,8 +182,26 @@ Label results: "via WebSearch (OpenAlex+tvly+Firecrawl fallback)". Warn user tha
 
 > The agent works out of the box with zero CLIs installed — WebSearch is always available.
 
+**Crossref degradation (if api.crossref.org unavailable):**
+
+**Tier 2 [Tavily fallback] for Crossref:**
+```bash
+tvly search "{topic} site:doi.org OR site:crossref.org" --depth advanced --max-results 8 --json
+```
+Label results: "via tvly (Crossref fallback)"
+
+**Tier 3 [WebSearch fallback] for Crossref:**
+```
+query: "{topic} DOI academic paper crossref"
+```
+Label results: "via WebSearch (Crossref fallback)". Warn user that citation metadata will be unavailable.
+
+**Unpaywall degradation (if api.unpaywall.org unavailable):**
+
+If Unpaywall is unavailable (timeout > 15 seconds, HTTP 5xx, HTTP 429), the paper remains DISCOVERED. Skip silently. Log a one-line channel status note: `Unpaywall: unavailable — N papers remain DISCOVERED`. Do not retry. Do not block. Do not fall back to another service — there is no equivalent free OA lookup service.
+
 **Unavailable criteria:** Trigger next tier when:
-- HTTP 5xx response from api.openalex.org (or non-zero exit from CLI)
+- HTTP 5xx response from api.openalex.org or api.crossref.org (or non-zero exit from CLI)
 - Request timeout > 15 seconds
 - HTTP 429 rate limit (without mailto parameter — add mailto and retry once before falling back)
 
@@ -142,11 +215,39 @@ Label results: "via WebSearch (OpenAlex+tvly+Firecrawl fallback)". Warn user tha
 
 **Daily cap:** None documented for reasonable usage (hundreds of requests per session is fine).
 
+**Crossref polite pool (with mailto parameter):** 50 requests/second
+
+**Crossref without mailto:** Rate limited to ~1 request/second with aggressive throttling.
+
+**Unpaywall (with email parameter):** 100,000 requests/day (practically unlimited for research use). Required: `email` parameter in every request.
+
 **Tavily (`tvly search`, fallback):** ~1,000 searches/month on free tier.
 
 **Firecrawl (`npx firecrawl-cli search`, fallback):** Free tier: 500 credits/month; each search consumes credits based on result count.
 
-**Best practice:** Always include `mailto={email}` parameter for OpenAlex. For bulk retrieval, use cursor-based pagination with `cursor=*` parameter rather than high `per_page` values.
+**Best practice:** Always include `mailto={email}` parameter for OpenAlex and Crossref requests. For bulk retrieval, use cursor-based pagination with `cursor=*` parameter rather than high `per_page` values.
+
+---
+
+## 8. Deduplication and Priority Rules
+
+**Query order:** OpenAlex first, Crossref second, Unpaywall third (inline during same pass).
+
+**Deduplication by DOI:** If a paper appears in both OpenAlex and Crossref results (matched by DOI string equality after normalization to lowercase), the OpenAlex entry is kept. The Crossref entry is silently dropped. This mirrors the URL deduplication in the discover skill's Step 4.
+
+**Data merge:** After deduplication, Crossref enriches missing fields on the surviving OpenAlex entries:
+- If OpenAlex entry has no DOI but Crossref matched by title → add DOI from Crossref
+- If OpenAlex entry has no citation count → use Crossref `is-referenced-by-count`
+- If OpenAlex author list is incomplete → supplement from Crossref `author[]`
+- OpenAlex data has priority in all cases — Crossref fills gaps only, never overwrites
+
+**Unpaywall trigger:** Called only when a paper has `is_oa=false` (from OpenAlex) or has no OA indicator (from Crossref-only results). Result: if `best_oa_location.url` is present and non-null, upgrade source status from DISCOVERED to ACCESSIBLE. Capped by the existing 8-result-per-channel limit.
+
+**Channel status line:** After all three APIs complete, report a single academic channel status line:
+```
+Academic: {N} results (OpenAlex: {n1}, Crossref-only: {n2}, Unpaywall upgrades: {n3}) [degraded: {list}]
+```
+Where `{list}` names any API that was unavailable during this run (empty if all succeeded).
 
 ---
 
@@ -200,3 +301,58 @@ Trimmed OpenAlex JSON response for a works query. The discover skill should extr
 - `open_access.oa_url` — direct full-text URL if open access
 - `primary_location.source.display_name` — journal or repository name
 - `is_retracted` — if true, flag prominently before including in research
+
+### Crossref Example Response
+
+Trimmed Crossref JSON response for a works query. The discover skill should extract these fields:
+
+```json
+{
+  "message": {
+    "items": [
+      {
+        "DOI": "10.1038/s41586-020-2649-2",
+        "title": ["Language models show human-like content effects on reasoning"],
+        "author": [
+          {"given": "Ishita", "family": "Dasgupta"}
+        ],
+        "is-referenced-by-count": 245,
+        "published": {"date-parts": [[2023, 1, 15]]},
+        "resource": {"primary": {"URL": "https://doi.org/10.1038/s41586-020-2649-2"}}
+      }
+    ]
+  }
+}
+```
+
+**Fields to extract per result:**
+- `DOI` — canonical identifier (use for deduplication against OpenAlex)
+- `title[0]` — paper title (Crossref wraps in array)
+- `author[].given` + `author[].family` — author names
+- `is-referenced-by-count` — citation count
+- `published.date-parts[0]` — publication date as [year, month, day] array
+- `resource.primary.URL` — landing page URL
+
+### Unpaywall Example Response
+
+Trimmed Unpaywall JSON response for a DOI lookup:
+
+```json
+{
+  "doi": "10.1038/s41586-020-2649-2",
+  "is_oa": true,
+  "best_oa_location": {
+    "url": "https://europepmc.org/articles/pmc7888567",
+    "license": "cc-by",
+    "version": "publishedVersion"
+  },
+  "oa_status": "green"
+}
+```
+
+**Fields to extract:**
+- `doi` — confirms lookup target
+- `is_oa` — true means legal OA copy found; upgrade source status to ACCESSIBLE
+- `best_oa_location.url` — direct OA URL (use as the accessible link in candidates)
+- `best_oa_location.license` — license type (cc-by, cc-by-nc, etc.)
+- `oa_status` — gold/green/hybrid/bronze/closed (informational for credibility notes)
