@@ -144,13 +144,17 @@ There is no percentage threshold. Every specific claim must check out. The score
 
   3. **Present the phase debrief** (see below). The debrief runs *after* STATE.md is advanced, not before.
 
-- **If FAIL:** Leave the file in `research/drafts/`. List every issue with line-level specifics and what needs to change. Do not promote until it passes. **Do not touch STATE.md on a failed audit** — the phase is still in the Verify step until the audit passes.
+- **If FAIL:** Do not promote the draft. Do not touch STATE.md. Execute the following steps in order — do not stop after step 1:
 
-  **Apply mechanical fixes directly.** For each issue where the correction is mechanical — a misattributed range, a typo'd figure, a wrong citation pointing at a note that exists, a qualifier strip that matches canonical data — apply the fix to the draft without asking permission. Mechanical means: the correct value or wording is already knowable from the source notes, canonical-figures.json, or an analogous fix already made elsewhere in the same draft. After fixing, list each fix applied (file, line, before → after) so the user can see what changed. Then tell the user: "Fixes applied. Re-run `/research:audit-claims <filepath>` to verify."
+  1. **Classify each issue as mechanical or judgment.**
+     - *Mechanical:* the correct value or wording is already knowable from the source notes, canonical-figures.json, or an analogous fix already made elsewhere in the same draft. Examples: misattributed range, typo'd figure, wrong citation pointing at a note that exists, qualifier strip that matches canonical data.
+     - *Judgment:* choosing between two plausible sources, rewriting a claim whose support is missing entirely, resolving a contradiction the draft got wrong.
 
-  **Do not apply non-mechanical fixes.** If a fix requires judgment — choosing between two plausible sources, rewriting a claim whose support is missing entirely, resolving a contradiction the draft got wrong — list the issue and stop. The user must decide.
+  2. **Apply every mechanical fix to the draft now.** Do not ask permission. Use the Edit tool to make each change in the draft file. This is not optional — if a fix is mechanical, apply it.
 
-  **Never auto-re-run the audit.** Even after applying mechanical fixes, do not chain into another `/research:audit-claims` call. Re-audit is always user-invoked so each audit is a fresh, full check (fixes can introduce new problems).
+  3. **List what you did and what remains.** For each mechanical fix applied, show: file, line, before → after. For each judgment issue, describe what needs to change and why the user must decide.
+
+  4. **Tell the user to re-run the audit.** End with: "Fixes applied. Re-run `/research:audit-claims <filepath>` to verify." Never auto-re-run — re-audit is always user-invoked so each audit is a fresh, full check (fixes can introduce new problems).
 
 ## Phase Debrief (after pass)
 
@@ -207,10 +211,11 @@ Only after the user is done reacting to the debrief, render the transition promp
 | Conflating confidence with audit pass/fail — treating low confidence as a failure | Confidence tier measures evidence strength (how well-supported). Audit pass/fail measures evidence accuracy (how truthfully represented). A section with one source, accurately cited, passes the audit with Low confidence. Do not fail it for having thin evidence — flag the tier and let the user decide whether to add sources. |
 | Silent phase closeout — promoting the draft and presenting the debrief but leaving STATE.md pointing at the completed phase | On PASS, execute the full closeout sequence in `After Audit / If PASS` step 2 before presenting the debrief. Every write — check off Verify, mark Phase N complete, advance Active phase to N+1, reset Cycle step, replace Current Phase Cycle with a fresh Phase N+1 checklist, reset per-phase source counters, rewrite Next Action — must land in STATE.md atomically. If any part cannot be completed (e.g., research-plan.md has no Phase N+1), stop and surface the discrepancy instead of partially updating. The next session may skip `/research:start-phase` and run `/research:discover` directly — STATE.md must be correct before the debrief, not after. |
 | Leaving the completed phase's cycle checklist in Current Phase Cycle alongside the new one | `Current Phase Cycle` always reflects exactly one active phase. When advancing to Phase N+1, replace the Phase N checklist entirely — the completed record lives in `Completed Phases`, not in `Current Phase Cycle`. Two checklists in `Current Phase Cycle` is a bug, not a history feature. |
+| Listing issues without applying mechanical fixes — stopping after the report instead of editing the draft | On FAIL, the 4-step sequence is mandatory: classify → apply mechanical fixes → list changes → tell user to re-run. If a fix is mechanical (correct value knowable from sources), apply it with the Edit tool. Do not present fixes as suggestions — make the edits. |
 
 ## Output
 Scorecard summary and pass/fail status.
 
-**If failed:** list every issue with its location and what needs to change. Apply mechanical fixes directly (see "If FAIL" above for the mechanical-vs-judgment distinction) and list each fix applied. Do NOT render a transition prompt — a failed audit is a loop, not a transition. After fixes are applied, tell the user to re-run `/research:audit-claims` on the same file; do not auto-invoke it.
+**If failed:** Execute the full 4-step fail sequence (classify → apply mechanical fixes → list changes and remaining issues → tell user to re-run). Do NOT render a transition prompt — a failed audit is a loop, not a transition. Do NOT stop after listing issues — if any fix is mechanical, apply it before responding to the user.
 
 **If passed:** confirm the promotion to `outputs/`, present the phase debrief (see above), wait for the user to react, and then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`). The transition prompt appears only after the user is done reacting to the debrief — not before.
