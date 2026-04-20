@@ -68,7 +68,7 @@ Plans:
   4. Drift flags are visible in audit-claims output before the user promotes to synthesis
 **Plans**: 2 plans
 Plans:
-- [ ] 12-01-PLAN.md — Drift detection, issue type, weakest-link rollup, and drift_warning lifecycle in audit-claims
+- [x] 12-01-PLAN.md — Drift detection, issue type, weakest-link rollup, and drift_warning lifecycle in audit-claims
 - [ ] 12-02-PLAN.md — Drift warning surfacing in research-integrity agent check 9
 
 ### Phase 13: Academic & Evidence Layer Expansion
@@ -136,7 +136,7 @@ Plans:
 | 1-6 | v1.1 | 10/10 | Complete | 2026-03-30 |
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
 | 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 12. Claim Graph Operations | v1.3 | 0/2 | Not started | - |
+| 12. Claim Graph Operations | v1.3 | 1/2 | In Progress|  |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
 | 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
