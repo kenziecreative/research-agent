@@ -82,8 +82,8 @@ Plans:
   4. All three academic integrations degrade gracefully when an API is unavailable
 **Plans**: 2 plans
 Plans:
-- [ ] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
-- [ ] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
+- [x] 11-01-PLAN.md — Add step 8b to audit-claims (claim graph write path)
+- [x] 11-02-PLAN.md — Init scaffolding + research-integrity check 9
 **UI hint**: no
 
 ### Phase 14: Web Channel Diversity
@@ -135,7 +135,7 @@ Plans:
 | 1-5 | v1.0 | 15/15 | Complete | 2026-03-29 |
 | 1-6 | v1.1 | 10/10 | Complete | 2026-03-30 |
 | 7-10 | v1.2 | 8/8 | Complete | 2026-04-04 |
-| 11. Claim Graph Foundation | v1.3 | 2/2 | Complete   | 2026-04-20 |
+| 11. Claim Graph Foundation | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 12. Claim Graph Operations | v1.3 | 0/? | Not started | - |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 0/? | Not started | - |
 | 14. Web Channel Diversity | v1.3 | 0/? | Not started | - |
