@@ -28,6 +28,21 @@ The user will provide a filepath to audit (should be a file in `research/drafts/
    - If a number is carried from a previous phase, does it match the original exactly?
 6. **Cross-document consistency check:** If other files already exist in `research/outputs/` or `research/drafts/`, check whether this draft and those documents cite the same numbers for the same claims. Flag any inconsistencies.
 6a. **Canonical figures check:** Read `research/reference/canonical-figures.json`. If the file does not exist, note "No canonical figures registry yet — first phase of this research project or registry not yet populated. Skipping this check; it will activate once figures are registered." and continue to step 7. If the file exists but fails to parse as JSON, stop the audit and tell the user: "`research/reference/canonical-figures.json` exists but cannot be parsed as JSON. This is a registry corruption — restore from git or fix the file manually before re-running the audit. Do not promote the draft." Do not proceed until the file is valid. If the file exists and parses correctly, for every number in the draft that exists in the canonical registry, verify it matches exactly. Flag any discrepancy as high-severity.
+
+   **Drift detection (claim graph):** If `research/reference/claim-graph.json` exists and parses correctly, walk every claim node whose `figure_ids` array is non-empty. For each figure ID listed, look up the current value in the canonical-figures.json registry (already read above). If the registry value differs from the value stored when the claim was written (detectable when the claim text contains a specific figure that no longer matches the canonical value), annotate the claim node with a `drift_warning` object:
+   ```json
+   {
+     "figure_id": "<id from figure_ids>",
+     "expected_value": "<value stored in claim at last audit>",
+     "canonical_value": "<current registry value>"
+   }
+   ```
+   Write the annotated claim-graph.json back to disk. Do not alter the claim's `confidence_tier`. Collect all drift warnings for reporting in the findings table (step 7) and scorecard (step 8). If claim-graph.json does not exist or fails to parse, skip drift detection without comment — the graph is supplementary infrastructure; its absence does not block the audit.
+
+   **Transitive detection:** Drift is resolved in the same read pass — a figure ID may appear in multiple claim nodes. Flag all nodes referencing a revised figure; no separate traversal step is needed because `figure_ids` is a flat array on each node.
+
+   **Error handling:** If claim-graph.json exists but fails to parse as JSON, log a warning and skip drift detection — do not fail the audit. After writing drift_warning annotations back to disk, re-read the file and confirm it parses as valid JSON. If the write verification fails, log: "WARNING: claim-graph.json drift annotation write failed" and continue the audit.
+
 7. **Classify each issue found:**
    - **Unsupported claim** — No source note backs this up
    - **Misrepresented** — Source says something different than what's claimed
@@ -38,6 +53,7 @@ The user will provide a filepath to audit (should be a file in `research/drafts/
    - **Qualifier dropped** — Source qualification was lost in compression
    - **Number drift** — Figure doesn't match the cited source
    - **Cross-document inconsistency** — Same claim, different figures across documents
+   - **Drift detected** — A canonical figure this claim references has changed since the claim was written; `drift_warning` field has been set on the claim node in claim-graph.json
 8. **Generate audit scorecard:**
    - Total specific claims checked: N
    - Claims traced to source: N (X%)
