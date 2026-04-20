@@ -104,6 +104,26 @@ For each channel:
 
 **h.** If a channel fails (timeout, rate limit, API error, tool unavailable), log the specific failure reason, continue to the next channel. Never abort discovery because one channel failed.
 
+**i.** Accumulate a retrieval log entry for this channel-tool execution. Do not write to disk yet — collect entries in memory for batch write after Step 6. Each entry is a JSON object with these fields:
+
+| Field | Type | Value |
+|-------|------|-------|
+| `timestamp` | string (ISO 8601) | Current timestamp at the moment of this channel execution |
+| `phase` | string | Active phase name from STATE.md (Step 1 pre-check) |
+| `channel` | string | Channel name from the Discovery Group (e.g., "web-search", "academic", "financial") |
+| `tool` | string | Specific tool that executed (e.g., "tavily", "exa", "openalex", "crossref", "firecrawl", "websearch") |
+| `query` | string | Exact query string or URL submitted to the tool (from Step 2d substitution) |
+| `template` | string | Template letter used (A, B, or C from Step 2c selection) |
+| `results_count` | integer | Count of URLs returned before dedup (from Step 2f) |
+| `urls` | array of strings | All returned URLs from this call (pre-dedup) |
+| `status` | string | One of: "found", "error", "degraded", "skipped" — mapped from Step 2g output |
+| `degraded_to` | string or null | Fallback tool name if status is "degraded"; null otherwise |
+| `deduped_count` | integer | Set to 0 here; updated after Step 4 dedup for multi-tool channels |
+
+**Multi-tool channels:** When a channel runs multiple tools (e.g., web-search runs Tavily then Exa), accumulate one entry per tool execution. A web-search channel with both tools succeeding produces two entries: one with `tool: "tavily"`, one with `tool: "exa"`. The Exa entry's `deduped_count` is updated after Step 4 to reflect URL matches collapsed against Tavily results.
+
+**Failed channels:** Accumulate an entry even when status is "error" or "skipped". Set `results_count: 0`, `urls: []`, and populate `status` accordingly. This provides a full audit trail of what was attempted, not just what succeeded.
+
 ### Step 3: Degradation handling
 
 Tools are organized in tiers. On failure, try the next tier automatically:
@@ -124,6 +144,8 @@ Before writing, check if `research/discovery/{phase}-candidates.md` already exis
 - Remove any new results whose URL already appears in the existing file
 - Track count of skipped duplicates
 - Print: "Deduplication: {N} duplicates skipped (already in candidates file)"
+
+After deduplication, update the `deduped_count` field on the relevant log entry objects. For cross-tool dedup within a channel (e.g., Exa URLs that matched Tavily URLs), set `deduped_count` on the later tool's entry to the number of URLs removed. For dedup against an existing candidates file (re-run), set `deduped_count` on each affected entry to the number of that entry's URLs that were already present.
 
 ### Step 5: Determine source status for each candidate
 
