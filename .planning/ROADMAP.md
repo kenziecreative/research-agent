@@ -38,7 +38,7 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
 - [x] **Phase 12: Claim Graph Operations** - Transitive drift detection, per-claim confidence, and weakest-link rollup (completed 2026-04-20)
 - [x] **Phase 13: Academic & Evidence Layer Expansion** - Crossref + Unpaywall academic channel additions; absence-vs-contradiction gap distinction (completed 2026-04-20)
 - [x] **Phase 14: Web Channel Diversity** - Exa neural search as parallel web-search tier with deduplication against Tavily (completed 2026-04-20)
-- [ ] **Phase 15: Retrieval Provenance** - Structured retrieval log for reproducible discovery
+- [x] **Phase 15: Retrieval Provenance** - Structured retrieval log for reproducible discovery (completed 2026-04-21)
 - [ ] **Phase 16: CLI Polish** - Consistent formatting, next-action blocks, approachable language, and progressive disclosure across all 10 skills
 
 ## Phase Details
@@ -110,8 +110,8 @@ Plans:
   3. Re-running discover with the same inputs produces a log entry that can be compared to the prior entry to detect result drift
 **Plans**: 2 plans
 Plans:
-- [ ] 15-01-PLAN.md — Log entry accumulation in discover Step 2 and batch write Step 6a to retrieval-log.json
-- [ ] 15-02-PLAN.md — Scaffold empty retrieval-log.json in init Step 5, verify checklist, and CLAUDE.md tree
+- [x] 15-01-PLAN.md — Log entry accumulation in discover Step 2 and batch write Step 6a to retrieval-log.json
+- [x] 15-02-PLAN.md — Scaffold empty retrieval-log.json in init Step 5, verify checklist, and CLAUDE.md tree
 
 ### Phase 16: CLI Polish
 **Goal**: All 10 skills present output with consistent structure, clear next-action guidance, plain language, and progressive disclosure for long responses
@@ -139,5 +139,5 @@ Plans:
 | 12. Claim Graph Operations | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 13. Academic & Evidence Layer Expansion | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 14. Web Channel Diversity | v1.3 | 2/2 | Complete    | 2026-04-20 |
-| 15. Retrieval Provenance | v1.3 | 0/? | Not started | - |
+| 15. Retrieval Provenance | v1.3 | 2/2 | Complete   | 2026-04-21 |
 | 16. CLI Polish | v1.3 | 0/? | Not started | - |
