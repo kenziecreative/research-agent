@@ -133,7 +133,12 @@ Use this pattern when the current step consumed significant context (primary doc
 
 ## Skills That Use This Template
 
+- `/research:init` — after Step 7 report (Phase 1 discovery handoff)
 - `/research:start-phase` — at end of phase briefing
+- `/research:discover` — after discovery completion summary
+- `/research:process-source` — after source processing summary
+- `/research:cross-ref` — after cross-reference report (context-sensitive)
+- `/research:check-gaps` — after gap analysis (context-sensitive)
 - `/research:summarize-section` — after draft is written
 - `/research:audit-claims` — after phase debrief, on pass only
 - `/research:phase-insight` — conditionally, only when the recommendation is unambiguous
@@ -141,9 +146,35 @@ Use this pattern when the current step consumed significant context (primary doc
 
 ## Skills That Do NOT Use This Template
 
-- `/research:progress` — read-only dashboard
-- `/research:check-gaps` — informational gap analysis
-- `/research:cross-ref` — pattern report, advisory only
-- `/research:process-source` — runs in batches, status line between sources
-- `/research:discover` — uses its own "Legitimate Pause Points" logic
-- `/research:init` — multi-step conversational setup, no transition point at the end in the template sense
+- `/research:progress` — read-only dashboard, no handoff
+
+---
+
+## CLI Tone Rules
+
+These rules apply to all CLI skill output: transition text, status messages, next-action context, and `## Output` section content. They do NOT apply to research output written to `research/outputs/`, which follows `writing-standards.md`.
+
+### Banned phrases
+
+Never use these phrases in CLI skill output:
+
+- "it should be noted that"
+- "it is worth noting"
+- "the evidence suggests" (in CLI status/transition text — permitted in research outputs)
+- "it may be the case that"
+- "one might consider"
+- "this would allow for"
+- "in order to facilitate"
+- "to that end"
+
+### Replacement style
+
+Write direct present-tense statements of what the command does and why it applies now.
+
+**Banned:** "It is worth noting that additional sources may facilitate better coverage."
+**Correct:** "Coverage is thin on 2 questions — run discover to find more sources."
+
+**Banned:** "One might consider running cross-ref at this point in order to facilitate pattern detection."
+**Correct:** "Cross-reference is overdue — 6 sources processed since the last run."
+
+The test: could a developer with no context understand the sentence in under two seconds? If not, rewrite it.
