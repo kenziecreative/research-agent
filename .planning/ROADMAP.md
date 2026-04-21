@@ -124,8 +124,8 @@ Plans:
   4. Skills that produce more than one screen of output lead with a summary section and gate details behind a clear separator or explicit prompt
 **Plans**: 2 plans
 Plans:
-- [ ] 16-01-PLAN.md — [to be planned]
-- [ ] 16-02-PLAN.md — [to be planned]
+- [ ] 16-01-PLAN.md — CLI tone rules in prompt-templates.md, skills lists update, and delimiter/phrase audit of existing transition blocks
+- [ ] 16-02-PLAN.md — Next-action blocks and progressive disclosure for init, discover, process-source, cross-ref, and check-gaps
 **UI hint**: yes
 
 ## Progress
@@ -140,4 +140,4 @@ Plans:
 | 13. Academic & Evidence Layer Expansion | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 14. Web Channel Diversity | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 15. Retrieval Provenance | v1.3 | 2/2 | Complete    | 2026-04-21 |
-| 16. CLI Polish | v1.3 | 0/? | Not started | - |
+| 16. CLI Polish | v1.3 | 0/2 | Not started | - |
