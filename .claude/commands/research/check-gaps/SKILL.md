@@ -109,4 +109,31 @@ Criticality order for the list:
 
 Note: "Not Started" questions are discovery targets — run /research:discover to fill them. "Evidence Against" questions are synthesis challenges — the user must address the contradiction in the draft, not find more sources.
 
+**Context-sensitive next-action block:**
+
+If gaps exist (Not Started, Lopsided, or Evidence Against questions):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:discover` — [N] questions have no Direct coverage — find sources to fill them.
+
+**Also available:**
+- `/research:phase-insight` — Review which questions are thin vs. strong before deciding.
+- `/research:cross-ref` — Re-run cross-reference if sources have been added since the last run.
+
+───────────────────────────────────────────────────────────
+
+If all questions have Direct coverage (>= 2 independent sources per question):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:summarize-section` — Coverage is adequate — draft the phase output.
+
+**Also available:**
+- `/research:phase-insight` — Review phase strength in detail before drafting.
+- `/research:cross-ref` — Confirm patterns are current before synthesis.
+
+───────────────────────────────────────────────────────────
+
+
 If more than 10 gaps qualify, show the top 10 by the criticality order above and add a final line: "and N more — see the per-question detail above."

@@ -532,11 +532,46 @@ If you catch yourself wanting to ask "should I keep going?" after a clean source
 
 ## Output
 
-Print the completion summary (Step 7 format) with:
-- Total candidates found
-- Per-channel status (found N / skipped / error / degraded)
-- Path to candidates file
-- Prioritized candidate list with offer to begin processing
+Print the completion summary (Step 7 format):
+
+### Discovery: Phase [N] — [Phase Name]
+
+| Channel | Status | Found |
+|---------|--------|-------|
+| Web Search | found | 6 |
+| Academic | found | 4 |
+| Regulatory | skipped | 0 |
+| Financial | error (timeout) | 0 |
+
+**Total candidates:** N | **Duplicates skipped:** N | Saved to: `research/discovery/{phase}-candidates.md`
+
+---
+
+[Per-channel candidate detail and prioritized list follow below]
+
+After presenting the prioritized candidate list and receiving user approval to process, append the next-action block at the end of the discovery output (after the batch processing offer):
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:process-source <first-url>` — Start processing the approved candidates in priority order.
+
+**Also available:**
+- `/research:cross-ref` — Cross-reference sources processed so far before continuing.
+- `/research:check-gaps` — Check coverage against the phase's questions before collecting more sources.
+
+───────────────────────────────────────────────────────────
+
+After discovery is complete and all approved sources have been processed (post-batch), render this block instead:
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:cross-ref` — Cross-reference the [N] sources processed so far before continuing.
+
+**Also available:**
+- `/research:check-gaps` — Check coverage against the phase's questions before collecting more sources.
+- `/research:process-source <url>` — Process a specific source not in the candidates list.
+
+───────────────────────────────────────────────────────────
 
 After discovery, the agent should guide the user through source processing — not hand back control and wait for manual URL entry. The user's job is to review and approve; the agent's job is to drive the workflow forward.
 

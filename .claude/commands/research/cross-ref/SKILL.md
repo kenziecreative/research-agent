@@ -67,4 +67,47 @@ Analyze all processed source notes for cross-cutting patterns.
 
 ## Output
 
+### Cross-Reference: Phase [N]
+
+| Signal | Count |
+|--------|-------|
+| Contradictions (unresolved) | N |
+| Contradictions (total) | N |
+| Shared-origin clusters | N |
+| Saturation advisory | triggered / not triggered |
+| Patterns identified | N |
+
+**Aggregate saturation:** [N%] confirmatory — [converging / still building]
+
+---
+
+[Contradictions detail, saturation per-question, cluster list, pattern list follow below]
+
 Summarize new patterns found since the last cross-reference. Report: number of contradictions found (unresolved/total), saturation status (aggregate % and any per-question advisories), shared-origin clusters detected. Highlight any contradictions that block synthesis and any questions that are under-covered. If aggregate saturation advisory is triggered, suggest the user consider moving saturated questions to synthesis.
+
+**Context-sensitive next-action block (per D-08):**
+
+If unresolved contradictions exist:
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** Resolve the [N] unresolved contradiction(s) above — synthesis is blocked until core contradictions are confirmed.
+
+**Also available:**
+- `/research:check-gaps` — Check coverage after resolving contradictions.
+- `/research:phase-insight` — Get a full picture of phase strength before deciding next steps.
+
+───────────────────────────────────────────────────────────
+
+If no blocking contradictions and coverage is converging:
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:check-gaps` — Confirm coverage for Phase [N] before synthesis.
+
+**Also available:**
+- `/research:process-source <url>` — Process additional sources if any questions remain under-covered.
+- `/research:phase-insight` — Analyze phase strength in detail before deciding.
+
+───────────────────────────────────────────────────────────
+
