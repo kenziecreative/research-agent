@@ -407,7 +407,8 @@ research/
 ├── audits/                   # Claim audit reports
 ├── reference/                # Protocol and standards reference files
 │   ├── canonical-figures.json # Single source of truth for cross-phase numbers
-│   └── claim-graph.json       # Claim graph registry, written by /research:audit-claims
+│   ├── claim-graph.json       # Claim graph registry, written by /research:audit-claims
+│   └── retrieval-log.json     # Retrieval log registry, written by /research:discover
 ├── discovery/               # Discovery strategy and candidate sources
 ├── cross-reference.md        # Cross-source patterns
 └── gaps.md                   # Coverage tracker
@@ -685,6 +686,8 @@ Permission gate decisions for writes to research/outputs/.
 
 - Write `research/reference/claim-graph.json` with initial content `{"claims": []}` — this is the claim graph registry, populated by `/research:audit-claims` during each phase's Verify step.
 
+- Write `research/reference/retrieval-log.json` with initial content `{"entries": []}` — this is the retrieval log registry, populated by `/research:discover` after each discovery run.
+
 - Write `research/commonplace.md` with the following initial content:
 
 ```markdown
@@ -730,6 +733,7 @@ Before reporting to the user, verify the scaffolding is complete:
    - `reference/tools-guide.md`
    - `reference/canonical-figures.json`
    - `reference/claim-graph.json`
+   - `reference/retrieval-log.json`
    - `discovery/strategy.md`
    - `source-material-digest.md` (only required if `source-material/` contains non-dotfiles; skip otherwise)
 2. **Read `CLAUDE.md`** — confirm it references the nine skills with `/research:*` qualified names and the correct finding tags for the selected research type.
