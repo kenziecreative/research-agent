@@ -42,6 +42,7 @@ You don't need to be technical. You need [Claude Code](https://docs.anthropic.co
 
 ## v1.3 Highlights
 
+- **CLI-first tool architecture.** Migrated from MCP tools to a 3-tier CLI fallback chain (Tavily CLI → Firecrawl CLI → built-in WebSearch/WebFetch). CLIs return structured JSON that the agent parses, keeping raw page content out of the context window. Local PDFs go through `pdftotext` instead of the built-in PDF reader for the same reason. The project works out of the box with zero CLIs installed — built-ins serve as the floor.
 - **Claim graph.** Every factual claim is now a node in a queryable graph with edges to its source notes and canonical figures. When a figure gets revised, the system traces every downstream claim that depends on it and flags the drift.
 - **Academic expansion.** Discovery now queries Crossref and Unpaywall alongside OpenAlex, filling metadata gaps and finding legal open-access copies of paywalled papers.
 - **Web search diversity.** Exa neural search runs as a parallel tier alongside Tavily, surfacing semantically relevant sources that keyword search misses. Results are deduplicated before you see them.
