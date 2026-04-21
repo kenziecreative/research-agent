@@ -39,7 +39,7 @@ Shipped contradiction detection, saturation signals, shared-origin cluster detec
 - [x] **Phase 13: Academic & Evidence Layer Expansion** - Crossref + Unpaywall academic channel additions; absence-vs-contradiction gap distinction (completed 2026-04-20)
 - [x] **Phase 14: Web Channel Diversity** - Exa neural search as parallel web-search tier with deduplication against Tavily (completed 2026-04-20)
 - [x] **Phase 15: Retrieval Provenance** - Structured retrieval log for reproducible discovery (completed 2026-04-21)
-- [ ] **Phase 16: CLI Polish** - Consistent formatting, next-action blocks, approachable language, and progressive disclosure across all 10 skills
+- [x] **Phase 16: CLI Polish** - Consistent formatting, next-action blocks, approachable language, and progressive disclosure across all 10 skills (completed 2026-04-21)
 
 ## Phase Details
 
@@ -125,7 +125,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 16-01-PLAN.md — CLI tone rules in prompt-templates.md, skills lists update, and delimiter/phrase audit of existing transition blocks
-- [ ] 16-02-PLAN.md — Next-action blocks and progressive disclosure for init, discover, process-source, cross-ref, and check-gaps
+- [x] 16-02-PLAN.md — Next-action blocks and progressive disclosure for init, discover, process-source, cross-ref, and check-gaps
 **UI hint**: yes
 
 ## Progress
@@ -140,4 +140,4 @@ Plans:
 | 13. Academic & Evidence Layer Expansion | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 14. Web Channel Diversity | v1.3 | 2/2 | Complete    | 2026-04-20 |
 | 15. Retrieval Provenance | v1.3 | 2/2 | Complete    | 2026-04-21 |
-| 16. CLI Polish | v1.3 | 1/2 | In Progress|  |
+| 16. CLI Polish | v1.3 | 2/2 | Complete   | 2026-04-21 |
