@@ -82,6 +82,7 @@ Shipped in v1.2:
 - Gap analysis distinguishes absence of evidence from evidence-against (Contradicts classification + Evidence Against status)
 - Discover skill is a thin orchestrator — all channel intelligence lives in playbooks, not the skill
 - Init generates per-project discovery strategy mapping phases to channels
+- Retrieval provenance: every discover call logs query, channel, tool, and URLs to `research/reference/retrieval-log.json` for reproducibility and audit
 - Known tech debt: audit-claims staleness input lacks explicit Read instruction for type template (INT-01, advisory-only impact)
 
 ## Constraints
@@ -113,6 +114,8 @@ Shipped in v1.2:
 | Adjacent matches excluded from coverage status | Prevents inflated coverage; 3 Adjacent + 0 Direct = Not Started | ✓ Good |
 | Lopsided advisory (not gate) | Consistent with staleness advisory pattern; warns but doesn't block | ✓ Good |
 | Infrastructure checks read-only (no Bash) | Consistent with progress skill's allowed-tools constraint | ✓ Good |
+| Retrieval log as flat JSON array (not JSONL) | Matches canonical-figures.json and claim-graph.json registry pattern; agents Read + parse, no new query contract | ✓ Good |
+| Non-blocking log write (advisory-not-gate) | Log write failure does not abort discovery; candidates file is the primary artifact | ✓ Good |
 
 ## Evolution
 
@@ -132,4 +135,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-20 — Phase 14 (Web Channel Diversity) complete*
+*Last updated: 2026-04-21 — Phase 15 (Retrieval Provenance) complete*
