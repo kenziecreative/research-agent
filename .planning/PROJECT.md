@@ -83,6 +83,7 @@ Shipped in v1.2:
 - Discover skill is a thin orchestrator — all channel intelligence lives in playbooks, not the skill
 - Init generates per-project discovery strategy mapping phases to channels
 - Retrieval provenance: every discover call logs query, channel, tool, and URLs to `research/reference/retrieval-log.json` for reproducibility and audit
+- CLI polish: all 10 skills use consistent output structure (H2/H3/bold-label hierarchy, `---`/`───` dividers, `-` bullets), `▶ NEXT:` blocks with context-sensitive recommendations, CLI Tone Rules in prompt-templates.md, progressive disclosure for long-output skills
 - Known tech debt: audit-claims staleness input lacks explicit Read instruction for type template (INT-01, advisory-only impact)
 
 ## Constraints
@@ -135,4 +136,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-21 — Phase 15 (Retrieval Provenance) complete*
+*Last updated: 2026-04-21 — Phase 16 (CLI Polish) complete*
