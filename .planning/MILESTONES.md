@@ -1,10 +1,34 @@
 # Milestones
 
+## v1.3 Evidence Depth & Retrieval Integrity (Shipped: 2026-04-21)
+
+**Phases completed:** 6 phases, 12 plans, 11 tasks
+
+**Key accomplishments:**
+
+- Claim graph — claims as nodes with typed edges to sources and canonical figures; dedup and non-blocking persistence (TRACE-01)
+- Transitive drift detection with weakest-link section rollup and drift_warning lifecycle across audit-claims and research-integrity (TRACE-02, TRACE-03, TRACE-04)
+- Crossref + Unpaywall academic channel expansion alongside OpenAlex for DOI metadata and legal OA copies (DISC-01, DISC-02)
+- Gap analysis distinguishes absence of evidence from evidence-against with Contradicts classification (TRACE-05)
+- Exa neural search as parallel web-search tier with dedup rules, source attribution tags, and independent degradation (DISC-03, DISC-04)
+- Retrieval provenance logging — per-channel-tool log accumulation with batch write to retrieval-log.json for reproducibility (PROV-01, PROV-02)
+- CLI polish — tone rules, consistent output structure, ▶ NEXT: blocks, and progressive disclosure across all 10 skills (UX-01 through UX-04)
+
+**Tech debt accepted:**
+
+- audit-claims staleness input lacks explicit Read instruction for type template (INT-01, advisory-only — carried from v1.2)
+- Human verification pending: runtime test of init scaffold, audit-claims graph write, Exa parallel execution
+- discover/SKILL.md academic channel summary under-documents Crossref/Unpaywall inline (advisory, by-design thin orchestrator pattern)
+- Nyquist compliance: no VALIDATION.md files for any phase (research was disabled)
+
+---
+
 ## v1.2 Evidence Quality & Analytical Rigor (Shipped: 2026-04-04)
 
 **Phases completed:** 4 phases, 8 plans, 0 tasks
 
 **Key accomplishments:**
+
 - Contradiction detection in cross-ref with forced resolution gate before synthesis (XREF-01)
 - Saturation signals showing evidence convergence with per-question advisory (XREF-02)
 - Shared-origin cluster detection preventing false triangulation via Echo-level collapse (XREF-03)
@@ -16,6 +40,7 @@
 - Infrastructure health checks (5 named checks) in progress output (INFRA-01)
 
 **Tech debt accepted:**
+
 - audit-claims staleness input lacks explicit Read instruction for type template (INT-01, moderate — advisory only)
 - ROADMAP.md plan checkboxes and progress table had documentation lag (cosmetic)
 
@@ -26,6 +51,7 @@
 **Phases completed:** 6 phases, 10 plans, 2 tasks
 
 **Key accomplishments:**
+
 - 6 channel playbooks with query templates, credibility tiers, and degradation chains (web-search, academic, regulatory, financial, social-signals, domain-specific)
 - 9 type-channel maps routing each research type's phases to prioritized discovery channels
 - `/research:discover` skill — thin orchestrator for type-aware multi-channel source discovery
@@ -41,6 +67,7 @@
 **Phases:** 1-5 (initial build through restructure)
 
 **What shipped:**
+
 - 9 slash commands: init, process-source, cross-ref, check-gaps, summarize-section, audit-claims, start-phase, phase-insight, progress
 - 1 agent: research-integrity (post-write drift detection)
 - 9 research type templates with type-specific credibility hierarchies and finding tags
@@ -51,6 +78,7 @@
 - Canonical figures registry for cross-phase number tracking
 
 **Key decisions:**
+
 - Commands in .claude/commands/research/ (not plugin structure)
 - Reference files in .claude/reference/ (outside commands tree)
 - Human-in-the-loop between all workflow steps (no agent orchestration)

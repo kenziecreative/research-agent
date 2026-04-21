@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Claude Code tool that scaffolds and guides structured, evidence-based research projects. Users pick a research type and topic, the system generates a phased research plan grounded in preliminary web research, then guides them through a disciplined collect-connect-assess-synthesize-verify cycle for each phase. Every claim in the final output traces to a specific source, every number is canonically tracked, and an integrity agent watches for fabrication and drift on every write. The pipeline now catches contradictions, staleness, lopsided coverage, source laundering, and false triangulation before they reach the final output.
+A Claude Code tool that scaffolds and guides structured, evidence-based research projects. Users pick a research type and topic, the system generates a phased research plan grounded in preliminary web research, then guides them through a disciplined collect-connect-assess-synthesize-verify cycle for each phase. Every claim in the final output traces to a specific source via a claim graph, every number is canonically tracked, and an integrity agent watches for fabrication and drift on every write. The pipeline catches contradictions, staleness, lopsided coverage, source laundering, false triangulation, and transitive drift before they reach the final output. Discovery spans 5 channel types (web, academic, regulatory, financial, domain-specific) with retrieval provenance logging for reproducibility.
 
 ## Core Value
 
@@ -52,18 +52,27 @@ Shipped in v1.2:
 - ✓ Adjacent-vs-direct question matching in gap analysis (GAP-02) — v1.2
 - ✓ Infrastructure health checks in progress output (INFRA-01) — v1.2
 
+Shipped in v1.3:
+
+- ✓ Claim graph with claims as nodes, typed edges to sources and canonical figures (TRACE-01) — v1.3
+- ✓ Transitive drift detection flagging downstream claims when canonical figures change (TRACE-02) — v1.3
+- ✓ Per-claim confidence tier derived from supporting evidence (TRACE-03) — v1.3
+- ✓ Weakest-link section rollup — section confidence = lowest claim tier (TRACE-04) — v1.3
+- ✓ Gap analysis distinguishes absence of evidence from evidence-against (TRACE-05) — v1.3
+- ✓ Crossref API integration for DOI, author, citation metadata alongside OpenAlex (DISC-01) — v1.3
+- ✓ Unpaywall integration for legal open-access copies of paywalled papers (DISC-02) — v1.3
+- ✓ Exa neural search as parallel web-search tier surfacing non-SEO sources (DISC-03) — v1.3
+- ✓ Exa/Tavily deduplication before candidate presentation (DISC-04) — v1.3
+- ✓ Retrieval provenance log with query, channel, and URLs per discovery call (PROV-01) — v1.3
+- ✓ Structured, queryable retrieval log filterable by phase/channel/query (PROV-02) — v1.3
+- ✓ Consistent section dividers, headings, and bullet formatting across all 10 skills (UX-01) — v1.3
+- ✓ Next-action blocks on every skill with recommendations and alternatives (UX-02) — v1.3
+- ✓ Approachable, non-academic transition language (UX-03) — v1.3
+- ✓ Progressive disclosure for long-output skills (UX-04) — v1.3
+
 ### Active
 
-## Current Milestone: v1.3 Evidence Depth & Retrieval Integrity
-
-**Goal:** Deepen evidence traceability from individual claims through cross-phase figures, expand index diversity for honest source counting, and make discovery reproducible.
-
-**Target features:**
-- Claim graph — claims as nodes with edges to source notes and canonical figures; transitive drift detection across phases
-- Crossref + Unpaywall — academic channel expansion alongside OpenAlex for metadata gaps and legal OA copies
-- Exa as parallel web-search tier — neural/semantic index diversity surfacing non-SEO sources
-- Per-claim confidence propagation — weakest-link rollup from claims to section tiers
-- Retrieval replay logging — query, channel, and URL logging per discovery call for reproducibility
+(None yet — define in next milestone)
 
 ### Out of Scope
 
@@ -77,13 +86,13 @@ Shipped in v1.2:
 
 - Built on Claude Code with slash commands in `.claude/commands/research/`
 - Uses Tavily MCP server for web search and content extraction
-- v1.2 shipped evidence quality gates: contradiction/saturation/laundering detection in cross-ref, staleness/confidence/assumptions in the synthesis pipeline, independence-aware gap analysis, infrastructure health visibility
+- 10 slash commands + 1 agent (research-integrity) + 9 research type templates
 - Discovery channels: Tavily + Exa (web/financial/social/domain), OpenAlex + Crossref + Unpaywall (academic), EDGAR EFTS (regulatory filings), ProPublica (nonprofits), Google Patents (URL construction)
-- Gap analysis distinguishes absence of evidence from evidence-against (Contradicts classification + Evidence Against status)
-- Discover skill is a thin orchestrator — all channel intelligence lives in playbooks, not the skill
-- Init generates per-project discovery strategy mapping phases to channels
-- Retrieval provenance: every discover call logs query, channel, tool, and URLs to `research/reference/retrieval-log.json` for reproducibility and audit
-- CLI polish: all 10 skills use consistent output structure (H2/H3/bold-label hierarchy, `---`/`───` dividers, `-` bullets), `▶ NEXT:` blocks with context-sensitive recommendations, CLI Tone Rules in prompt-templates.md, progressive disclosure for long-output skills
+- Evidence quality gates: contradiction/saturation/laundering detection in cross-ref, staleness/confidence/assumptions in synthesis pipeline, independence-aware gap analysis, infrastructure health visibility
+- Claim graph: claims as graph nodes with edges to sources and canonical figures; transitive drift detection flags downstream claims when figures change; weakest-link section rollups
+- Gap analysis: 4-tier classification (Direct/Adjacent/Contradicts/None) distinguishing absence of evidence from evidence-against
+- Retrieval provenance: every discover call logs query, channel, tool, and URLs to `research/reference/retrieval-log.json`
+- CLI: consistent output structure (H2/H3/bold-label hierarchy, `---`/`───` dividers, `-` bullets), `▶ NEXT:` blocks with context-sensitive recommendations, CLI Tone Rules in prompt-templates.md, progressive disclosure for long-output skills
 - Known tech debt: audit-claims staleness input lacks explicit Read instruction for type template (INT-01, advisory-only impact)
 
 ## Constraints
@@ -117,6 +126,14 @@ Shipped in v1.2:
 | Infrastructure checks read-only (no Bash) | Consistent with progress skill's allowed-tools constraint | ✓ Good |
 | Retrieval log as flat JSON array (not JSONL) | Matches canonical-figures.json and claim-graph.json registry pattern; agents Read + parse, no new query contract | ✓ Good |
 | Non-blocking log write (advisory-not-gate) | Log write failure does not abort discovery; candidates file is the primary artifact | ✓ Good |
+| Claim graph as flat JSON (not graph DB) | Same pattern as canonical-figures.json; agents Read + parse, no external dependency | ✓ Good |
+| D-05 schema for claim nodes | Unique ID, edges to sources and figures, confidence tier, drift_warning — future-proof without overcomplicating | ✓ Good |
+| Drift_warning lifecycle (set/clear) | Flags set when figure changes, cleared when claim re-audited — avoids stale warnings accumulating | ✓ Good |
+| Crossref/Unpaywall as APIs 2 and 3 (not replacements) | OpenAlex remains primary; Crossref fills DOI/citation gaps; Unpaywall adds OA links — additive, not disruptive | ✓ Good |
+| Exa as parallel tier (not Tavily replacement) | Neural search surfaces different results than keyword search — diversity, not replacement | ✓ Good |
+| URL-based dedup for Exa/Tavily | Simple, deterministic dedup before candidate list — no fuzzy matching needed | ✓ Good |
+| CLI Tone Rules in prompt-templates.md | Centralized banned-phrase list + replacements; skills reference one file instead of each defining tone independently | ✓ Good |
+| ▶ NEXT: block as canonical format | Consistent next-action format across all 10 skills; context-sensitive recommendations based on output state | ✓ Good |
 
 ## Evolution
 
@@ -136,4 +153,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-21 — Phase 16 (CLI Polish) complete*
+*Last updated: 2026-04-21 after v1.3 milestone*
