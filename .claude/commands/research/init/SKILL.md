@@ -749,7 +749,16 @@ Tell the user what was created. Include:
 - The finding tags for this project type
 - **The phase table.** Render every phase from the research plan as a markdown table with these three columns: `#`, `Phase`, `Expected Outcome`. One row per phase — do not collapse, summarize as an arrow chain, or report only the count. Pull each phase's expected outcome from the synthesis line / output description in `research/research-plan.md` and condense it to one sentence that names what the phase will produce or settle. The synthesis phase is a row like every other phase. This table is mandatory — if you find yourself writing "Phases: N — A → B → C" instead of a table, stop and render the table.
 - The ten research skills available: `/research:init`, `/research:discover`, `/research:process-source`, `/research:cross-ref`, `/research:check-gaps`, `/research:summarize-section`, `/research:audit-claims`, `/research:start-phase`, `/research:phase-insight`, `/research:progress`
-- Next steps: review the research plan in `research/research-plan.md`, then start Phase 1 with `/research:discover`
-- Reminder to clear context between phases for sharper analysis
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:discover` — Find candidate sources for Phase 1's questions using the type-channel map.
+
+**Also available:**
+- `/research:start-phase` — Get the full Phase 1 briefing before starting discovery.
+- `/research:process-source <url-or-file>` — Process a specific source you already have.
+
+**What to expect:** Discovery will surface a prioritized candidate list for Phase 1's channels based on the research type and questions just generated. After you approve, processing runs sequentially with a cross-reference checkpoint every 5-8 sources.
+
+───────────────────────────────────────────────────────────
 
 Do NOT tell the user to `cd` anywhere — they are already in the correct directory. Do NOT initialize a git repo.

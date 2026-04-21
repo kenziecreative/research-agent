@@ -104,4 +104,21 @@ The user will provide a URL, file path, or pasted content.
 | Wrapping batch processing in a TodoWrite/TaskCreate task list | The candidates file is the queue, STATE.md is the counter, registry.md is the ledger. A parallel todo list ("Process Source 39", "Run cross-ref at 5-source threshold", "Process Source 42"…) duplicates state into a place `/clear` destroys, drifts from the authoritative files, and — the real bug — converts the cross-reference checkpoint from a hard interrupt into a queue item a task-list-driven loop will simply tick past. Read the candidates file top-to-bottom and process sources inline. One status line per source is the correct cadence; a progress bar is not. |
 
 ## Output
-Summarize the key findings for the user. Note which research phases this source is relevant to and any contradictions with existing sources. If "Sources since last cross-reference" is now 4 or 5, remind the user: "Cross-reference is due soon (N/5 sources). Run `/research:cross-ref` after the next source or two."
+
+**Source:** [title]
+**Credibility:** [tier]
+**Key findings:** [N] findings tagged for Phase [N]
+**Contradictions:** [N found / none]
+**Sources since last cross-ref:** [N]/5
+
+If N >= 4: "Cross-reference is due — run `/research:cross-ref` after the next source."
+
+───────────────────────────────────────────────────────────
+
+**▶ NEXT:** `/research:process-source <next-url>` — Continue processing the approved candidate list.
+
+**Also available:**
+- `/research:cross-ref` — Run cross-reference now if 5+ sources have been processed.
+- `/research:check-gaps` — Check coverage before processing more sources.
+
+───────────────────────────────────────────────────────────
