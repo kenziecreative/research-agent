@@ -2,6 +2,7 @@
 name: summarize-section
 description: Synthesize processed source notes into a draft research output section
 argument-hint: "[section-name-or-phase-number]"
+model: opus
 ---
 
 # /research:summarize-section
@@ -166,7 +167,7 @@ If any pre-check fails, do not proceed. Tell the user which check failed and wha
 
 ## Output
 
-Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+Confirm the draft was written to `research/drafts/`, integrity-checked, and summarize the key findings. Then render the transition prompt (format defined in `.claude/reference/prompt-templates-runtime.md`):
 
 ───────────────────────────────────────────────────────────
 

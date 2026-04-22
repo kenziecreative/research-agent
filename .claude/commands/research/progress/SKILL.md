@@ -2,6 +2,7 @@
 name: progress
 description: Show research project dashboard — phase status, source counts, and next action
 allowed-tools: Read, Grep, Glob
+model: sonnet
 ---
 
 # /research:progress

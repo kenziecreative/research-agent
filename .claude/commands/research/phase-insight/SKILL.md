@@ -2,6 +2,7 @@
 name: phase-insight
 description: Analyze current phase progress — which questions are addressed, which are thin, emerging patterns
 allowed-tools: Read, Grep, Glob
+model: sonnet
 ---
 
 # /research:phase-insight
@@ -62,7 +63,7 @@ Only include this subsection if any questions have adjacent-only matches.
 
 **Recommendation:** [What to do next — more sources? ready for cross-ref? ready for synthesis?]
 
-If the recommendation is unambiguous (clear next step with high confidence — e.g., "one question has zero Direct sources, collect more" or "all questions have strong Direct coverage, ready for cross-ref"), render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+If the recommendation is unambiguous (clear next step with high confidence — e.g., "one question has zero Direct sources, collect more" or "all questions have strong Direct coverage, ready for cross-ref"), render the transition prompt (format defined in `.claude/reference/prompt-templates-runtime.md`):
 
 ───────────────────────────────────────────────────────────
 

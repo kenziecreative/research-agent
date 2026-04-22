@@ -2,6 +2,7 @@
 name: audit-claims
 description: Fact-check a research draft against source notes and promote to outputs if it passes
 argument-hint: "[filepath]"
+model: opus
 ---
 
 # /research:audit-claims
@@ -221,7 +222,7 @@ Wait for the user to respond. They may:
 - Challenge or comment on something the research surfaced
 - Say they're good to move on
 
-Only after the user is done reacting to the debrief, render the transition prompt (format defined in `.claude/reference/prompt-templates.md`):
+Only after the user is done reacting to the debrief, render the transition prompt (format defined in `.claude/reference/prompt-templates-runtime.md`):
 
 ───────────────────────────────────────────────────────────
 
@@ -264,4 +265,4 @@ Scorecard summary and pass/fail status.
 
 **If failed:** Execute the full 4-step fail sequence (classify → apply mechanical fixes → list changes and remaining issues → tell user to re-run). Do NOT render a transition prompt — a failed audit is a loop, not a transition. Do NOT stop after listing issues — if any fix is mechanical, apply it before responding to the user.
 
-**If passed:** confirm the promotion to `outputs/`, present the phase debrief (see above), wait for the user to react, and then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`). The transition prompt appears only after the user is done reacting to the debrief — not before.
+**If passed:** confirm the promotion to `outputs/`, present the phase debrief (see above), wait for the user to react, and then render the transition prompt (format defined in `.claude/reference/prompt-templates-runtime.md`). The transition prompt appears only after the user is done reacting to the debrief — not before.

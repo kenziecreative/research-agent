@@ -2,11 +2,10 @@
 name: init
 description: Scaffold a structured research project with state management, evidence standards, and agent-driven workflows
 disable-model-invocation: true
+model: opus
 ---
 
 # /research:init — Initialize a Structured Research Project
-
-> **Model requirement:** This workflow is designed to run on **Claude Opus 4.6** (1M context window). Running on Sonnet 4.6 (200k) will hit context limits mid-project as source notes accumulate. Before proceeding, confirm with the user that they are running on Opus, or advise them to restart with `claude --model claude-opus-4-6`.
 
 You are scaffolding a new research project. This skill creates the research infrastructure: directory structure, CLAUDE.md, STATE.md, reference protocols, source registry, gap tracker, cross-reference file, and a research plan tailored to the project's topic and type.
 
@@ -476,13 +475,13 @@ Read the research plan in `research/research-plan.md` before starting. It define
 
 **How to recommend an intra-phase clear:**
 
-At the end of a step where the criteria above apply, update STATE.md with a step-specific "Next Action" (see State Management section), then render the transition prompt (format defined in `.claude/reference/prompt-templates.md`, Example 4) pointing at `/clear` followed by the next step's command. The user decides whether to accept — if they decline, continue to the next step in the same context window.
+At the end of a step where the criteria above apply, update STATE.md with a step-specific "Next Action" (see State Management section), then render the transition prompt (format defined in `.claude/reference/prompt-templates-guide.md`, Example 4) pointing at `/clear` followed by the next step's command. The user decides whether to accept — if they decline, continue to the next step in the same context window.
 
 **How to resume after an intra-phase clear:**
 
 On the next session, read STATE.md first. The "Cycle step" field tells you which step is active. The "Next Action" field is a specific command — execute it. Do not re-read prior step artifacts unless the current step's skill instructs you to.
 
-**At the end of every phase, render the transition prompt** (format defined in `.claude/reference/prompt-templates.md`):
+**At the end of every phase, render the transition prompt** (format defined in `.claude/reference/prompt-templates-runtime.md`):
 
 ───────────────────────────────────────────────────────────
 
