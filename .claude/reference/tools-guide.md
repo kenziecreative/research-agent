@@ -103,7 +103,7 @@ Crawling is powerful but slow. Use it deliberately. Map first (`tvly map` or `np
 ## Common Mistakes
 
 - **Extracting before searching** — Running `tvly extract` on a URL you guessed or recalled, skipping search evaluation entirely. Always search first.
-- **Skipping tiers** — Jumping to WebSearch when tvly is available. Always try Tier 1 first; the fallback chain handles unavailability automatically.
+- **Skipping tiers** — Jumping to WebSearch when tvly is available. Always try Tier 1 first; the fallback chain handles unavailability automatically. This includes site-scoped queries — use `tvly search --include-domains "github.com"` instead of WebSearch with `site:github.com`. WebSearch is a last-resort fallback, never a parallel tool.
 - **Crawling without mapping** — Crawling a domain without running `tvly map` or `npx firecrawl-cli map` first wastes time on irrelevant sections.
 - **Manual search for systematic discovery** — Running `tvly search` manually for a full research project when `/research:discover` exists. Use the skill; it reads channel playbooks and handles degradation automatically.
 - **Hardcoding tool paths** — All CLI commands use bare names (`tvly`, `npx firecrawl-cli`). PATH is configured in `.claude/settings.json`. Never hardcode absolute paths.

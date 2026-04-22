@@ -131,6 +131,8 @@ Tools are organized in tiers. On failure, try the next tier automatically:
 - **Tier 2** (`npx firecrawl-cli search`/`npx firecrawl-cli scrape`) — secondary, broader results
 - **Tier 3** (`WebSearch`/`WebFetch`) — built-in, always available, no CLI needed
 
+**CRITICAL: WebSearch/WebFetch are ONLY fallbacks.** Do not use WebSearch as a parallel tool, a convenience tool for site-scoped queries, or a "specialty" tool for any purpose. Every query runs through Tier 1 first. Tavily's `--include-domains` flag handles domain scoping (e.g., `--include-domains "github.com"` replaces `site:github.com`). WebSearch is the tool of last resort when Tier 1 AND Tier 2 both fail — not an alternative you choose because a query "feels" like a WebSearch query.
+
 - **Tier 1 unavailable (tvly not installed or API error):** Try Tier 2 automatically. Print warning: "WARNING: tvly unavailable — using Firecrawl fallback." Label results: `[Firecrawl fallback]`.
 - **Tier 2 also unavailable:** Try Tier 3 (WebSearch). Print warning: "WARNING: CLI tools unavailable — using WebSearch fallback. Results will be less targeted." Label results: `[WebSearch fallback]`.
 - **The attempt IS the check** — no pre-flight availability detection. Try the tool, handle failure inline.
