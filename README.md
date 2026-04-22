@@ -166,6 +166,7 @@ That walks you through setup: research type, topic, and project location. From t
 | `/research:start-phase` | Get a briefing before starting the next phase |
 | `/research:phase-insight` | See which questions are well-covered vs. thin in the current phase |
 | `/research:progress` | Project dashboard: phase status, source counts, next action |
+| `/research:graph-analysis` | Analyze the claim graph for load-bearing claims, fragile foundations, and cheapest confidence upgrades |
 
 ---
 
@@ -194,7 +195,7 @@ All CLI and HTTP API calls are made via Bash in the terminal. You can see exactl
 
 **Canonical figures registry.** Every number cited across phases is registered in a single source of truth. When a figure is carried forward, it must match the canonical value exactly. Numbers don't drift.
 
-**Claim graph.** Every factual claim extracted during audit is recorded as a node with edges to its source notes and canonical figures. When a figure is revised, the system traces all downstream claims that depend on it and flags the drift before you proceed.
+**Claim graph.** Every factual claim extracted during audit is recorded as a node with edges to its source notes and canonical figures. When a figure is revised, the system traces all downstream claims that depend on it and flags the drift before you proceed. Run `/research:graph-analysis` at any point to see what the graph reveals about your research: which claims are load-bearing, where the evidence is fragile, which single-source claims are one source away from a confidence upgrade, and where multiple independent sources converge. The analysis is tailored to your research type.
 
 **Research integrity agent.** Runs automatically after every write. Catches fabricated data, range narrowing (source says "1-3x", output says "2-3x"), qualifier stripping, internal inconsistencies, and cross-phase drift.
 

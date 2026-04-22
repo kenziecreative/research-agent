@@ -429,6 +429,7 @@ Do not create files outside this structure for research artifacts. Working files
 | Summarize Section | `/research:summarize-section <name>` | Synthesizes notes into polished draft sections |
 | Start Phase | `/research:start-phase` | Shows what's needed to begin the next phase |
 | Phase Insight | `/research:phase-insight` | Analyzes current phase progress and thin areas |
+| Graph Analysis | `/research:graph-analysis` | Analyzes the claim graph for load-bearing claims, fragile foundations, and cheapest confidence upgrades |
 | Progress | `/research:progress` | Shows project dashboard with phase status |
 | Discover Sources | `/research:discover` | Finds candidate sources for the current phase using type-aware multi-channel discovery |
 
@@ -747,7 +748,7 @@ Tell the user what was created. Include:
 - The research type selected
 - The finding tags for this project type
 - **The phase table.** Render every phase from the research plan as a markdown table with these three columns: `#`, `Phase`, `Expected Outcome`. One row per phase — do not collapse, summarize as an arrow chain, or report only the count. Pull each phase's expected outcome from the synthesis line / output description in `research/research-plan.md` and condense it to one sentence that names what the phase will produce or settle. The synthesis phase is a row like every other phase. This table is mandatory — if you find yourself writing "Phases: N — A → B → C" instead of a table, stop and render the table.
-- The ten research skills available: `/research:init`, `/research:discover`, `/research:process-source`, `/research:cross-ref`, `/research:check-gaps`, `/research:summarize-section`, `/research:audit-claims`, `/research:start-phase`, `/research:phase-insight`, `/research:progress`
+- The eleven research skills available: `/research:init`, `/research:discover`, `/research:process-source`, `/research:cross-ref`, `/research:check-gaps`, `/research:summarize-section`, `/research:audit-claims`, `/research:start-phase`, `/research:phase-insight`, `/research:progress`, `/research:graph-analysis`
 ───────────────────────────────────────────────────────────
 
 **▶ NEXT:** `/research:discover` — Find candidate sources for Phase 1's questions using the type-channel map.
