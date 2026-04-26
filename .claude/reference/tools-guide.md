@@ -100,10 +100,32 @@ Use `--depth advanced` for technical research, academic sources, and anything th
 
 Crawling is powerful but slow. Use it deliberately. Map first (`tvly map` or `npx firecrawl-cli map`), then crawl specific sections. Do not crawl entire domains without purpose.
 
+## PATH and Tool Visibility
+
+The Bash tool runs in a non-interactive shell that does NOT source `~/.zshrc` or `~/.bashrc`. Tools installed via Volta, nvm, asdf, pyenv, or to user-local prefixes (`~/.local/bin`) may not be on the harness PATH even if they work in your terminal.
+
+**CRITICAL: `settings.json` env values do NOT expand shell variables.** `$HOME`, `${HOME}`, `$PATH`, `${PATH}` all pass through as literal strings. Do NOT put variable references in `settings.json` env.PATH — they will appear as literal characters in the PATH and nothing will resolve.
+
+### How PATH is configured in this project
+
+A `SessionStart` hook (`.claude/hooks/setup-paths.sh`) runs at the beginning of every session and writes real, expanded PATH entries to `CLAUDE_ENV_FILE`. This persists for the entire session — every Bash call inherits the correct PATH automatically. The hook detects common tool locations (`~/.volta/bin`, `~/.local/bin`, `/opt/homebrew/bin`, nvm directories) and only adds directories that actually exist on disk.
+
+As belt-and-suspenders, the skills (`discover`, `process-source`, `init`) also include inline `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" &&` prefixes on their CLI invocations. This is harmless if the hook already set PATH correctly, and protects against the hook being removed.
+
+### Diagnosing tool issues
+
+If tools aren't found despite the hook:
+1. Run `which tvly && which npx` — if these resolve, the hook is working
+2. If not, run `ls "$HOME/.local/bin/tvly"` to confirm the binary exists on disk
+3. Check that `.claude/hooks/setup-paths.sh` exists and is executable (`chmod +x`)
+4. Check that the SessionStart hook is present in `.claude/settings.json`
+5. If the binary is in a non-standard location, add its directory to the hook script
+
 ## Common Mistakes
 
 - **Extracting before searching** — Running `tvly extract` on a URL you guessed or recalled, skipping search evaluation entirely. Always search first.
 - **Skipping tiers** — Jumping to WebSearch when tvly is available. Always try Tier 1 first; the fallback chain handles unavailability automatically. This includes site-scoped queries — use `tvly search --include-domains "github.com"` instead of WebSearch with `site:github.com`. WebSearch is a last-resort fallback, never a parallel tool.
 - **Crawling without mapping** — Crawling a domain without running `tvly map` or `npx firecrawl-cli map` first wastes time on irrelevant sections.
 - **Manual search for systematic discovery** — Running `tvly search` manually for a full research project when `/research:discover` exists. Use the skill; it reads channel playbooks and handles degradation automatically.
-- **Hardcoding tool paths** — All CLI commands use bare names (`tvly`, `npx firecrawl-cli`). PATH is configured in `.claude/settings.json`. Never hardcode absolute paths.
+- **Hardcoding tool paths** — CLI commands use bare names (`tvly`, `npx firecrawl-cli`) but MUST be preceded by `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"` in the same Bash call. Do NOT rely on `settings.json` env.PATH for this — it doesn't expand variables.
+- **Assuming "command not found" means "not installed"** — The harness shell has a different PATH than your interactive terminal. A tool can exist on disk and still be invisible to the Bash tool. Always verify with `ls` before concluding a tool isn't installed.

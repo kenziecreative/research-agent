@@ -75,6 +75,40 @@ I'll search across {N} channels and present what I find. You'll get to review
 candidates and decide which ones to process — nothing gets processed automatically.
 ```
 
+### Step 1b: Tool availability pre-flight
+
+Before executing any queries, check which tool tiers are available. Run this single Bash command — it completes in milliseconds and handles PATH repair inline:
+
+```bash
+export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && which tvly 2>/dev/null && echo "TIER1_OK" || echo "TIER1_MISSING" && which npx 2>/dev/null && echo "TIER2_OK" || echo "TIER2_MISSING"
+```
+
+**CRITICAL: Every Bash call in this skill that invokes `tvly` or `npx` MUST prepend the PATH export.** Claude Code's `settings.json` env block does NOT expand shell variables (`$HOME`, `$PATH` pass through as literal strings). The only place variable expansion works is inside the Bash tool's shell itself. The pattern for every CLI invocation is:
+
+```bash
+export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && tvly search "query" --depth advanced --max-results 8 --json
+```
+
+This is not optional. Without it, `tvly` and `npx` will be invisible to the shell even when installed.
+
+Based on pre-flight results, set the tool availability for this run:
+
+- **Both found:** All tiers available. Print: "Tool check: tvly ✓, npx ✓ — using Tier 1 (Tavily) as primary."
+- **tvly missing, npx found:** Print: "Tool check: tvly ✗, npx ✓ — Tier 1 unavailable, using Tier 2 (Firecrawl) as primary." Then run a diagnostic:
+  ```bash
+  ls "$HOME/.local/bin/tvly" 2>/dev/null && echo "EXISTS_ON_DISK" || echo "NOT_INSTALLED"
+  ```
+  - If EXISTS_ON_DISK: "NOTE: tvly exists at ~/.local/bin/tvly but was not found even with PATH augmentation. Check that the binary is executable (`chmod +x`)."
+  - If NOT_INSTALLED: "NOTE: tvly is not installed. Install with: curl -sSL https://tavily.com/install | sh (or see tools-guide.md)."
+- **Both missing:** Print: "Tool check: tvly ✗, npx ✗ — CLI tools unavailable, using Tier 3 (WebSearch/WebFetch) for all channels." Then diagnose:
+  ```bash
+  ls "$HOME/.local/bin/tvly" 2>/dev/null && echo "TVLY_ON_DISK" || echo "TVLY_NOT_INSTALLED"
+  ls "$HOME/.volta/bin/npx" 2>/dev/null || ls /usr/local/bin/npx 2>/dev/null || ls /opt/homebrew/bin/npx 2>/dev/null && echo "NPX_ON_DISK" || echo "NPX_NOT_INSTALLED"
+  ```
+  - Report which binaries exist on disk vs. genuinely not installed.
+
+This pre-flight runs once per discovery invocation. The results determine the starting tier for Step 2 — if Tier 1 is confirmed missing (not installed), skip it on every channel instead of failing and retrying per-channel.
+
 ### Step 2: Execute each channel in priority order
 
 For each channel:
@@ -134,9 +168,9 @@ Tools are organized in tiers. On failure, try the next tier automatically:
 
 **CRITICAL: WebSearch/WebFetch are ONLY fallbacks.** Do not use WebSearch as a parallel tool, a convenience tool for site-scoped queries, or a "specialty" tool for any purpose. Every query runs through Tier 1 first. Tavily's `--include-domains` flag handles domain scoping (e.g., `--include-domains "github.com"` replaces `site:github.com`). WebSearch is the tool of last resort when Tier 1 AND Tier 2 both fail — not an alternative you choose because a query "feels" like a WebSearch query.
 
-- **Tier 1 unavailable (tvly not installed or API error):** Try Tier 2 automatically. Print warning: "WARNING: tvly unavailable — using Firecrawl fallback." Label results: `[Firecrawl fallback]`.
-- **Tier 2 also unavailable:** Try Tier 3 (WebSearch). Print warning: "WARNING: CLI tools unavailable — using WebSearch fallback. Results will be less targeted." Label results: `[WebSearch fallback]`.
-- **The attempt IS the check** — no pre-flight availability detection. Try the tool, handle failure inline.
+- **Tier 1 unavailable:** Try Tier 2 automatically. Print warning: "WARNING: `tvly` returned 'command not found'. The binary may be installed but not on the harness shell PATH (see tools-guide.md § PATH and Tool Visibility). Falling back to Firecrawl." Label results: `[Firecrawl fallback]`.
+- **Tier 2 also unavailable:** Try Tier 3 (WebSearch). Print warning: "WARNING: `tvly` and `npx firecrawl-cli` both returned 'command not found'. Both may be installed but not on the harness shell PATH — run `ls ~/.local/bin/tvly` and `ls ~/.volta/bin/npx` to check. Falling back to WebSearch (less targeted)." Label results: `[WebSearch fallback]`.
+- **Pre-flight sets the floor, runtime handles the rest.** Step 1b determines which tiers are genuinely available. If a tier was confirmed available in pre-flight but fails at runtime (API error, timeout, rate limit), that's a per-query degradation — fall back to the next tier for that query only. If a tier was confirmed missing in pre-flight, skip it entirely — don't waste time retrying a binary that doesn't exist.
 - **HTTP API failure (OpenAlex, EDGAR, ProPublica):** Log as channel error, attempt `tvly search` fallback → `npx firecrawl-cli search` → `WebSearch` per the playbook's degradation chain.
 - **Absolute floor:** If all tiers fail for all channels, produce the candidates file with empty channel sections and an all-channels-failed status report. Never leave the user without a file.
 

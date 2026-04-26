@@ -1,4 +1,5 @@
 .DS_Store
+.firecrawl/
 
 # GSD planning (development only)
 .planning/

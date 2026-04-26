@@ -59,7 +59,7 @@ Before generating any plan, you must fully read every document the user has prov
 
 ### 2a. Save pasted or referenced content to source-material/
 
-If the user's Question 2 answer included a document path, URL, or pasted content, save it to `source-material/` with a descriptive filename — use the document's own title or a short slug derived from its first heading, not "source.txt" or "doc1.md". For URLs, fetch the full content with `tvly extract` first; fall back to `npx firecrawl-cli scrape`, then `WebFetch` if CLIs unavailable. Never work from search snippets here — the plan generator will use what you save as ground truth.
+If the user's Question 2 answer included a document path, URL, or pasted content, save it to `source-material/` with a descriptive filename — use the document's own title or a short slug derived from its first heading, not "source.txt" or "doc1.md". For URLs, fetch the full content with `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && tvly extract "{url}" --format markdown` first; fall back to `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && npx firecrawl-cli scrape "{url}" --format markdown`, then `WebFetch` if CLIs unavailable. The PATH export is required because `settings.json` env values do not expand shell variables. Never work from search snippets here — the plan generator will use what you save as ground truth.
 
 ### 2b. List and read every file in source-material/
 

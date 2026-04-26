@@ -34,13 +34,30 @@ The user will provide a URL, file path, or pasted content.
 
 ## Process
 
-1. **Fetch the content.** For URLs, try each extraction tier in order on every source, every phase, every time:
-   - **Tier 1:** `tvly extract "{url}" --format markdown` (via Bash)
-   - **Tier 2:** `npx firecrawl-cli scrape "{url}" --format markdown --only-main-content` (via Bash)
-   - **Tier 3:** `WebFetch` (built-in — always available, no CLI needed)
-   - **Floor:** `npx playwright pdf "{url}" /tmp/extract-$(date +%s).pdf` then Read the PDF
+1. **Check tool availability** (once per process-source invocation, not per source). Run via Bash:
+   ```bash
+   export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && which tvly 2>/dev/null && echo "TIER1_OK" || echo "TIER1_MISSING" && which npx 2>/dev/null && echo "TIER2_OK" || echo "TIER2_MISSING"
+   ```
 
-   If a tier fails for a specific source, try the next tier for that source only. On the next source, start from Tier 1 again. Fallbacks are per-source, not per-session — a failure on one URL does not mean the tool is broken for all URLs.
+   **CRITICAL: Every Bash call in this skill that invokes `tvly` or `npx` MUST prepend the same PATH export.** Claude Code's `settings.json` env block does NOT expand shell variables — `$HOME` and `$PATH` pass through as literal strings. The only place variable expansion works is inside the Bash tool's shell. The pattern for every CLI invocation is:
+   ```bash
+   export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && tvly extract "https://example.com" --format markdown
+   ```
+
+   If a tier is still missing after PATH augmentation, run a diagnostic:
+   ```bash
+   ls "$HOME/.local/bin/tvly" 2>/dev/null && echo "EXISTS_ON_DISK" || echo "NOT_INSTALLED"
+   ls "$HOME/.volta/bin/npx" 2>/dev/null || ls /usr/local/bin/npx 2>/dev/null || ls /opt/homebrew/bin/npx 2>/dev/null && echo "EXISTS_ON_DISK" || echo "NOT_INSTALLED"
+   ```
+   Print a one-line status: "Tool check: tvly ✓, npx ✓" or "Tool check: tvly ✗ (not installed), npx ✓" or similar. Skip confirmed-missing tiers for the rest of this invocation.
+
+2. **Fetch the content.** For URLs, try each extraction tier in order, starting from the highest available tier confirmed in step 1:
+   - **Tier 1:** `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && tvly extract "{url}" --format markdown` (via Bash)
+   - **Tier 2:** `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && npx firecrawl-cli scrape "{url}" --format markdown --only-main-content` (via Bash)
+   - **Tier 3:** `WebFetch` (built-in — always available, no CLI needed)
+   - **Floor:** `export PATH="$HOME/.volta/bin:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH" && npx playwright pdf "{url}" /tmp/extract-$(date +%s).pdf` then Read the PDF
+
+   If a tier fails for a specific source at runtime (API error, timeout, 403 — not "command not found"), try the next tier for that source only. On the next source, start from the highest available tier again. Runtime failures are per-source, not per-session — a timeout on one URL does not mean the tool won't work on the next.
 
    For local files: if the file is a PDF, try `pdftotext "{path}" /tmp/{basename}.txt` first (via Bash), then read the text file. If `pdftotext` is not installed (command not found), fall back to reading the PDF directly with the Read tool. For non-PDF files, read them directly. Do not work from search snippets.
 
@@ -97,7 +114,8 @@ The user will provide a URL, file path, or pasted content.
 | Working from search snippets instead of full content | Always extract or read the full source content. Search snippets are for discovery, not for note-taking. Partial content leads to missing context and qualifier stripping. |
 | Processing a file from source-material/ without updating the digest | When the source path begins with `source-material/`, after writing the note, update `research/source-material-digest.md` with the file's contents (add to Files Read table, append new entities/dates/credentials/facts/assumptions). The digest is the reconciliation anchor for `/research:start-phase` — drift produces false blockers or misses real drops. |
 | Silently skipping blocked or paywalled sources | Never decide on your own to skip a source you can't access. Present the access failure to the user with options: they provide the content, explicitly skip it, or offer an alternative URL. The user decides, not the agent. |
-| Sticky fallback — using a lower tier for all sources after one failure | Fallbacks are per-source, not per-session. Always start from Tier 1 (`tvly extract`) on every source. A failure on one URL does not mean that tier won't work on the next. Reset to Tier 1 on every new source. |
+| Sticky fallback — using a lower tier for all sources after one failure | Fallbacks are per-source, not per-session. Always start from the highest available tier (per step 1 pre-flight) on every source. A runtime failure on one URL (timeout, 403, API error) does not mean that tier won't work on the next. Reset to the highest available tier on every new source. But if step 1 confirmed a tier is missing (binary not installed), skip it for all sources — don't retry a missing binary. |
+| Assuming "command not found" means "not installed" | The harness shell has a different PATH than your terminal. Step 1's diagnostic distinguishes "not on PATH" from "not installed." If a binary exists on disk but isn't callable, tell the user which directory to add to settings.json env.PATH — don't silently degrade for the whole session. |
 | Silently resolving contradictions within a source | When a source contains contradictory figures for the same metric, flag both values. Do not pick the one that fits the narrative. |
 | Missing origin chain — not recording whether a source is primary or secondary | Every source note must include an origin chain field. If the source's originality status is unclear from the content, record "Origin unclear — could not determine from extracted content" rather than omitting the field. |
 | Delegating source processing to a spawned subagent (Agent tool) — individual or batch | `/research:process-source` runs in the main conversation, not a subagent. A spawned subagent has a cold context (no commonplace book, no prior source notes in memory, no in-session contradictions), races with the main agent over STATE.md and registry.md, can't be interrupted by the user mid-source, and — in batch mode — silently walks past the cross-reference checkpoint because the main agent isn't watching the counter. Process each source inline. If the candidate list is long and you are tempted to "parallelize" by spawning subagents, resist: the bottleneck isn't agent throughput, it's the cross-ref cadence and user visibility. |

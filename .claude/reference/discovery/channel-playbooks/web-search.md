@@ -59,11 +59,16 @@ channel-type: web-search
 | `query` | (string) | Natural language query; Exa optimizes for semantic relevance |
 | `numResults` | 8 | Per D-03: 8-result cap per tool within channel |
 | `type` | `auto` | Per D-04: routes to neural or keyword via Exa's internal categorization |
-| `useAutoprompt` | `true` | Let Exa refine the query for better semantic retrieval |
+| `contents.highlights.maxCharacters` | `4000` | Token-efficient excerpts per result |
 | `startPublishedDate` | (ISO date, optional) | Filter to results published after this date |
 | `category` | (optional) | One of: company, research paper, news, pdf, github, tweet, personal site |
 
-**Response format:** JSON with `results[]` array. Each result has: `title`, `url`, `publishedDate`, `author`, `score`.
+**Response format:** JSON with `results[]` array. Each result has: `title`, `url`, `publishedDate`, `author`, `score`, `highlights` (array of excerpt strings when `contents.highlights` is requested).
+
+**Deprecated parameters (do NOT use):**
+- `useAutoprompt` — removed from API
+- `livecrawl: "always"` — use `contents.maxAgeHours: 0` instead
+- `numSentences`, `highlightsPerUrl` — use `maxCharacters` instead
 
 ---
 
@@ -123,7 +128,9 @@ curl -s -X POST "https://api.exa.ai/search" \
     "query": "{topic} {context_keywords}",
     "numResults": 8,
     "type": "auto",
-    "useAutoprompt": true
+    "contents": {
+      "highlights": {"maxCharacters": 4000}
+    }
   }'
 ```
 
@@ -145,8 +152,10 @@ curl -s -X POST "https://api.exa.ai/search" \
     "query": "{entity_name} {entity_type}",
     "numResults": 8,
     "type": "auto",
-    "useAutoprompt": true,
-    "category": "{category}"
+    "category": "{category}",
+    "contents": {
+      "highlights": {"maxCharacters": 4000}
+    }
   }'
 ```
 
@@ -169,9 +178,11 @@ curl -s -X POST "https://api.exa.ai/search" \
     "query": "{topic} recent developments",
     "numResults": 8,
     "type": "auto",
-    "useAutoprompt": true,
     "startPublishedDate": "{iso_date}",
-    "category": "news"
+    "category": "news",
+    "contents": {
+      "highlights": {"maxCharacters": 4000}
+    }
   }'
 ```
 
