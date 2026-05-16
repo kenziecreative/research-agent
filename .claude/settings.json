@@ -1,4 +1,12 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(tvly search:*)",
+      "Bash(tvly extract:*)",
+      "Bash(npx firecrawl-cli search:*)",
+      "Bash(npx firecrawl-cli scrape:*)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
